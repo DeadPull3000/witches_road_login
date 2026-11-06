@@ -1,0 +1,13 @@
+{
+  "engine": "firefox",
+  "version": "157.0",
+  "viewport": {
+    "width": 1280,
+    "height": 800
+  },
+  "entryRenderer": "ready",
+  "libraryRenderer": "ready",
+  "audioContexts": 1,
+  "signalAfterRenewal": 0.012294980697333813,
+  "renewed": true
+}

@@ -1,0 +1,29 @@
+[
+  {
+    "asset": "cabin",
+    "prompt": "Use case: stylized-concept\nAsset type: landscape 16:9 background for a 640x360 browser pixel-art puzzle game, The Witches' Road.\nPrimary request: an original detailed pixel-art game adaptation of the séance cabin in Agatha All Along: 1980s summer-camp horror cabin, honey-brown vertical wood paneling, sloped timber roof, dusty old fireplace on the left, violet moonlight through a large multipane window at back center, muted plum cushions and a handmade patterned rug, intimate supernatural atmosphere. Respect the show's cabin design language rather than a generic witch shop.\nComposition/framing: fixed front three-quarter wide view of the interior, no people. A broad low empty wooden séance table spans the lower-left to center foreground, its surface centered at approximately x=250,y=245 in a 640x360 frame, wide enough for four small game lamps that will be added by code. Do not draw the four lamps. Leave the lower-right floor clear for an Agatha sprite at x=520. Some burgundy candlelight, no figures in the windows. Full bleed image, landscape 16:9.\nStyle/medium: richly crafted crisp pixel art, visible small square pixel clusters, restrained dithering, warm materials, deep purple shadow, consistent with a cozy 16-bit adventure background at high resolution; no blur, no photorealism, no painted text.\nConstraints: no text, no logos, no UI, no watermark, no people or characters, no lamps on the table. Playable composition, readable tabletop, dramatic but comfortable lighting.",
+    "method": "built-in ImageGen",
+    "savedPath": "public/assets/cabin/cabin-violet.png",
+    "absoluteSavedPath": "C:/Users/User/Desktop/Projects (Coding)/The Witches' Road/public/assets/cabin/cabin-violet.png",
+    "sourceOutput": "exec-06d40716-81d9-4a00-a5d4-6e1cff272c13.png",
+    "transparent_background": false
+  },
+  {
+    "asset": "tower",
+    "prompt": "Use case: stylized-concept\nAsset type: 16:9 landscape pixel-art game environment, a divination tower interior for The Witches' Road.\nPrimary request: an original playable game adaptation inspired by Lilia's tarot trial in Agatha All Along: circular ancient stone rotunda with ribbed/coffered ceiling disappearing upward, suspended upright silver swords around the upper vault, tall leaded Gothic windows with blue-violet dusk behind them, chained antique books on curved shelves, ochre candlelight and pale gold astronomical carvings. Rich mysterious divination, elegant and human, not a dungeon battle.\nComposition/framing: fixed wide front three-quarter view; in the lower-left center a wide empty oval walnut tarot table with purple inset cloth at approximately x=250,y=249 in a 640x360 game frame. Two empty high-backed carved chairs sit on opposite sides of that table, one toward the camera, one at its far edge. Tabletop clearly visible from slightly elevated camera. Do not draw any cards, card labels or markings on the table: code adds five cards and a permanent table-edge nick. Leave clear lower-right floor for a Lilia sprite near x=520. No people. Full bleed landscape16:9.\nStyle/medium: meticulously detailed pixel-art adventure environment, crisp square pixel clusters and limited dithering, indigo shadows, weathered ochre stone, wine-purple upholstery, antique gold accents. Match warm detailed 16-bit game background aesthetics with strong readable scene structure.\nConstraints: no letters, numbers, text, logo, watermark or UI. No people or faces, no cards already on table, no fallen swords, no violence.",
+    "method": "built-in ImageGen",
+    "savedPath": "public/assets/tower/tower-divination.png",
+    "absoluteSavedPath": "C:/Users/User/Desktop/Projects (Coding)/The Witches' Road/public/assets/tower/tower-divination.png",
+    "sourceOutput": "exec-f22593e8-eaad-4c63-91d8-3164978ed8c1.png",
+    "transparent_background": false
+  },
+  {
+    "asset": "lilia",
+    "prompt": "Use case: stylized-concept\nAsset type: transparent full-body character sprite for a pixel-art browser adventure game, The Witches' Road.\nPrimary request: Lilia Calderu from Agatha All Along as played by Patti LuPone, recognizable mature face, expressive dark eyes, gently arched eyebrows, wavy shoulder-length silver-blonde hair, thoughtful slightly raised chin, kind but formidable fortune teller. Costume inspired by her actual Road look: flowing long mustard ochre dress with long blue sleeves, layered indigo-blue wrap/shawl, small pendant necklaces, dark practical shoes. One hand softly raised with an unlettered tarot card, the other relaxed. She is not in a pointed witch hat.\nStyle/medium: high quality crisp pixel-art sprite, small square pixel clusters, careful face shading and warm outlines, consistent with a richly detailed 16-bit adventure game's Agatha blue/purple, Jen pink and Alice amber sprites. Readable at 118x177 display pixels.\nComposition/framing: single complete full-body character only, near-front three-quarter pose facing slightly left toward the game table. Feet aligned at the bottom with margin, hair fully visible, no cropped hands or clothing. Tall portrait canvas. Genuine transparent background with alpha, no background color, no checkerboard rendered into image, no floor, no scenery, no cast shadow outside character, no additional figures.\nConstraints: one pose only, no text, no logos or watermark, no UI, no extra props apart from one small blank card, coherent anatomy and hands.",
+    "method": "built-in ImageGen",
+    "savedPath": "public/assets/tower/lilia-road.png",
+    "absoluteSavedPath": "C:/Users/User/Desktop/Projects (Coding)/The Witches' Road/public/assets/tower/lilia-road.png",
+    "sourceOutput": "exec-542729ce-ba1a-4da0-b4ea-3218a1836ca4.png",
+    "transparent_background": true
+  }
+]

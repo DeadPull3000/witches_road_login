@@ -1,0 +1,64 @@
+
+added 115 packages in 28s
+
+> the-witches-road@0.1.0 build
+> tsc -b && vite build
+
+vite v6.4.5 building for production...
+transforming...
+node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+node_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+
+in "node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+✓ 921 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                            0.59 kB │ gzip:   0.37 kB
+dist/assets/vision-pale-B2zImckZ.webp                    826.85 kB
+dist/assets/alice-road-DoE7YWRV.webp                     869.25 kB
+dist/assets/lilia-road-Bcr3JocF.webp                     952.09 kB
+dist/assets/rio-road-ETUXE_d1.webp                       976.29 kB
+dist/assets/agatha-road-B7sNJDha.webp                  1,000.79 kB
+dist/assets/jen-road-Sv3xHh1P.webp                     1,002.45 kB
+dist/assets/vision-annex-wide-CoNdmH-G.webp            1,711.80 kB
+dist/assets/vision-annex-portrait-o7_VRwTg.webp        1,730.33 kB
+dist/assets/kitchen-tide-B_WSKTkF.webp                 1,811.90 kB
+dist/assets/cottage-room-portrait-Nnc9Q5_q.webp        2,033.18 kB
+dist/assets/cottage-room--TlKBIBh.webp                 2,039.06 kB
+dist/assets/library-afterhours-mTFCiXoY.webp           2,064.18 kB
+dist/assets/studio-amber-B90Rc7l0.webp                 2,097.56 kB
+dist/assets/cabin-violet-aeV5ep_W.webp                 2,124.90 kB
+dist/assets/coven-cellar-Mvtg_Txt.webp                 2,135.91 kB
+dist/assets/library-afterhours-portrait-Ce8rRA0A.webp  2,250.45 kB
+dist/assets/garden-moonrise-tall-BL0Wnb9m.webp         2,280.01 kB
+dist/assets/garden-moonrise-wide-y3ePIHP5.webp         2,324.14 kB
+dist/assets/greenhouse-earth-qbq-YWoR.webp             2,394.01 kB
+dist/assets/tower-divination-0cN8BUSz.webp             2,412.85 kB
+dist/assets/cottage-dusk-DVRMq_SN.webp                 2,656.81 kB
+dist/assets/cottage-dusk-portrait-DHWUHmwD.webp        2,714.69 kB
+dist/assets/index-CXkpjLkI.css                           113.79 kB │ gzip:  27.05 kB
+dist/assets/CanvasPool-HAnOpg4U.js                         2.75 kB │ gzip:   1.20 kB
+dist/assets/canvasUtils-doqfm_3F.js                        5.81 kB │ gzip:   1.82 kB
+dist/assets/getTexelRangeRects-CakWbtGX.js                11.43 kB │ gzip:   3.01 kB
+dist/assets/webworkerAll-DhY2n5TD.js                      15.66 kB │ gzip:   4.96 kB
+dist/assets/CanvasRenderer-BekkzONZ.js                    18.51 kB │ gzip:   6.20 kB
+dist/assets/browserAll-BTfEeXLs.js                        44.21 kB │ gzip:  11.50 kB
+dist/assets/RenderTargetSystem-BgHzwbpF.js                54.37 kB │ gzip:  14.94 kB
+dist/assets/WebGPURenderer-DSaOeUpR.js                    56.43 kB │ gzip:  16.16 kB
+dist/assets/WebGLRenderer-BFYxYV5O.js                     73.85 kB │ gzip:  20.24 kB
+dist/assets/renderer-CTWGihRR.js                         249.79 kB │ gzip:  78.18 kB
+dist/assets/index-DpFUyLSb.js                            507.33 kB │ gzip: 157.39 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 25.03s

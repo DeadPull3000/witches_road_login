@@ -1,0 +1,40 @@
+{
+  "method": "Built-in ImageGen. FFmpeg libwebp lossless production exports.",
+  "productionReferences": [
+    "https://www.marvel.com/amp/articles/tv-shows/behind-the-scenes-wandavision-featurette-story",
+    "https://lumiere-a.akamaihd.net/v1/documents/wandavision_production_brief_final_01-06-21_8766810b.pdf",
+    "https://philsaunders.artstation.com/projects/Qry5RB"
+  ],
+  "assets": [
+    {
+      "name": "Wide Vision annex",
+      "generated": "exec-00da746b-4995-4b79-8c2b-73502ad5ab5d.png",
+      "source": "public/assets/vision/vision-annex-wide.png",
+      "runtime": "public/assets/vision/vision-annex-wide.webp",
+      "width": 1672,
+      "height": 941,
+      "prompt": "Use case: stylized-concept. Finished wide 16:9 game background at about 1672 by 941 pixels for the full-screen Vision annex in The Witches’ Road. Original black-and-white retro-futurist records room that seems to exist inside a 1950s Westview sitcom broadcast. Make it look like richly hand-clustered late 16-bit pixel art with sharp stepped pixels and textured wood, Bakelite, frosted glass and brushed nickel. Warm-gray walnut veneers, silver film highlights, very dark charcoal shadow, with at most tiny icy indicator glows. A domestic Westview built-in fireplace, lace curtain, ribbed wall panels, floor lamp and geometric wallpaper have been converted to the library's discreet TV repair annex. A low mid-century console holds four small rounded CRT housings and rotary dials. Put the recognizable control bench with the four blank rounded sets in the middle-left around x=30–55%, y=43–65%, with open parquet floor below it and a darker walkable apron at right for a separate sprite. One old intercom on the bench, neatly bundled wires and an empty rail where a live receipt goes. A narrow spoked television antenna silhouette, soft grayscale light from a practical lamp, quiet slightly uncanny backroom. Slight room perspective with room legible all the way to the edges. Crisp, dense and colorful in grayscale values, theatrical shadows. No characters, no text or numbers, no UI, no logo, no watermark, no frame."
+    },
+    {
+      "name": "Portrait Vision annex",
+      "generated": "exec-4d8020b7-4ac0-431e-8d65-a248fa44de4b.png",
+      "reference": "public/assets/vision/vision-annex-wide.png",
+      "referenceRole": "Same room, materials and equipment in a portrait composition",
+      "source": "public/assets/vision/vision-annex-portrait.png",
+      "runtime": "public/assets/vision/vision-annex-portrait.webp",
+      "width": 941,
+      "height": 1672,
+      "prompt": "Use case: stylized-concept. Create a finished 9:16 portrait camera composition, about 941 by 1672 pixels, of the exact Vision annex in the reference wide game painting. Edge-to-edge richly textured late 16-bit pixel art, strong detailed monochrome grayscale values. Keep the same Westview sitcom fireplace, geometric wallpaper, ribbed wall and lace curtain, charcoal stained walnut, brushed nickel, rounded four-CRT cabinet, intercom on its left and dark equipment passage. All four blank rounded CRTs should be together and visible in the central 72% width. Arrange the whole repair bench around y=42–66% and leave empty parquet floor below, dark at the lower right for a separate standing character. Use the upper third for the tall lace window, warm gray geometric wallpaper, starburst clock and antenna. The station screens stay blank and can stack in a single horizontal row of four, visually matching the wide version. Give the lower 18% atmospheric floor and some shadows so live UI can sit above it. Maintain recognizability of the same room and the wide painting's polished angular pixel clusters. No characters, no text, no numbers, no UI, no watermarks or borders."
+    },
+    {
+      "name": "Pale Vision",
+      "generated": "exec-ea06a1f8-8a74-4e1a-8c99-83c32723344b.png",
+      "source": "public/assets/vision/vision-pale.png",
+      "runtime": "public/assets/vision/vision-pale.webp",
+      "width": 1024,
+      "height": 1536,
+      "transparentBackground": true,
+      "prompt": "Use case: stylized-concept. Transparent PNG full-body adventure game sprite of Vision in his pale synthezoid appearance from WandaVision, an original pixel-art interpretation inspired by Phil Saunders's production concept. 2:3 vertical frame approximately 1024×1536. Pose is calm and inquisitive in three-quarter view facing slightly left with one open hand held low at the waist, feet planted. Preserve the elongated angular bald synthetic face, thin forehead circuitry with a small cold-blue diamond light, porcelain-silver panels divided by subtle graphite mechanical seams, fitted white chest armor with diamond geometry, pale gloves, and long ivory cape with a graphite-shadowed lining. Slim adult male silhouette, measured expression, cropped pixel clusters around the eyes and jaw. Tone-matched to the black-and-white Westview television room. Crisp late 16-bit handcrafted pixel-art clusters and dark edge outlines, directional lamp shading from the upper left, clean isolated alpha around every edge including the hem and boots. Figure fills roughly 84% of height, boots and cape fully inside bounds. True transparent background. No ground, drop shadow, floor, platform, text, colored backdrop, watermarks, motion trails, or other figures."
+    }
+  ]
+}

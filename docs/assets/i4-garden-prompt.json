@@ -1,0 +1,53 @@
+{
+  "date": "2026-11-05",
+  "method": "Two separate built-in image_gen generation calls for new landscape and portrait game backgrounds. Inspected reference material informed the text prompts. Generated PNG originals preserved; FFmpeg libwebp lossless runtime exports, without resizing or cropping.",
+  "intent": "New game scenery, not an edit of an existing asset. The portrait is an authored alternate composition.",
+  "referenceMaterial": [
+    {
+      "path": "docs/references/images/witch.png",
+      "role": "User-supplied style/composition reference: moonlit garden, pond, path and mint accents; no puzzle ring copied."
+    },
+    {
+      "path": "public/assets/cottage/cottage-dusk.png",
+      "role": "Existing game style/palette reference: crisp pixel clusters, gnarled woodland, moss, purple depth and amber cottage light."
+    },
+    {
+      "path": "public/assets/cottage/cottage-dusk-portrait.png",
+      "role": "Existing portrait composition and consistent game art treatment."
+    },
+    {
+      "path": "docs/SHOW_DESIGN_REFERENCE.md",
+      "role": "Established Road/garden interpretation and distinction between show-inspired direction and original game locations."
+    }
+  ],
+  "assets": [
+    {
+      "profile": "landscape",
+      "requestedAspect": "16:9",
+      "generatedSource": "C:/Users/User/.codex/generated_images/01a1a7dc-6aef-79d2-af5f-1b0bbd5bcbd7/exec-8ed92db1-463a-467c-927c-742df8c5f35c.png",
+      "projectSource": "public/assets/garden/garden-moonrise-wide.png",
+      "runtime": "public/assets/garden/garden-moonrise-wide.webp",
+      "width": 1672,
+      "height": 941,
+      "sourceBytes": 3310265,
+      "runtimeBytes": 2324142,
+      "prompt": "Use case: stylized-concept. Asset type: full-bleed opaque landscape pixel-art background for The Witches' Road browser puzzle game, wide 16:9 composition, ideally 1672 by 941 pixels. Primary request: a cozy eerie moonlit garden clearing on a magical woodland road, illustrated as detailed crisp pixel art. Match the established game's dark plum outlines, finely clustered pixels, gnarled twisting tree silhouettes, ivy, moss, ferns, weathered stone, warm amber practical lights and restrained mint magical glows. The user's garden reference contributes a small pond, a winding stone path, an intimate cottage garden and moonlit mint accents; the existing cottage scenes contribute rich violet forest depth, natural scale and warm storybook architecture. Scene: a broad quiet grass-and-earth clearing framed by great twisted roots and trees; a small still pond at the far left edge, an uneven stone path curving from lower middle into mist, and a SMALL distant crooked cottage with one amber window tucked into the upper-left background. A pale gold moon hangs high between branches toward the upper right; layered indigo and violet woods fade behind. The lower-left and middle foreground remain a broad relatively clear patch of mossy earth with low grass and sparse stones, suitable for separately rendered interactive garden objects. Keep the scenery richly textured at the perimeter and calmer in that working clearing. A few tiny mint wild mushrooms may grow at distant tree roots, without any prominent ring or orderly group. Night colors are deep blue, violet, dark plum, fern green and mint, with a little amber from the distant cottage. This is a game-specific garden inspired by the practical root-filled fantasy Road, not a literal reproduction of a show set. No people or characters, no UI, no text, no symbols, no numbers, no watermark, no border, no foreground table, and no eight-mushroom puzzle ring baked into the image. Compose specifically for a wide game viewport. Pixel-art painting rather than smooth vector shapes or photorealism."
+    },
+    {
+      "profile": "portrait",
+      "requestedAspect": "9:16",
+      "generatedSource": "C:/Users/User/.codex/generated_images/01a1a7dc-6aef-79d2-af5f-1b0bbd5bcbd7/exec-e8915f5d-3830-48e2-b68e-0492a34b0f23.png",
+      "projectSource": "public/assets/garden/garden-moonrise-tall.png",
+      "runtime": "public/assets/garden/garden-moonrise-tall.webp",
+      "width": 941,
+      "height": 1672,
+      "sourceBytes": 3273194,
+      "runtimeBytes": 2280014,
+      "prompt": "Use case: stylized-concept. Asset type: full-bleed opaque PORTRAIT pixel-art garden background for The Witches' Road browser puzzle game, vertical 9:16 composition, ideally 940 by 1672 pixels. Primary request: an authored tall-camera composition of the same moonlit garden setting as the wide scene just made: a cozy eerie magical woodland clearing, twisted roots, detailed crisp clustered pixels, dark plum contours, layered indigo/violet forest, fern green ground, mint magical accents and one distant amber cottage window. Preserve the illustrated game's rich natural materials and pixel scale. Compose this as a complete portrait painting, not a crop, zoom or stretch of a landscape. Large gnarled trunks frame both sides and curve branches across the upper portion. A pale gold moon is visible high toward the upper right. A SMALL mossy crooked stone cottage with one glowing amber window is tucked in the upper-left distance, with a little pond below it at the left edge. The woodland road curves from the lower-right edge toward a misty tunnel through the middle distance. Keep the broad lower-left/middle foreground as relatively clear mossy earth and grass so a separately rendered interactive mushroom ring can sit there, with stone, ferns and fine flowers framing its edges. Use enough open space through the middle half for native game objects without losing the atmosphere. A few tiny mint mushrooms at distant tree roots are allowed; no prominent extra mushroom circle or orderly group. Moonlit blue/violet rather than sunset, with restrained amber light from the distant cottage. This is the game's own garden inspired by the root-filled fantasy Road. No people, no characters, no UI, no text, no numbers, no symbols, no logo, no watermark, no border, no foreground table, and no eight-mushroom puzzle ring baked into the image. Detailed pixel-art painting, not smooth vector art or photorealism."
+    }
+  ],
+  "visualReview": "Both outputs inspected at full-image scale. Consistent pixel-art woodland palette, pond, path, distant amber cottage and moon; open foreground for native game objects. No people, text, numbers, UI, watermark or extra prominent puzzle ring. Portrait recomposes architecture/branches/path rather than cropping the landscape. Small distant natural mushrooms are decorative.",
+  "exportVerification": "docs/evidence/i4-garden-exports.json",
+  "exportCommandTemplate": "ffmpeg -hide_banner -loglevel error -threads 1 -i <source.png> -c:v libwebp -lossless 1 -compression_level 6 -q:v 100 -n <runtime.webp>",
+  "verificationMethod": "FFmpeg decode of source/runtime RGBA compared pixel by pixel, with identical visible pixels and dimensions; all pixels opaque."
+}

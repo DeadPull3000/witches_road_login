@@ -1,0 +1,175 @@
+
+> the-witches-road@0.1.0 check
+> npm run typecheck && npm test && npm run build && npm run test:e2e
+
+
+> the-witches-road@0.1.0 typecheck
+> tsc -b
+
+
+> the-witches-road@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.12 C:/Users/User/Desktop/Projects (Coding)/The Witches' Road
+
+
+ Test Files  14 passed (14)
+      Tests  125 passed (125)
+   Start at  01:00:53
+   Duration  7.10s (transform 6.51s, setup 0ms, import 16.22s, tests 10.13s, environment 5ms)
+
+
+> the-witches-road@0.1.0 build
+> tsc -b && vite build
+
+vite v6.4.5 building for production...
+transforming...
+node_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+
+in "node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+✓ 888 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                               0.59 kB │ gzip:   0.37 kB
+dist/assets/index-BY41aIEP.css               88.94 kB │ gzip:  21.02 kB
+dist/assets/Filter-CorkLSR-.js                0.91 kB │ gzip:   0.48 kB
+dist/assets/CanvasPool-CWXm7E0a.js            1.89 kB │ gzip:   0.83 kB
+dist/assets/canvasUtils-LUR9eZp0.js           5.81 kB │ gzip:   1.82 kB
+dist/assets/getTexelRangeRects-f5rZMOtg.js   11.43 kB │ gzip:   3.01 kB
+dist/assets/webworkerAll-BllwfiWo.js         15.69 kB │ gzip:   4.97 kB
+dist/assets/CanvasRenderer-BEERb8G0.js       18.54 kB │ gzip:   6.22 kB
+dist/assets/BitmapFont-CiAX8sfY.js           34.55 kB │ gzip:  11.78 kB
+dist/assets/browserAll-CwIRIjNQ.js           44.24 kB │ gzip:  11.52 kB
+dist/assets/RenderTargetSystem-BTRNfEiJ.js   54.40 kB │ gzip:  14.95 kB
+dist/assets/WebGPURenderer-BK2Lxeus.js       56.46 kB │ gzip:  16.17 kB
+dist/assets/WebGLRenderer-pJ4RvbOh.js        73.88 kB │ gzip:  20.25 kB
+dist/assets/renderer-1H-qmoOU.js            280.16 kB │ gzip:  88.76 kB
+dist/assets/index-CTXaupU3.js               458.95 kB │ gzip: 142.49 kB
+✓ built in 13.94s
+
+> the-witches-road@0.1.0 test:e2e
+> playwright test
+
+
+Running 108 tests using 1 worker
+
+  ok   1 [chromium] › tests\e2e\immersiveI1.spec.ts:6:1 › the cottage fills every aspect ratio and reframes one live renderer without losing a typed card (19.6s)
+  ok   2 [chromium] › tests\e2e\immersiveI1.spec.ts:40:1 › menus, motion preferences and resizing retain the entered spell and the same audio context (3.3s)
+  ok   3 [chromium] › tests\e2e\immersiveI1.spec.ts:67:1 › a keyboard-sized visual viewport keeps the focused card usable without scrolling the world (2.0s)
+  ok   4 [chromium] › tests\e2e\immersiveI1.spec.ts:81:1 › the door restores focus and skipping theft cancels the delayed card reopening (3.3s)
+  ok   5 [chromium] › tests\e2e\immersiveI1.spec.ts:100:1 › keyboard card actions stay focusable and queue in order during a slow save (4.6s)
+  ok   6 [chromium] › tests\e2e\immersiveI2.spec.ts:28:1 › the folded map gates rooms, traps focus and preserves the card through map and notebook visits (7.3s)
+  ok   7 [chromium] › tests\e2e\immersiveI2.spec.ts:49:1 › the saved-card folio preserves progress and preferences through new and resumed journeys (6.5s)
+  ok   8 [chromium] › tests\e2e\immersiveI2.spec.ts:67:1 › every location uses one world canvas, with the library reached through its guarded doorway (20.1s)
+  ok   9 [chromium] › tests\e2e\immersiveI2.spec.ts:88:1 › a slow obsolete room finishes without replacing the newer destination or its renderer (5.5s)
+  ok  10 [chromium] › tests\e2e\immersiveI2.spec.ts:101:1 › the active-play timer waits for required sound and pauses inside the shared menus (4.8s)
+  ok  11 [chromium] › tests\e2e\immersiveI2.spec.ts:115:1 › saved-card and file-read failures can be retried without losing the active journey (7.9s)
+  ok  12 [chromium] › tests\e2e\immersiveI3.spec.ts:19:1 › coven keepsakes move between unique floor seats, survive closing and reload, and open the guarded trapdoor (15.3s)
+  ok  13 [chromium] › tests\e2e\immersiveI3.spec.ts:40:1 › the counter uses its vessel geometry, accepted quantities, source tools and an interruptible pour (8.9s)
+  ok  14 [chromium] › tests\e2e\immersiveI3.spec.ts:57:1 › the recording desk retains its telephone draft through approach, menus and reframing while hardware follows the saved mix (9.1s)
+  ok  15 [chromium] › tests\e2e\immersiveI3.spec.ts:76:1 › the four spirit lamps keep all statements readable and the planchette never awards progress for a failed check (5.2s)
+  ok  16 [chromium] › tests\e2e\immersiveI3.spec.ts:89:1 › all four instrument planes reframe with reachable targets and retain one world and audio context (33.2s)
+  ok  17 [chromium] › tests\e2e\immersiveI3.spec.ts:108:1 › an instrument publishes quantities and its pour only after save completion, and travel cannot replay the cue (10.0s)
+  ok  18 [chromium] › tests\e2e\immersiveI4.spec.ts:20:1 › the opposite chair accepts only a legal arrangement and its closed table never leaks the answer (41.5s)
+  ok  19 [chromium] › tests\e2e\immersiveI4.spec.ts:32:1 › named stones share the drawing plane and keyboard moves still work immediately after a real stroke (35.8s)
+  ok  20 [chromium] › tests\e2e\immersiveI4.spec.ts:43:1 › resizing, menus, closing, scroll and a changed drawing transform all cancel an uncommitted vine stroke (33.7s)
+  ok  21 [chromium] › tests\e2e\immersiveI4.spec.ts:57:1 › numbered caps preserve neighbor previews, undo, reload and optional recognition through their ring (14.7s)
+  ok  22 [chromium] › tests\e2e\immersiveI4.spec.ts:67:1 › all three working objects reframe without extra worlds, unreachable controls or page overflow (15.0s)
+  ok  23 [chromium] › tests\e2e\immersiveI4.spec.ts:79:1 › the last three trials remain playable with missing textures and large text (3.0s)
+  ok  24 [chromium] › tests\e2e\journey.spec.ts:46:1 › complete story route, interrupted confirmation, renewal and optional remembered return (36.0s)
+  ok  25 [chromium] › tests\e2e\journey.spec.ts:56:1 › every required action is keyboard operable with reduced motion (9.7s)
+  ok  26 [chromium] › tests\e2e\journey.spec.ts:63:1 › the entire required route works when canvas rendering is unavailable (9.7s)
+  ok  27 [chromium] › tests\e2e\journey.spec.ts:72:1 › the entire required route works when illustration textures are missing (11.8s)
+  ok  28 [chromium] › tests\e2e\journey.spec.ts:78:1 › accepted jug move survives refresh; undo, reset and preferences stay scoped (19.2s)
+  ok  29 [chromium] › tests\e2e\journey.spec.ts:88:1 › stale browser tab loads the winner and does not replay its alias action (18.3s)
+  ok  30 [chromium] › tests\e2e\journey.spec.ts:97:1 › quota failure stays playable and exports the current unsaved journey (11.8s)
+  ok  31 [chromium] › tests\e2e\journey.spec.ts:111:1 › corrupt newest snapshot restores checkpoint without discarding original (8.8s)
+  ok  32 [chromium] › tests\e2e\journey.spec.ts:125:1 › import rejects unsupported files and keeps slots and new modes separate (6.7s)
+  ok  33 [chromium] › tests\e2e\phaseC.spec.ts:16:1 › kitchen art, accepted pours, active timer and character reactions preserve progress (14.1s)
+  ok  34 [chromium] › tests\e2e\phaseC.spec.ts:32:1 › studio stems start together; controls persist without revealing a solution (27.6s)
+  ok  35 [chromium] › tests\e2e\phaseC.spec.ts:72:1 › audio must start before play; a failed device can be retried without losing a journey (9.2s)
+  ok  36 [chromium] › tests\e2e\phaseC.spec.ts:96:1 › legacy showcase saves have no hints or automatic answers in any required level (36.7s)
+  ok  37 [chromium] › tests\e2e\phaseC.spec.ts:107:1 › repeated room changes keep one live scene and load the right art (25.8s)
+  ok  38 [chromium] › tests\e2e\phaseD.spec.ts:16:1 › a real audio signal starts on entry, follows the rooms and respects immediate mute (21.7s)
+  ok  39 [chromium] › tests\e2e\phaseD.spec.ts:47:1 › cabin lamps share scene and text controls; the shadow never removes progress (20.7s)
+  ok  40 [chromium] › tests\e2e\phaseD.spec.ts:73:1 › tarot memories, table nick and opposite-seat confirmation survive reload without answers (35.4s)
+  ok  41 [chromium] › tests\e2e\phaseD.spec.ts:108:1 › changing the motion preference cancels an active shadow without replaying it (7.2s)
+  ok  42 [chromium] › tests\e2e\phaseD.spec.ts:119:1 › reduced motion preserves both tower perspectives and skips the inversion (5.4s)
+  ok  43 [chromium] › tests\e2e\phaseD.spec.ts:130:1 › repeated studio, cabin and tower visits retain a single renderer with live audio (33.8s)
+  ok  44 [chromium] › tests\e2e\phaseE.spec.ts:39:1 › drawing crosses vines without inventing a stone; partial and alternate complete routes persist (32.7s)
+  ok  45 [chromium] › tests\e2e\phaseE.spec.ts:56:1 › touch strokes cancel safely and a concurrent button move discards an old drawing (24.3s)
+  ok  46 [chromium] › tests\e2e\phaseE.spec.ts:73:1 › the unchanged cottage room reveals the Road and the stitch gesture still gates sign-in (35.7s)
+  ok  47 [chromium] › tests\e2e\phaseE.spec.ts:108:1 › recognition begins after first sign-in and Forget/Remember preserve the completed journey (24.2s)
+  ok  48 [chromium] › tests\e2e\phaseE.spec.ts:123:1 › renewal saves before the receipt flourish and reload keeps the complete illustrated receipt (10.9s)
+  ok  49 [chromium] › tests\e2e\phaseE.spec.ts:136:1 › an unsaved finale remains exportable and Retry persists unbinding, sign-in and renewal together (16.6s)
+  ok  50 [chromium] › tests\e2e\scenes.spec.ts:4:1 › illustrated cottage renders, shares accessible object controls and preserves final theft state (15.8s)
+  ok  51 [chromium] › tests\e2e\scenes.spec.ts:36:1 › garden caps share one coordinate definition and allow undo and optional completion (16.4s)
+  ok  52 [chromium] › tests\e2e\scenes.spec.ts:53:1 › reduced motion reaches canvas presentation and removes theft playback (3.0s)
+  ok  53 [chromium] › tests\e2e\scenes.spec.ts:62:1 › WebGL context loss switches to a usable still view (8.9s)
+  ok  54 [chromium] › tests\e2e\scenes.spec.ts:79:1 › an unexpected GPU draw failure preserves the React controls and saved run (6.5s)
+  ok  55 [mobile-chromium] › tests\e2e\immersiveI1.spec.ts:6:1 › the cottage fills every aspect ratio and reframes one live renderer without losing a typed card (39.9s)
+  ok  56 [mobile-chromium] › tests\e2e\immersiveI1.spec.ts:40:1 › menus, motion preferences and resizing retain the entered spell and the same audio context (6.3s)
+  ok  57 [mobile-chromium] › tests\e2e\immersiveI1.spec.ts:67:1 › a keyboard-sized visual viewport keeps the focused card usable without scrolling the world (3.9s)
+  ok  58 [mobile-chromium] › tests\e2e\immersiveI1.spec.ts:81:1 › the door restores focus and skipping theft cancels the delayed card reopening (7.8s)
+  ok  59 [mobile-chromium] › tests\e2e\immersiveI1.spec.ts:100:1 › keyboard card actions stay focusable and queue in order during a slow save (9.4s)
+  ok  60 [mobile-chromium] › tests\e2e\immersiveI2.spec.ts:28:1 › the folded map gates rooms, traps focus and preserves the card through map and notebook visits (20.9s)
+  ok  61 [mobile-chromium] › tests\e2e\immersiveI2.spec.ts:49:1 › the saved-card folio preserves progress and preferences through new and resumed journeys (13.3s)
+  ok  62 [mobile-chromium] › tests\e2e\immersiveI2.spec.ts:67:1 › every location uses one world canvas, with the library reached through its guarded doorway (46.0s)
+  ok  63 [mobile-chromium] › tests\e2e\immersiveI2.spec.ts:88:1 › a slow obsolete room finishes without replacing the newer destination or its renderer (12.6s)
+  ok  64 [mobile-chromium] › tests\e2e\immersiveI2.spec.ts:101:1 › the active-play timer waits for required sound and pauses inside the shared menus (9.2s)
+  ok  65 [mobile-chromium] › tests\e2e\immersiveI2.spec.ts:115:1 › saved-card and file-read failures can be retried without losing the active journey (13.2s)
+  ok  66 [mobile-chromium] › tests\e2e\immersiveI3.spec.ts:19:1 › coven keepsakes move between unique floor seats, survive closing and reload, and open the guarded trapdoor (26.1s)
+  ok  67 [mobile-chromium] › tests\e2e\immersiveI3.spec.ts:40:1 › the counter uses its vessel geometry, accepted quantities, source tools and an interruptible pour (18.9s)
+  ok  68 [mobile-chromium] › tests\e2e\immersiveI3.spec.ts:57:1 › the recording desk retains its telephone draft through approach, menus and reframing while hardware follows the saved mix (25.9s)
+  ok  69 [mobile-chromium] › tests\e2e\immersiveI3.spec.ts:76:1 › the four spirit lamps keep all statements readable and the planchette never awards progress for a failed check (10.4s)
+  ok  70 [mobile-chromium] › tests\e2e\immersiveI3.spec.ts:89:1 › all four instrument planes reframe with reachable targets and retain one world and audio context (53.7s)
+  ok  71 [mobile-chromium] › tests\e2e\immersiveI3.spec.ts:108:1 › an instrument publishes quantities and its pour only after save completion, and travel cannot replay the cue (15.4s)
+  ok  72 [mobile-chromium] › tests\e2e\immersiveI4.spec.ts:20:1 › the opposite chair accepts only a legal arrangement and its closed table never leaks the answer (36.4s)
+  ok  73 [mobile-chromium] › tests\e2e\immersiveI4.spec.ts:32:1 › named stones share the drawing plane and keyboard moves still work immediately after a real stroke (27.3s)
+  ok  74 [mobile-chromium] › tests\e2e\immersiveI4.spec.ts:43:1 › resizing, menus, closing, scroll and a changed drawing transform all cancel an uncommitted vine stroke (34.1s)
+  ok  75 [mobile-chromium] › tests\e2e\immersiveI4.spec.ts:57:1 › numbered caps preserve neighbor previews, undo, reload and optional recognition through their ring (22.1s)
+  ok  76 [mobile-chromium] › tests\e2e\immersiveI4.spec.ts:67:1 › all three working objects reframe without extra worlds, unreachable controls or page overflow (33.6s)
+  ok  77 [mobile-chromium] › tests\e2e\immersiveI4.spec.ts:79:1 › the last three trials remain playable with missing textures and large text (4.1s)
+  ok  78 [mobile-chromium] › tests\e2e\journey.spec.ts:46:1 › complete story route, interrupted confirmation, renewal and optional remembered return (1.1m)
+  ok  79 [mobile-chromium] › tests\e2e\journey.spec.ts:56:1 › every required action is keyboard operable with reduced motion (20.8s)
+  ok  80 [mobile-chromium] › tests\e2e\journey.spec.ts:63:1 › the entire required route works when canvas rendering is unavailable (15.4s)
+  ok  81 [mobile-chromium] › tests\e2e\journey.spec.ts:72:1 › the entire required route works when illustration textures are missing (16.2s)
+  ok  82 [mobile-chromium] › tests\e2e\journey.spec.ts:78:1 › accepted jug move survives refresh; undo, reset and preferences stay scoped (20.0s)
+  ok  83 [mobile-chromium] › tests\e2e\journey.spec.ts:88:1 › stale browser tab loads the winner and does not replay its alias action (23.6s)
+  ok  84 [mobile-chromium] › tests\e2e\journey.spec.ts:97:1 › quota failure stays playable and exports the current unsaved journey (10.4s)
+  ok  85 [mobile-chromium] › tests\e2e\journey.spec.ts:111:1 › corrupt newest snapshot restores checkpoint without discarding original (9.2s)
+  ok  86 [mobile-chromium] › tests\e2e\journey.spec.ts:125:1 › import rejects unsupported files and keeps slots and new modes separate (7.8s)
+  ok  87 [mobile-chromium] › tests\e2e\phaseC.spec.ts:16:1 › kitchen art, accepted pours, active timer and character reactions preserve progress (18.0s)
+  ok  88 [mobile-chromium] › tests\e2e\phaseC.spec.ts:32:1 › studio stems start together; controls persist without revealing a solution (26.9s)
+  ok  89 [mobile-chromium] › tests\e2e\phaseC.spec.ts:72:1 › audio must start before play; a failed device can be retried without losing a journey (14.5s)
+  ok  90 [mobile-chromium] › tests\e2e\phaseC.spec.ts:96:1 › legacy showcase saves have no hints or automatic answers in any required level (35.5s)
+  ok  91 [mobile-chromium] › tests\e2e\phaseC.spec.ts:107:1 › repeated room changes keep one live scene and load the right art (22.3s)
+  ok  92 [mobile-chromium] › tests\e2e\phaseD.spec.ts:16:1 › a real audio signal starts on entry, follows the rooms and respects immediate mute (19.7s)
+  ok  93 [mobile-chromium] › tests\e2e\phaseD.spec.ts:47:1 › cabin lamps share scene and text controls; the shadow never removes progress (18.0s)
+  ok  94 [mobile-chromium] › tests\e2e\phaseD.spec.ts:73:1 › tarot memories, table nick and opposite-seat confirmation survive reload without answers (35.9s)
+  ok  95 [mobile-chromium] › tests\e2e\phaseD.spec.ts:108:1 › changing the motion preference cancels an active shadow without replaying it (5.9s)
+  ok  96 [mobile-chromium] › tests\e2e\phaseD.spec.ts:119:1 › reduced motion preserves both tower perspectives and skips the inversion (6.0s)
+  ok  97 [mobile-chromium] › tests\e2e\phaseD.spec.ts:130:1 › repeated studio, cabin and tower visits retain a single renderer with live audio (38.9s)
+  ok  98 [mobile-chromium] › tests\e2e\phaseE.spec.ts:39:1 › drawing crosses vines without inventing a stone; partial and alternate complete routes persist (27.9s)
+  ok  99 [mobile-chromium] › tests\e2e\phaseE.spec.ts:56:1 › touch strokes cancel safely and a concurrent button move discards an old drawing (19.7s)
+  ok 100 [mobile-chromium] › tests\e2e\phaseE.spec.ts:73:1 › the unchanged cottage room reveals the Road and the stitch gesture still gates sign-in (40.3s)
+  ok 101 [mobile-chromium] › tests\e2e\phaseE.spec.ts:108:1 › recognition begins after first sign-in and Forget/Remember preserve the completed journey (21.5s)
+  ok 102 [mobile-chromium] › tests\e2e\phaseE.spec.ts:123:1 › renewal saves before the receipt flourish and reload keeps the complete illustrated receipt (11.3s)
+  ok 103 [mobile-chromium] › tests\e2e\phaseE.spec.ts:136:1 › an unsaved finale remains exportable and Retry persists unbinding, sign-in and renewal together (10.7s)
+  ok 104 [mobile-chromium] › tests\e2e\scenes.spec.ts:4:1 › illustrated cottage renders, shares accessible object controls and preserves final theft state (13.9s)
+  ok 105 [mobile-chromium] › tests\e2e\scenes.spec.ts:36:1 › garden caps share one coordinate definition and allow undo and optional completion (12.7s)
+  ok 106 [mobile-chromium] › tests\e2e\scenes.spec.ts:53:1 › reduced motion reaches canvas presentation and removes theft playback (3.0s)
+  ok 107 [mobile-chromium] › tests\e2e\scenes.spec.ts:62:1 › WebGL context loss switches to a usable still view (5.2s)
+  ok 108 [mobile-chromium] › tests\e2e\scenes.spec.ts:79:1 › an unexpected GPU draw failure preserves the React controls and saved run (4.0s)
+
+  108 passed (33.0m)

@@ -1,0 +1,692 @@
+{
+  "browser": "156.0.8078.81",
+  "isMobile": false,
+  "distBytes": 41584321,
+  "openingBytes": 3969974,
+  "opening": [
+    {
+      "file": "",
+      "transferBytes": 887,
+      "encodedBytes": 587
+    },
+    {
+      "file": "index-DrzkrLPR.js",
+      "transferBytes": 160406,
+      "encodedBytes": 160106
+    },
+    {
+      "file": "index-C-14ra6Z.css",
+      "transferBytes": 29513,
+      "encodedBytes": 29213
+    },
+    {
+      "file": "cottage-dusk-DVRMq_SN.webp",
+      "transferBytes": 2657108,
+      "encodedBytes": 2656808
+    },
+    {
+      "file": "agatha-road-B7sNJDha.webp",
+      "transferBytes": 1001094,
+      "encodedBytes": 1000794
+    },
+    {
+      "file": "renderer-BmauT6b_.js",
+      "transferBytes": 79948,
+      "encodedBytes": 79648
+    },
+    {
+      "file": "WebGLRenderer-DsAyTf_8.js",
+      "transferBytes": 20537,
+      "encodedBytes": 20237
+    },
+    {
+      "file": "getTexelRangeRects-ChG1Oj1W.js",
+      "transferBytes": 3308,
+      "encodedBytes": 3008
+    },
+    {
+      "file": "RenderTargetSystem-0J2M8E0H.js",
+      "transferBytes": 15237,
+      "encodedBytes": 14937
+    },
+    {
+      "file": "CanvasPool-C_Wvmskx.js",
+      "transferBytes": 1496,
+      "encodedBytes": 1196
+    },
+    {
+      "file": "favicon.ico",
+      "transferBytes": 440,
+      "encodedBytes": 140
+    }
+  ],
+  "entryMs": 476,
+  "entryArt": {
+    "framebuffer": [
+      943,
+      530
+    ],
+    "activeImages": 2,
+    "leasedImages": 2,
+    "rgbaBytes": 12584864
+  },
+  "entryPeak": 0.02042558044195175,
+  "openingDraws": {
+    "fps": 58.7,
+    "p95DrawIntervalMs": 17,
+    "viewport": [
+      1280,
+      720
+    ],
+    "density": 1,
+    "webglRenderer": "ANGLE (Intel, Intel(R) Arc(TM) Graphics (0x00007D55) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+  },
+  "annexArt": {
+    "framebuffer": [
+      943,
+      530
+    ],
+    "activeImages": 2,
+    "leasedImages": 2,
+    "rgbaBytes": 12584864
+  },
+  "annexDraws": {
+    "fps": 58.3,
+    "p95DrawIntervalMs": 18.4,
+    "viewport": [
+      1280,
+      720
+    ],
+    "density": 1,
+    "webglRenderer": "ANGLE (Intel, Intel(R) Arc(TM) Graphics (0x00007D55) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+  },
+  "annexPeak": 0.00953409168869257,
+  "renewMs": 134,
+  "visits": [
+    {
+      "circuit": 1,
+      "scene": "threshold",
+      "readyMs": 949,
+      "framebuffer": [
+        943,
+        530
+      ],
+      "activeImages": 2,
+      "leasedImages": 2,
+      "rgbaBytes": 12584864,
+      "resources": [
+        {
+          "file": "coven-cellar-Mvtg_Txt.webp",
+          "transferBytes": 2136212,
+          "encodedBytes": 2135912
+        },
+        {
+          "file": "agatha-road-B7sNJDha.webp",
+          "transferBytes": 300,
+          "encodedBytes": 1000794
+        }
+      ]
+    },
+    {
+      "circuit": 1,
+      "scene": "kitchen",
+      "readyMs": 715,
+      "framebuffer": [
+        943,
+        530
+      ],
+      "activeImages": 2,
+      "leasedImages": 2,
+      "rgbaBytes": 12584864,
+      "resources": [
+        {
+          "file": "kitchen-tide-B_WSKTkF.webp",
+          "transferBytes": 1812200,
+          "encodedBytes": 1811900
+        },
+        {
+          "file": "jen-road-Sv3xHh1P.webp",
+          "transferBytes": 1002754,
+          "encodedBytes": 1002454
+        }
+      ]
+    },
+    {
+      "circuit": 1,
+      "scene": "studio",
+      "readyMs": 850,
+      "framebuffer": [
+        943,
+        530
+      ],
+      "activeImages": 2,
+      "leasedImages": 2,
+      "rgbaBytes": 12584864,
+      "resources": [
+        {
+          "file": "studio-amber-B90Rc7l0.webp",
+          "transferBytes": 2097864,
+          "encodedBytes": 2097564
+        },
+        {
+          "file": "alice-road-DoE7YWRV.webp",
+          "transferBytes": 869548,
+          "encodedBytes": 869248
+        }
+      ]
+    },
+    {
+      "circuit": 1,
+      "scene": "cabin",
+      "readyMs": 823,
+      "framebuffer": [
+        943,
+        530
+      ],
+      "activeImages": 2,
+      "leasedImages": 2,
+      "rgbaBytes": 12584864,
+      "resources": [
+        {
+          "file": "cabin-violet-aeV5ep_W.webp",
+          "transferBytes": 2125196,
+          "encodedBytes": 2124896
+        },
+        {
+          "file": "agatha-road-B7sNJDha.webp",
+          "transferBytes": 300,
+          "encodedBytes": 1000794
+        }
+      ]
+    },
+    {
+      "circuit": 1,
+      "scene": "tower",
+      "readyMs": 847,
+      "framebuffer": [
+        943,
+        530
+      ],
+      "activeImages": 2,
+      "leasedImages": 2,
+      "rgbaBytes": 12584864,
+      "resources": [
+        {
+          "file": "tower-divination-0cN8BUSz.webp",
+          "transferBytes": 2413150,
+          "encodedBytes": 2412850
+        },
+        {
+          "file": "lilia-road-Bcr3JocF.webp",
+          "transferBytes": 952390,
+          "encodedBytes": 952090
+        }
+      ]
+    },
+    {
+      "circuit": 1,
+      "scene": "greenhouse",
+      "readyMs": 877,
+      "framebuffer": [
+        943,
+        530
+      ],
+      "activeImages": 2,
+      "leasedImages": 2,
+      "rgbaBytes": 12584864,
+      "resources": [
+        {
+          "file": "greenhouse-earth-qbq-YWoR.webp",
+          "transferBytes": 2394314,
+          "encodedBytes": 2394014
+        },
+        {
+          "file": "rio-road-ETUXE_d1.webp",
+          "transferBytes": 976594,
+          "encodedBytes": 976294
+        }
+      ]
+    },
+    {
+      "circuit": 1,
+      "scene": "garden",
+      "readyMs": 634,
+      "framebuffer": [
+        943,
+        530
+      ],
+      "activeImages": 1,
+      "leasedImages": 1,
+      "rgbaBytes": 6293408,
+      "resources": [
+        {
+          "file": "garden-moonrise-wide-y3ePIHP5.webp",
+          "transferBytes": 2324442,
+          "encodedBytes": 2324142
+        }
+      ]
+    },
+    {
+      "circuit": 1,
+      "scene": "cottage",
+      "readyMs": 908,
+      "framebuffer": [
+        943,
+        530
+      ],
+      "activeImages": 2,
+      "leasedImages": 2,
+      "rgbaBytes": 12584864,
+      "resources": [
+        {
+          "file": "cottage-dusk-DVRMq_SN.webp",
+          "transferBytes": 300,
+          "encodedBytes": 2656808
+        },
+        {
+          "file": "agatha-road-B7sNJDha.webp",
+          "transferBytes": 300,
+          "encodedBytes": 1000794
+        }
+      ]
+    },
+    {
+      "circuit": 2,
+      "scene": "threshold",
+      "readyMs": 656,
+      "framebuffer": [
+        943,
+        530
+      ],
+      "activeImages": 2,
+      "leasedImages": 2,
+      "rgbaBytes": 12584864,
+      "resources": [
+        {
+          "file": "coven-cellar-Mvtg_Txt.webp",
+          "transferBytes": 300,
+          "encodedBytes": 2135912
+        }
+      ]
+    },
+    {
+      "circuit": 2,
+      "scene": "kitchen",
+      "readyMs": 632,
+      "framebuffer": [
+        943,
+        530
+      ],
+      "activeImages": 2,
+      "leasedImages": 2,
+      "rgbaBytes": 12584864,
+      "resources": [
+        {
+          "file": "kitchen-tide-B_WSKTkF.webp",
+          "transferBytes": 300,
+          "encodedBytes": 1811900
+        },
+        {
+          "file": "jen-road-Sv3xHh1P.webp",
+          "transferBytes": 300,
+          "encodedBytes": 1002454
+        }
+      ]
+    },
+    {
+      "circuit": 2,
+      "scene": "studio",
+      "readyMs": 780,
+      "framebuffer": [
+        943,
+        530
+      ],
+      "activeImages": 2,
+      "leasedImages": 2,
+      "rgbaBytes": 12584864,
+      "resources": [
+        {
+          "file": "studio-amber-B90Rc7l0.webp",
+          "transferBytes": 300,
+          "encodedBytes": 2097564
+        },
+        {
+          "file": "alice-road-DoE7YWRV.webp",
+          "transferBytes": 300,
+          "encodedBytes": 869248
+        }
+      ]
+    },
+    {
+      "circuit": 2,
+      "scene": "cabin",
+      "readyMs": 825,
+      "framebuffer": [
+        943,
+        530
+      ],
+      "activeImages": 2,
+      "leasedImages": 2,
+      "rgbaBytes": 12584864,
+      "resources": [
+        {
+          "file": "cabin-violet-aeV5ep_W.webp",
+          "transferBytes": 300,
+          "encodedBytes": 2124896
+        },
+        {
+          "file": "agatha-road-B7sNJDha.webp",
+          "transferBytes": 300,
+          "encodedBytes": 1000794
+        }
+      ]
+    },
+    {
+      "circuit": 2,
+      "scene": "tower",
+      "readyMs": 917,
+      "framebuffer": [
+        943,
+        530
+      ],
+      "activeImages": 2,
+      "leasedImages": 2,
+      "rgbaBytes": 12584864,
+      "resources": [
+        {
+          "file": "tower-divination-0cN8BUSz.webp",
+          "transferBytes": 300,
+          "encodedBytes": 2412850
+        },
+        {
+          "file": "lilia-road-Bcr3JocF.webp",
+          "transferBytes": 300,
+          "encodedBytes": 952090
+        }
+      ]
+    },
+    {
+      "circuit": 2,
+      "scene": "greenhouse",
+      "readyMs": 784,
+      "framebuffer": [
+        943,
+        530
+      ],
+      "activeImages": 2,
+      "leasedImages": 2,
+      "rgbaBytes": 12584864,
+      "resources": [
+        {
+          "file": "greenhouse-earth-qbq-YWoR.webp",
+          "transferBytes": 300,
+          "encodedBytes": 2394014
+        },
+        {
+          "file": "rio-road-ETUXE_d1.webp",
+          "transferBytes": 300,
+          "encodedBytes": 976294
+        }
+      ]
+    },
+    {
+      "circuit": 2,
+      "scene": "garden",
+      "readyMs": 656,
+      "framebuffer": [
+        943,
+        530
+      ],
+      "activeImages": 1,
+      "leasedImages": 1,
+      "rgbaBytes": 6293408,
+      "resources": [
+        {
+          "file": "garden-moonrise-wide-y3ePIHP5.webp",
+          "transferBytes": 300,
+          "encodedBytes": 2324142
+        }
+      ]
+    },
+    {
+      "circuit": 2,
+      "scene": "cottage",
+      "readyMs": 834,
+      "framebuffer": [
+        943,
+        530
+      ],
+      "activeImages": 2,
+      "leasedImages": 2,
+      "rgbaBytes": 12584864,
+      "resources": [
+        {
+          "file": "cottage-dusk-DVRMq_SN.webp",
+          "transferBytes": 300,
+          "encodedBytes": 2656808
+        },
+        {
+          "file": "agatha-road-B7sNJDha.webp",
+          "transferBytes": 300,
+          "encodedBytes": 1000794
+        }
+      ]
+    },
+    {
+      "circuit": 3,
+      "scene": "threshold",
+      "readyMs": 662,
+      "framebuffer": [
+        943,
+        530
+      ],
+      "activeImages": 2,
+      "leasedImages": 2,
+      "rgbaBytes": 12584864,
+      "resources": [
+        {
+          "file": "coven-cellar-Mvtg_Txt.webp",
+          "transferBytes": 300,
+          "encodedBytes": 2135912
+        }
+      ]
+    },
+    {
+      "circuit": 3,
+      "scene": "kitchen",
+      "readyMs": 621,
+      "framebuffer": [
+        943,
+        530
+      ],
+      "activeImages": 2,
+      "leasedImages": 2,
+      "rgbaBytes": 12584864,
+      "resources": [
+        {
+          "file": "kitchen-tide-B_WSKTkF.webp",
+          "transferBytes": 300,
+          "encodedBytes": 1811900
+        },
+        {
+          "file": "jen-road-Sv3xHh1P.webp",
+          "transferBytes": 300,
+          "encodedBytes": 1002454
+        }
+      ]
+    },
+    {
+      "circuit": 3,
+      "scene": "studio",
+      "readyMs": 770,
+      "framebuffer": [
+        943,
+        530
+      ],
+      "activeImages": 2,
+      "leasedImages": 2,
+      "rgbaBytes": 12584864,
+      "resources": [
+        {
+          "file": "studio-amber-B90Rc7l0.webp",
+          "transferBytes": 300,
+          "encodedBytes": 2097564
+        },
+        {
+          "file": "alice-road-DoE7YWRV.webp",
+          "transferBytes": 300,
+          "encodedBytes": 869248
+        }
+      ]
+    },
+    {
+      "circuit": 3,
+      "scene": "cabin",
+      "readyMs": 850,
+      "framebuffer": [
+        943,
+        530
+      ],
+      "activeImages": 2,
+      "leasedImages": 2,
+      "rgbaBytes": 12584864,
+      "resources": [
+        {
+          "file": "cabin-violet-aeV5ep_W.webp",
+          "transferBytes": 300,
+          "encodedBytes": 2124896
+        },
+        {
+          "file": "agatha-road-B7sNJDha.webp",
+          "transferBytes": 300,
+          "encodedBytes": 1000794
+        }
+      ]
+    },
+    {
+      "circuit": 3,
+      "scene": "tower",
+      "readyMs": 804,
+      "framebuffer": [
+        943,
+        530
+      ],
+      "activeImages": 2,
+      "leasedImages": 2,
+      "rgbaBytes": 12584864,
+      "resources": [
+        {
+          "file": "tower-divination-0cN8BUSz.webp",
+          "transferBytes": 300,
+          "encodedBytes": 2412850
+        },
+        {
+          "file": "lilia-road-Bcr3JocF.webp",
+          "transferBytes": 300,
+          "encodedBytes": 952090
+        }
+      ]
+    },
+    {
+      "circuit": 3,
+      "scene": "greenhouse",
+      "readyMs": 762,
+      "framebuffer": [
+        943,
+        530
+      ],
+      "activeImages": 2,
+      "leasedImages": 2,
+      "rgbaBytes": 12584864,
+      "resources": [
+        {
+          "file": "greenhouse-earth-qbq-YWoR.webp",
+          "transferBytes": 300,
+          "encodedBytes": 2394014
+        },
+        {
+          "file": "rio-road-ETUXE_d1.webp",
+          "transferBytes": 300,
+          "encodedBytes": 976294
+        }
+      ]
+    },
+    {
+      "circuit": 3,
+      "scene": "garden",
+      "readyMs": 653,
+      "framebuffer": [
+        943,
+        530
+      ],
+      "activeImages": 1,
+      "leasedImages": 1,
+      "rgbaBytes": 6293408,
+      "resources": [
+        {
+          "file": "garden-moonrise-wide-y3ePIHP5.webp",
+          "transferBytes": 300,
+          "encodedBytes": 2324142
+        }
+      ]
+    },
+    {
+      "circuit": 3,
+      "scene": "cottage",
+      "readyMs": 796,
+      "framebuffer": [
+        943,
+        530
+      ],
+      "activeImages": 2,
+      "leasedImages": 2,
+      "rgbaBytes": 12584864,
+      "resources": [
+        {
+          "file": "cottage-dusk-DVRMq_SN.webp",
+          "transferBytes": 300,
+          "encodedBytes": 2656808
+        }
+      ]
+    }
+  ],
+  "memory": [
+    {
+      "usedSize": 7493224,
+      "totalSize": 8527872,
+      "embedderHeapUsedSize": 1715224,
+      "backingStorageSize": 3083278,
+      "documents": 1,
+      "nodes": 547,
+      "jsEventListeners": 219
+    },
+    {
+      "usedSize": 9033236,
+      "totalSize": 10100736,
+      "embedderHeapUsedSize": 2320616,
+      "backingStorageSize": 3108976,
+      "documents": 1,
+      "nodes": 719,
+      "jsEventListeners": 222
+    },
+    {
+      "usedSize": 9521184,
+      "totalSize": 10625024,
+      "embedderHeapUsedSize": 2372368,
+      "backingStorageSize": 3108976,
+      "documents": 1,
+      "nodes": 719,
+      "jsEventListeners": 222
+    },
+    {
+      "usedSize": 9722972,
+      "totalSize": 11149312,
+      "embedderHeapUsedSize": 2420216,
+      "backingStorageSize": 3108976,
+      "documents": 1,
+      "nodes": 719,
+      "jsEventListeners": 222
+    }
+  ],
+  "detachedPreloads": 0
+}

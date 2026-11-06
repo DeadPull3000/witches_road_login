@@ -1,0 +1,185 @@
+{
+  "node": "v20.14.0",
+  "npm": "10.7.0",
+  "lockfileSha256": "bb0655af4ca6b7ba6e5b8429d27fb3694a6c4d75ebd0028ed5b4c0752f2504d6",
+  "cleanInstall": "npm ci --offline from the pinned lockfile in a fresh directory",
+  "identicalFiles": 35,
+  "totalBytes": 41564020.0,
+  "files": [
+    {
+      "path": "assets/agatha-road-B7sNJDha.webp",
+      "bytes": 1000794,
+      "sha256": "300957f39752e4118b87cc6683b53411f804cf6c245deff94020dcf36ca963da"
+    },
+    {
+      "path": "assets/alice-road-DoE7YWRV.webp",
+      "bytes": 869248,
+      "sha256": "ab3b64f6fc1be25b00f3a25332ede943175b37532e298353cd275422ea52f668"
+    },
+    {
+      "path": "assets/browserAll-BTfEeXLs.js",
+      "bytes": 44211,
+      "sha256": "e145c922f4d2c3f5ccb805c0b20a9cba171250376787ae6a8062474c67af6ab6"
+    },
+    {
+      "path": "assets/cabin-violet-aeV5ep_W.webp",
+      "bytes": 2124896,
+      "sha256": "0a3e054f49cab9d4f39cb76f0e19f647c817edeba3bd88a57ceefe6cdb88dbae"
+    },
+    {
+      "path": "assets/CanvasPool-HAnOpg4U.js",
+      "bytes": 2752,
+      "sha256": "4129ddf310ee3b395ff80961972f01d02e9b8f58a779a6a1df5be08457beeb36"
+    },
+    {
+      "path": "assets/CanvasRenderer-BekkzONZ.js",
+      "bytes": 18513,
+      "sha256": "a97b09b1e57fc21e05a6405fad6c8d25bfa24be8adc1199860f452dbe4f99ec3"
+    },
+    {
+      "path": "assets/canvasUtils-doqfm_3F.js",
+      "bytes": 5805,
+      "sha256": "11fe14ca0a546a7dee47aa34c3b949c7b4162c3bdaa701477198d25d70f48e0b"
+    },
+    {
+      "path": "assets/cottage-dusk-DVRMq_SN.webp",
+      "bytes": 2656808,
+      "sha256": "fe807aa2f0d7fec25794fa71449f34b7c5a2f54a758b48c6f8e4d6ce98d202d1"
+    },
+    {
+      "path": "assets/cottage-dusk-portrait-DHWUHmwD.webp",
+      "bytes": 2714694,
+      "sha256": "713493112e8b0632db13e6e07cd94c8e394dd2a11de8e474beceffd6ec620833"
+    },
+    {
+      "path": "assets/cottage-room--TlKBIBh.webp",
+      "bytes": 2039060,
+      "sha256": "f0c9d3f7e326ee15f9f2008c559335d0c26c17551cb237dadbe66771663687ce"
+    },
+    {
+      "path": "assets/cottage-room-portrait-Nnc9Q5_q.webp",
+      "bytes": 2033178,
+      "sha256": "59911a613f634b564da992eb542ee1e20d227dab532e8934628d05816c672d4c"
+    },
+    {
+      "path": "assets/coven-cellar-Mvtg_Txt.webp",
+      "bytes": 2135912,
+      "sha256": "2cfda391d4bc2ab27f77387ee6bdec76a688d673c2d4eea88d4da120e56d91ab"
+    },
+    {
+      "path": "assets/garden-moonrise-tall-BL0Wnb9m.webp",
+      "bytes": 2280014,
+      "sha256": "808196a02ebf21aa7e00715bad3751fecc1067942b1072ff3e744e8b0ba5dfcb"
+    },
+    {
+      "path": "assets/garden-moonrise-wide-y3ePIHP5.webp",
+      "bytes": 2324142,
+      "sha256": "34328e84f1ed94007afe7c90ec3602a00eca020beedf56059cfc8132051672bf"
+    },
+    {
+      "path": "assets/getTexelRangeRects-CakWbtGX.js",
+      "bytes": 11431,
+      "sha256": "f87c58fe0636884fb897a9e9a8ccf893a51bf6ffa9baa9038ab9cc3d6c673a19"
+    },
+    {
+      "path": "assets/greenhouse-earth-qbq-YWoR.webp",
+      "bytes": 2394014,
+      "sha256": "c4a55233dad94b473e0d3515c4e6ec2bb1d72a991522aeabb41c3a432469019c"
+    },
+    {
+      "path": "assets/index-CXkpjLkI.css",
+      "bytes": 113787,
+      "sha256": "eee05cb718ad26281024375589ec0038a3d89d267d09d3ca918e871611664aed"
+    },
+    {
+      "path": "assets/index-DpFUyLSb.js",
+      "bytes": 507332,
+      "sha256": "d1aa0fb8d93cf19233f48d7df04da3a56b093a447f9be1edd92512b5f026fbd1"
+    },
+    {
+      "path": "assets/jen-road-Sv3xHh1P.webp",
+      "bytes": 1002454,
+      "sha256": "02e25e23c05ac5ba1a3d8bab2c319149d351904f085a0bf7b40385eca5ab07a7"
+    },
+    {
+      "path": "assets/kitchen-tide-B_WSKTkF.webp",
+      "bytes": 1811900,
+      "sha256": "863d8c053bc7e18c55ca9d83c7f244d31f494274a0560b175d29b3b7d308849e"
+    },
+    {
+      "path": "assets/library-afterhours-mTFCiXoY.webp",
+      "bytes": 2064178,
+      "sha256": "5cfdc2264abcf17bef05f01f16b09a08d5f5d3082ed0e10f9f2663c76bfdb2d5"
+    },
+    {
+      "path": "assets/library-afterhours-portrait-Ce8rRA0A.webp",
+      "bytes": 2250446,
+      "sha256": "d1a9b2521491e7767ce5c08e58f0e263cb94a27426ecf2a197cde03fd53efa74"
+    },
+    {
+      "path": "assets/lilia-road-Bcr3JocF.webp",
+      "bytes": 952090,
+      "sha256": "67ec16d9a426dcc7d10a292ea9a6a682e112be57fdd4ecc7cfff9447048c85e9"
+    },
+    {
+      "path": "assets/renderer-CTWGihRR.js",
+      "bytes": 249785,
+      "sha256": "2a332143d45daafb275ffa0e2ac7983d426a46dcbb671f85de16e8b1a7dc8044"
+    },
+    {
+      "path": "assets/RenderTargetSystem-BgHzwbpF.js",
+      "bytes": 54365,
+      "sha256": "45d59f01b840b4ccf355a237dc7e2744baa336430f77f431fb4f2bd7fc2bf952"
+    },
+    {
+      "path": "assets/rio-road-ETUXE_d1.webp",
+      "bytes": 976294,
+      "sha256": "10f580627ae302989e412d670bd1a719bab9176ace920223e35519ee25589364"
+    },
+    {
+      "path": "assets/studio-amber-B90Rc7l0.webp",
+      "bytes": 2097564,
+      "sha256": "fb16185b72f509657a6b2d0d3cd657f57678e6127c38b57acfc709141ce28af9"
+    },
+    {
+      "path": "assets/tower-divination-0cN8BUSz.webp",
+      "bytes": 2412850,
+      "sha256": "41790223bc925da124990a59082a28cc957cd1a41d7b8b3a7f99d20b6dbfbf5c"
+    },
+    {
+      "path": "assets/vision-annex-portrait-o7_VRwTg.webp",
+      "bytes": 1730328,
+      "sha256": "2c702a983af99c99d63ef6e423e8970dc0ce8837e7dca4d154c0485806fe42a3"
+    },
+    {
+      "path": "assets/vision-annex-wide-CoNdmH-G.webp",
+      "bytes": 1711804,
+      "sha256": "4abe437f78bf75398a3e8f911dbf9fb89779d8edc11fc22e8a7f5581fa277471"
+    },
+    {
+      "path": "assets/vision-pale-B2zImckZ.webp",
+      "bytes": 826854,
+      "sha256": "40f57beb9ae7c1401545ae5c8447ecf7954cc047b5f8f00008bd227dd658fe8b"
+    },
+    {
+      "path": "assets/WebGLRenderer-BFYxYV5O.js",
+      "bytes": 73846,
+      "sha256": "50dca8520b778a4bd3c9aea55b61638a66a6fd6a16979a743b197cd6be7cf7d8"
+    },
+    {
+      "path": "assets/WebGPURenderer-DSaOeUpR.js",
+      "bytes": 56425,
+      "sha256": "af568ffbe2180470a127dfd8a394f13d732dbcf1e4e086b770b0bd15506e2904"
+    },
+    {
+      "path": "assets/webworkerAll-DhY2n5TD.js",
+      "bytes": 15659,
+      "sha256": "c3403e22c3e3ac6f1d9b412c733ea65292fd75b8fa7cf2a05472585d45a7ae1d"
+    },
+    {
+      "path": "index.html",
+      "bytes": 587,
+      "sha256": "4da7f5bc297338ae531173def6ae6f5fb54fde55432b9a4168e30ff51585b5fb"
+    }
+  ]
+}

@@ -1,0 +1,306 @@
+{
+  "version": "156.0.8078.4",
+  "samples": [
+    {
+      "label": "desktop borrowing card",
+      "fps": 29.7,
+      "p95DrawIntervalMs": 33.4,
+      "framebuffer": [
+        894,
+        559
+      ],
+      "cssPixels": [
+        1280,
+        800
+      ],
+      "density": 1,
+      "activeImages": 2,
+      "rgbaEstimateBytes": 12584864,
+      "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "label": "desktop idle",
+      "fps": 59.2,
+      "p95DrawIntervalMs": 16.8,
+      "framebuffer": [
+        894,
+        559
+      ],
+      "cssPixels": [
+        1280,
+        800
+      ],
+      "density": 1,
+      "activeImages": 2,
+      "rgbaEstimateBytes": 12584864,
+      "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "label": "desktop settings",
+      "fps": 16.2,
+      "p95DrawIntervalMs": 83.3,
+      "framebuffer": [
+        894,
+        559
+      ],
+      "cssPixels": [
+        1280,
+        800
+      ],
+      "density": 1,
+      "activeImages": 2,
+      "rgbaEstimateBytes": 12584864,
+      "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "label": "1024 × 768",
+      "fps": 59.1,
+      "p95DrawIntervalMs": 16.8,
+      "framebuffer": [
+        816,
+        612
+      ],
+      "cssPixels": [
+        1024,
+        768
+      ],
+      "density": 1,
+      "activeImages": 2,
+      "rgbaEstimateBytes": 12584864,
+      "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "label": "2560 × 1440",
+      "fps": 42.7,
+      "p95DrawIntervalMs": 33.4,
+      "framebuffer": [
+        943,
+        530
+      ],
+      "cssPixels": [
+        2560,
+        1440
+      ],
+      "density": 1,
+      "activeImages": 2,
+      "rgbaEstimateBytes": 12584864,
+      "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "label": "2560 × 1080",
+      "fps": 54.7,
+      "p95DrawIntervalMs": 33.3,
+      "framebuffer": [
+        1089,
+        459
+      ],
+      "cssPixels": [
+        2560,
+        1080
+      ],
+      "density": 1,
+      "activeImages": 2,
+      "rgbaEstimateBytes": 12584864,
+      "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "label": "844 × 390",
+      "fps": 59,
+      "p95DrawIntervalMs": 16.8,
+      "framebuffer": [
+        844,
+        390
+      ],
+      "cssPixels": [
+        844,
+        390
+      ],
+      "density": 1,
+      "activeImages": 2,
+      "rgbaEstimateBytes": 12584864,
+      "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "label": "reduced motion",
+      "fps": 0,
+      "p95DrawIntervalMs": null,
+      "framebuffer": [
+        894,
+        559
+      ],
+      "cssPixels": [
+        1280,
+        800
+      ],
+      "density": 1,
+      "activeImages": 2,
+      "rgbaEstimateBytes": 12584864,
+      "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "label": "390 × 844 phone idle",
+      "fps": 29.8,
+      "p95DrawIntervalMs": 33.4,
+      "framebuffer": [
+        481,
+        1040
+      ],
+      "cssPixels": [
+        390,
+        844
+      ],
+      "density": 3,
+      "activeImages": 2,
+      "rgbaEstimateBytes": 12578176,
+      "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "label": "390 × 844 cottage interior",
+      "fps": 29.4,
+      "p95DrawIntervalMs": 33.4,
+      "framebuffer": [
+        481,
+        1040
+      ],
+      "cssPixels": [
+        390,
+        844
+      ],
+      "density": 3,
+      "activeImages": 2,
+      "rgbaEstimateBytes": 12577704,
+      "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "label": "360 × 640 cottage interior",
+      "fps": 29.8,
+      "p95DrawIntervalMs": 33.4,
+      "framebuffer": [
+        530,
+        943
+      ],
+      "cssPixels": [
+        360,
+        640
+      ],
+      "density": 3,
+      "activeImages": 2,
+      "rgbaEstimateBytes": 12577704,
+      "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    }
+  ],
+  "travel": [
+    {
+      "scene": "threshold",
+      "asset": "/assets/threshold/coven-cellar.webp",
+      "active": 2,
+      "leased": 2,
+      "rgbaEstimateBytes": 12584864
+    },
+    {
+      "scene": "kitchen",
+      "asset": "/assets/kitchen/kitchen-tide.webp",
+      "active": 2,
+      "leased": 2,
+      "rgbaEstimateBytes": 12584864
+    },
+    {
+      "scene": "studio",
+      "asset": "/assets/studio/studio-amber.webp",
+      "active": 2,
+      "leased": 2,
+      "rgbaEstimateBytes": 12584864
+    },
+    {
+      "scene": "cabin",
+      "asset": "/assets/cabin/cabin-violet.webp",
+      "active": 2,
+      "leased": 2,
+      "rgbaEstimateBytes": 12584864
+    },
+    {
+      "scene": "tower",
+      "asset": "/assets/tower/tower-divination.webp",
+      "active": 2,
+      "leased": 2,
+      "rgbaEstimateBytes": 12584864
+    },
+    {
+      "scene": "greenhouse",
+      "asset": "/assets/greenhouse/greenhouse-earth.webp",
+      "active": 2,
+      "leased": 2,
+      "rgbaEstimateBytes": 12584864
+    },
+    {
+      "scene": "garden",
+      "asset": "/assets/garden/garden-moonrise-wide.webp",
+      "active": 1,
+      "leased": 1,
+      "rgbaEstimateBytes": 6293408
+    },
+    {
+      "scene": "cottage",
+      "asset": "/assets/world/cottage-dusk.webp",
+      "active": 2,
+      "leased": 2,
+      "rgbaEstimateBytes": 12584864
+    },
+    {
+      "scene": "threshold",
+      "asset": "/assets/threshold/coven-cellar.webp",
+      "active": 2,
+      "leased": 2,
+      "rgbaEstimateBytes": 12584864
+    },
+    {
+      "scene": "kitchen",
+      "asset": "/assets/kitchen/kitchen-tide.webp",
+      "active": 2,
+      "leased": 2,
+      "rgbaEstimateBytes": 12584864
+    },
+    {
+      "scene": "studio",
+      "asset": "/assets/studio/studio-amber.webp",
+      "active": 2,
+      "leased": 2,
+      "rgbaEstimateBytes": 12584864
+    },
+    {
+      "scene": "cabin",
+      "asset": "/assets/cabin/cabin-violet.webp",
+      "active": 2,
+      "leased": 2,
+      "rgbaEstimateBytes": 12584864
+    },
+    {
+      "scene": "tower",
+      "asset": "/assets/tower/tower-divination.webp",
+      "active": 2,
+      "leased": 2,
+      "rgbaEstimateBytes": 12584864
+    },
+    {
+      "scene": "greenhouse",
+      "asset": "/assets/greenhouse/greenhouse-earth.webp",
+      "active": 2,
+      "leased": 2,
+      "rgbaEstimateBytes": 12584864
+    },
+    {
+      "scene": "garden",
+      "asset": "/assets/garden/garden-moonrise-wide.webp",
+      "active": 1,
+      "leased": 1,
+      "rgbaEstimateBytes": 6293408
+    },
+    {
+      "scene": "cottage",
+      "asset": "/assets/world/cottage-dusk.webp",
+      "active": 2,
+      "leased": 2,
+      "rgbaEstimateBytes": 12584864
+    }
+  ]
+}

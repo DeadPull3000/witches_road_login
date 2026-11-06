@@ -1,0 +1,78 @@
+{
+  "browser": "156.0.8078.81",
+  "tracing": false,
+  "reducedMotion": true,
+  "samples": [
+    {
+      "circuit": 1,
+      "connectedNodes": 215,
+      "documents": 1,
+      "nodes": 358,
+      "jsEventListeners": 205,
+      "usedSize": 7581776,
+      "embedderHeapUsedSize": 2467160
+    },
+    {
+      "circuit": 2,
+      "connectedNodes": 215,
+      "documents": 1,
+      "nodes": 358,
+      "jsEventListeners": 205,
+      "usedSize": 7872912,
+      "embedderHeapUsedSize": 2638936
+    },
+    {
+      "circuit": 3,
+      "connectedNodes": 215,
+      "documents": 1,
+      "nodes": 358,
+      "jsEventListeners": 205,
+      "usedSize": 7993180,
+      "embedderHeapUsedSize": 2364440
+    },
+    {
+      "circuit": 4,
+      "connectedNodes": 215,
+      "documents": 1,
+      "nodes": 358,
+      "jsEventListeners": 205,
+      "usedSize": 8100008,
+      "embedderHeapUsedSize": 2393088
+    },
+    {
+      "circuit": 5,
+      "connectedNodes": 215,
+      "documents": 1,
+      "nodes": 358,
+      "jsEventListeners": 205,
+      "usedSize": 8128772,
+      "embedderHeapUsedSize": 2356864
+    },
+    {
+      "circuit": 6,
+      "connectedNodes": 215,
+      "documents": 1,
+      "nodes": 358,
+      "jsEventListeners": 205,
+      "usedSize": 8215104,
+      "embedderHeapUsedSize": 2660320
+    }
+  ],
+  "detached": [
+    {
+      "name": "DIALOG",
+      "retainedNodes": 71,
+      "hasSource": false
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1,
+      "hasSource": true
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1,
+      "hasSource": true
+    }
+  ]
+}

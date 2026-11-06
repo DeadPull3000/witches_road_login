@@ -1,0 +1,29 @@
+{
+  "method": "FFmpeg libwebp lossless, compression_level=6, q=100. Decoded RGBA compared, ignoring RGB only where alpha=0.",
+  "assets": [
+    {
+      "source": "cottage/cottage-dusk.png",
+      "runtime": "world/cottage-dusk.webp",
+      "sourceBytes": 3580780,
+      "runtimeBytes": 2656808,
+      "visiblePixelsIdentical": true,
+      "decodedPixels": 1573352
+    },
+    {
+      "source": "cottage/cottage-dusk-portrait.png",
+      "runtime": "world/cottage-dusk-portrait.webp",
+      "sourceBytes": 3518407,
+      "runtimeBytes": 2714694,
+      "visiblePixelsIdentical": true,
+      "decodedPixels": 1571680
+    },
+    {
+      "source": "cottage/agatha-road.png",
+      "runtime": "world/agatha-road.webp",
+      "sourceBytes": 2011083,
+      "runtimeBytes": 1000794,
+      "visiblePixelsIdentical": true,
+      "decodedPixels": 1572864
+    }
+  ]
+}

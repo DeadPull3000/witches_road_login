@@ -1,0 +1,15 @@
+{
+  "engine": "Firefox",
+  "version": "157.0",
+  "viewport": {
+    "width": 900,
+    "height": 700
+  },
+  "annexRenderer": "ready",
+  "annexAudioPeak": 0.015843110159039497,
+  "audioContexts": 1,
+  "wrongReaderRejected": true,
+  "identityAccepted": true,
+  "returnedToTelevision": true,
+  "pageErrors": []
+}

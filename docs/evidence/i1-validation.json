@@ -1,0 +1,14 @@
+{
+  "date": "2026-11-04",
+  "phase": "I1 — full-viewport cottage proof",
+  "command": "npm run check",
+  "result": "passed",
+  "typecheck": "passed",
+  "unitTests": { "passed": 88, "files": 11 },
+  "productionBuild": "passed",
+  "browserTests": { "passed": 72, "desktopChromium": 36, "phoneChromiumEmulation": 36, "workers": 1, "retries": 0, "suiteMinutes": 13.1 },
+  "assetVerification": "All three runtime WebP exports match decoded visible RGBA pixels; RGB beneath alpha=0 is ignored.",
+  "traceRecording": "retain-on-failure with action/network/DOM/source records; continuous filmstrip disabled; explicit and failure screenshots retained",
+  "scope": "Cottage exterior proof. Other locations and a single renderer across all rooms remain in the migration plan.",
+  "deviceLimits": "Phone emulation is not real-device performance/audio testing; Firefox/WebKit remain pending."
+}

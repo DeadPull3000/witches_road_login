@@ -1,0 +1,64 @@
+{
+  "date": "2026-11-05",
+  "phase": "I4 — card table, vine bed and remembering garden",
+  "command": "npm run check",
+  "result": "passed",
+  "typecheck": "passed",
+  "unitTests": {
+    "passed": 125,
+    "files": 14,
+    "newCases": 11
+  },
+  "productionBuild": "passed",
+  "productionAssets": {
+    "css": "index-BY41aIEP.css",
+    "entry": "index-CTXaupU3.js",
+    "renderer": "renderer-1H-qmoOU.js"
+  },
+  "browserTests": {
+    "passed": 108,
+    "desktopChromium": 54,
+    "pixel7ChromiumEmulation": 54,
+    "newWorkflowsPerProject": 6,
+    "workers": 1,
+    "retries": 0,
+    "skipped": 0,
+    "minutes": 33
+  },
+  "gateSeconds": 2036.29,
+  "evidence": {
+    "log": "i4-check.log",
+    "screenshots": 20,
+    "gateCaptures": 16,
+    "isolatedDetailCaptures": 4,
+    "detailCaptureCommand": "node scripts/capture-i4-details.mjs",
+    "exports": "i4-garden-exports.json"
+  },
+  "preflight": {
+    "log": "i4-preflight.log",
+    "studioContext": "i4-preflight-studio-context.md",
+    "completedDesktopCases": 39,
+    "timeout": "The existing studio workflow reached its seal before the 30-second test budget expired. It now has a 60-second budget for two reloads and the full audio and persistence assertions."
+  },
+  "viewportChecks": [
+    [
+      1280,
+      800
+    ],
+    [
+      844,
+      390
+    ],
+    [
+      390,
+      844
+    ],
+    [
+      360,
+      640
+    ]
+  ],
+  "traceRecording": "Retain action, network, DOM and source records on failure. Save explicit and failure screenshots.",
+  "deviceCoverage": "Desktop Chromium and Pixel 7 emulation. I6 covers physical devices, zoom, Firefox and WebKit.",
+  "afterGate": "Evidence capture and project documentation."
+}

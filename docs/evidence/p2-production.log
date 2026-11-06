@@ -1,0 +1,31 @@
+
+> the-witches-road@0.1.0 test:release
+> playwright test --config playwright.release.config.ts
+
+[WebServer] (node:30580) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:32332) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 9 tests using 1 worker
+
+  ok 1 [release-chrome] › tests\e2e\journey.spec.ts:46:1 › complete story route, interrupted confirmation, renewal and optional remembered return (18.8s)
+  ok 2 [release-chrome] › tests\e2e\journey.spec.ts:72:1 › the entire required route works when illustration textures are missing (13.3s)
+  ok 3 [release-chrome] › tests\e2e\journey.spec.ts:88:1 › stale browser tab loads the winner and does not replay its alias action (3.3s)
+  ok 4 [release-chrome] › tests\e2e\journey.spec.ts:97:1 › quota failure stays playable and exports the current unsaved journey (4.9s)
+  ok 5 [release-chrome] › tests\e2e\journey.spec.ts:111:1 › corrupt newest snapshot restores checkpoint without discarding original (3.1s)
+{"browser":"156.0.8078.81","isMobile":false,"openingBytes":3974451,"entryMs":666,"renewMs":137,"openingDraws":{"fps":58.7,"p95DrawIntervalMs":16.9,"viewport":[1280,720],"density":1,"webglRenderer":"ANGLE (Intel, Intel(R) Arc(TM) Graphics (0x00007D55) Direct3D11 vs_5_0 ps_5_0, D3D11)"},"annexDraws":{"fps":59,"p95DrawIntervalMs":16.8,"viewport":[1280,720],"density":1,"webglRenderer":"ANGLE (Intel, Intel(R) Arc(TM) Graphics (0x00007D55) Direct3D11 vs_5_0 ps_5_0, D3D11)"},"heapBytes":[7481956,9145756,9632872,9804636]}
+(node:9536) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 6 [release-chrome] › tests\release\production.spec.ts:106:1 › the packaged game loads only versioned runtime art, keeps room leases bounded and plays sound (33.1s)
+  ok 7 [release-firefox] › tests\e2e\journey.spec.ts:56:1 › every required action is keyboard operable with reduced motion (14.6s)
+{"browser":"156.0.8078.4","isMobile":true,"openingBytes":4031897,"entryMs":1212,"renewMs":161,"openingDraws":{"fps":29.4,"p95DrawIntervalMs":33.4,"viewport":[412,839],"density":2.625,"webglRenderer":"ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"},"annexDraws":{"fps":29.4,"p95DrawIntervalMs":33.4,"viewport":[412,839],"density":2.625,"webglRenderer":"ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"},"heapBytes":[7465316,9121172,9536292,9734668]}
+(node:39492) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 8 [release-pixel] › tests\release\production.spec.ts:106:1 › the packaged game loads only versioned runtime art, keeps room leases bounded and plays sound (37.4s)
+{"browser":"27.2","audioContext":"undefined","outcome":"audio unavailable, retry and save export verified","renderer":"ready"}
+(node:50380) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 9 [release-webkit] › tests\release\webkit.spec.ts:5:1 › the WebKit build enforces sound entry and offers recovery when the browser has no audio context (19.0s)
+
+  9 passed (2.8m)

@@ -1,0 +1,60 @@
+{
+  "date": "2026-11-05",
+  "phase": "I5 — cottage return and borrowing desk",
+  "command": "npm run check",
+  "result": "passed",
+  "typecheck": "passed",
+  "unitTests": {
+    "passed": 131,
+    "files": 15,
+    "newCases": 6
+  },
+  "productionBuild": "passed",
+  "productionAssets": {
+    "css": "index-CXIQ7AJz.css",
+    "entry": "index-CARVMz5W.js",
+    "renderer": "renderer-5DES-XHg.js"
+  },
+  "browserTests": {
+    "passed": 116,
+    "desktopChromium": 58,
+    "pixel7ChromiumEmulation": 58,
+    "newWorkflowsPerProject": 4,
+    "workers": 1,
+    "retries": 0,
+    "skipped": 0,
+    "minutes": 26.8
+  },
+  "gateSeconds": 1668.28,
+  "focusedBrowserChecks": 12,
+  "viewportChecks": [
+    [
+      1280,
+      800
+    ],
+    [
+      844,
+      390
+    ],
+    [
+      390,
+      844
+    ],
+    [
+      360,
+      640
+    ]
+  ],
+  "evidence": {
+    "log": "i5-check.log",
+    "screenshots": 16,
+    "source": "Passing regression gate"
+  },
+  "correctedInPreflight": [
+    "Desktop sprite target intercepted the door plaque.",
+    "Short-screen renderer recovery covered the knocker.",
+    "A phone close-up covered the cottage view button."
+  ],
+  "deviceCoverage": "Desktop Chromium and Pixel 7 emulation. I6 covers physical devices, zoom and further browser testing.",
+  "afterGate": "Evidence preservation and phase documentation."
+}

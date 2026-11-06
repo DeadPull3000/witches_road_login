@@ -1,0 +1,36 @@
+{
+  "date": "2026-11-05",
+  "method": "FFmpeg libwebp lossless, compression_level=6, q=100; original PNG preserved; no resizing or cropping. Decoded RGBA compared pixel by pixel, ignoring RGB only beneath alpha=0.",
+  "assets": [
+    {
+      "profile": "landscape",
+      "source": "public/assets/garden/garden-moonrise-wide.png",
+      "runtime": "public/assets/garden/garden-moonrise-wide.webp",
+      "width": 1672,
+      "height": 941,
+      "sourceBytes": 3310265,
+      "runtimeBytes": 2324142,
+      "savingBytes": 986123,
+      "decodedPixels": 1573352,
+      "opaquePixels": 1573352,
+      "visiblePixelsIdentical": true,
+      "sourceSha256": "4e41e7117c8e1e365831c282a94a2342f7998d6865c8e8a8258090bb00813c30",
+      "runtimeSha256": "34328e84f1ed94007afe7c90ec3602a00eca020beedf56059cfc8132051672bf"
+    },
+    {
+      "profile": "portrait",
+      "source": "public/assets/garden/garden-moonrise-tall.png",
+      "runtime": "public/assets/garden/garden-moonrise-tall.webp",
+      "width": 941,
+      "height": 1672,
+      "sourceBytes": 3273194,
+      "runtimeBytes": 2280014,
+      "savingBytes": 993180,
+      "decodedPixels": 1573352,
+      "opaquePixels": 1573352,
+      "visiblePixelsIdentical": true,
+      "sourceSha256": "7b73765b30ff8f43076da86486b8af1a46db4276fb6e54a792127aeb08d08e77",
+      "runtimeSha256": "808196a02ebf21aa7e00715bad3751fecc1067942b1072ff3e744e8b0ba5dfcb"
+    }
+  ]
+}

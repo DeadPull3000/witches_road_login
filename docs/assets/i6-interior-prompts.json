@@ -1,0 +1,27 @@
+{
+  "method": "Built-in ImageGen, followed by FFmpeg libwebp lossless export. Each variant uses its existing wide painting as a visual reference.",
+  "variants": [
+    {
+      "label": "Cottage interior portrait",
+      "reference": "public/assets/cottage/cottage-room.png",
+      "referenceRole": "Existing room design, palette, landmarks and pixel-art texture",
+      "generated": "exec-28e1ed72-1e2a-44e4-ab5e-fbddfc27fbe2.png",
+      "source": "public/assets/cottage/cottage-room-portrait.png",
+      "runtime": "public/assets/cottage/cottage-room-portrait.webp",
+      "width": 981,
+      "height": 1602,
+      "prompt": "Use case: stylized-concept. Deliver a finished 9:16 portrait image, approximately 941×1672, edge to edge, no frame. It is a new vertical camera composition of the exact fictional witch's cottage interior shown in the reference landscape illustration, for The Witches' Road browser pixel adventure. Match its handcrafted late-16-bit pixel-art texture, twilight pink-violet through round glass, ivy and timber, dark stone, amber lantern and worn plum rug. No person, writing, UI, lettering, or rendered floating labels. Same set dressing and props should look like the same room rearranged by viewing angle. Make a narrow central band hold the important props across tall phone crops, with all important objects between x 16% and 84%. Top 0–18% plain dark rafters and ivy for overlaid heading. In middle, split the scene between a round dusk window and a broad work bench to the LEFT, and one closed arched timber door with a distinctly visible round brass knocker to the RIGHT. Door is visibly grounded where wall meets floor, fully visible from roughly x 54–81%, y 29–67%; ring around x 71%, y 50%. On the left, the wide empty tabletop is clearly defined around x 17–50%, y 51–57%; leave room for six tiny in-game objects to be drawn on top. Arrange a generous, visibly embroidered-texture but symbol-free burgundy carpet on the lower plank floor, from x 16–82%, y 70–88%; keep the horizontal middle of the carpet clear to receive live symbols. Lamps and outside colors recognizable from the attached illustration. Hand-placed coherent pixel clusters, no smooth vector look, rich material texture. Build an immersive room with enough floor below the door, fitting the door, desk, and carpet in a single shot. The bottom 8% can be dim floor."
+    },
+    {
+      "label": "After-hours library portrait",
+      "reference": "public/assets/library/library-afterhours.png",
+      "referenceRole": "Existing library design, materials, window, counter and return slot",
+      "generated": "exec-088d4a61-db4a-47d6-86fa-3e0a2b230ccf.png",
+      "source": "public/assets/library/library-afterhours-portrait.png",
+      "runtime": "public/assets/library/library-afterhours-portrait.webp",
+      "width": 941,
+      "height": 1672,
+      "prompt": "Use case: stylized-concept. Deliver an edge-to-edge tall portrait 9:16 background painting of the same fictional Westview after-hours library as the reference, for a browser pixel adventure. Match the carved gothic timber, green lamp shades, warm varnish, dark plum shadows, gold trim, ivy and books, purple sunset through a tall arched window, pixel clusters and careful hand-placed material details. Use a portrait camera that sees the same curved desk from just across the aisle. Important reading landmarks should stay within the central 70% width even on a narrow phone. The desk is fully visible from approximately x 12–88%, y 50–76% of the image, with ample unbroken amber-lit counter space for a live ledger left of center and a single clearly visible brass book return slot near x 70%, y 52–59%. The return slot is a modest tabletop brass box, low and wide with a black horizontal slit, like the reference, distinct from the empty left part of the counter. Keep the desk's three lunar carvings, flanking shelves, moss-green rug, and antique green reading lamp. Show the arched window, gold lights, ceiling and bookcases above the desk for a readable room silhouette. Let the lower 15% recede to warm floor and woven carpet. No characters, text, writing, signage, watermark, baked-in UI, blur, frames, or borders. Draw readable warm edges and crisp pixel texture in the existing style."
+    }
+  ]
+}

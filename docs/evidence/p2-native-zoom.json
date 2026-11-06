@@ -1,0 +1,16 @@
+{
+  "zoom": 2,
+  "viewport": {
+    "width": 640,
+    "height": 360,
+    "density": 2,
+    "documentScroll": [
+      0,
+      0
+    ],
+    "overflow": false
+  },
+  "nativeStoneAccepted": true,
+  "focusReturnedToTag": true,
+  "routePreserved": true
+}

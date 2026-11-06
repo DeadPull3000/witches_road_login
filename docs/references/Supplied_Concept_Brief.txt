@@ -1,0 +1,163 @@
+I’d build it as a **browser puzzle game whose entire world functions as a login form**. The cottage supplies the entry controls, the Road supplies account recovery, and completing the journey opens a usable fictional library account.
+
+I’ve written the full specification, including state definitions, worked puzzle instances, 34 named discoveries and character interactions, asset requirements, failure handling, and implementation milestones.
+
+:chatgpt-content-reference{index="5"}[Westview_Login_Architecture_Plan.md](sandbox:/workspace/scratch/dae645474c92/Westview_Login_Architecture_Plan.md)
+
+The plan assumes fictional credentials and saves progress in the player’s browser. It carries forward our library setting and keeps **Remember me optional** throughout.
+
+1. **Fix the complete player journey first.**
+
+   Every required trial should correspond to a recognizable login operation.
+
+   | Location | Player interaction | Login function |
+   |---|---|---|
+   | Sunset cottage | Stamp a fictional alias onto a borrowing card | Enter username |
+   | Cottage door | Attempt a password while Agatha steals its dots | Failed login |
+   | Coven threshold | Assemble the coven using illustrated matching tokens | Begin account recovery |
+   | Jen’s kitchen | Measure an exact quantity with inconvenient vessels | Verify recovery eligibility |
+   | Alice’s studio | Reconstruct a number from three musical constraints | Enter verification code |
+   | Agatha’s cabin | Satisfy the spirits’ Boolean statements | Complete CAPTCHA |
+   | Lilia’s tower | Deduce, arrange, and confirm a card sequence from two perspectives | Set password |
+   | Rio’s greenhouse | Sign every clause through a continuous vine route | Accept terms |
+   | Cottage return | Recognize the opening props and unbind the door | Sign in |
+   | Library account | Renew the book, inspect discoveries, revisit rooms | Successful destination |
+
+   The mandatory route contains five substantial trials. The garden puzzle, television channels, Vision annex, detective drawer, and rabbit hunt branch from that route.
+
+   Completed rooms remain accessible through a Road map drawn in the borrowing ledger. Returning to a room preserves its solved state.
+
+2. **Separate the game’s rules from its presentation.**
+
+   Use **React, TypeScript, and Vite** for the application, with **PixiJS** for the illustrated rooms and animated characters. PixiJS provides the scene containers, ticker, and asset-loading facilities needed for this approach. [PixiJS](https://pixijs.com/8.x/guides/components/application?utm_source=chatgpt.com)
+
+   | Component | Owns |
+   |---|---|
+   | React interface | Dialogue, journal, inventory, settings, accessible controls, account page |
+   | Pixi scene renderer | Scenery, sprites, camera, lighting, particles |
+   | TypeScript rules | Legal moves, puzzle answers, prerequisites, rewards |
+   | Command processor | Validating and applying player actions |
+   | Save repository | Run snapshots, revisions, migration, recovery |
+   | Effect scheduler | Animation and audio cues |
+   | Content files | Clues, conversations, scene definitions, Easter egg triggers |
+
+   ```mermaid
+   flowchart TB
+       I["Player controls"] --> C["Command processor"]
+       C --> R["Puzzle rules"]
+       R --> S["Authoritative game state"]
+       S --> V["Scene and interface"]
+       S --> D["Save repository"]
+       C --> E["Animation and audio cues"]
+   ```
+
+   For example, pouring a jug changes its integer volume state. The resulting animation depicts that accepted move. Closing the tab halfway through the animation restores the correct quantities.
+
+   The same rule applies to opening doors, awarding seals, collecting discoveries, and renewing the book.
+
+3. **Give every puzzle an explicit mathematical contract.**
+
+   Each puzzle needs legal actions, an accepted completion condition, undo behavior, a solver, and hints that work from its current state.
+
+   | Puzzle | Mathematical structure | Concrete instance |
+   |---|---|---|
+   | Jen’s kitchen | Finite state search | Three-cup and five-cup jugs, exactly four cups required |
+   | Alice’s studio | Modular arithmetic | A number from `00–99` with remainders `2 mod 3`, `3 mod 5`, `2 mod 7` |
+   | Agatha’s cabin | Boolean parity constraints | Four lamps satisfying four XOR statements |
+   | Lilia’s tower | Constraint satisfaction and permutations | Five cards, four ordering clues, two movement controls |
+   | Rio’s greenhouse | Euler trail | Traverse seven vines exactly once, from Seed to Bloom |
+   | Remember me garden | Binary linear algebra | Eight mushrooms, each toggling itself and its neighbors |
+
+   I checked the sample instances while preparing the plan. The kitchen has a six-move shortest solution. Alice’s number is uniquely **23**. The cabin has one valid lamp assignment. Lilia’s clues select one card order, and the two controls can reach all 120 arrangements. Every garden lighting pattern is solvable.
+
+   **Lilia’s tower should receive the most interaction polish.** CUT moves the first card to the end. QUARREL swaps the first two. Once the player submits the correct order, the opposite chair slides out and the confirmation field asks for the sequence from that seat.
+
+   Put a visible nick in the table and a seat marker beside the cards. The perspective reversal then becomes something the player can deduce. Keep the card labels upright during the transition.
+
+4. **Keep one authoritative record of progress.**
+
+   A saved run should contain its version, seed, mode, current room, alias, puzzle states, discovered clues, inventory, discoveries, and milestones.
+
+   Important milestones include opening the Road, completing the unbinding, signing in once, and renewing the book.
+
+   Derive visible seals and available exits from those records. A single function should decide whether sign-in is available, and both the door’s appearance and its action handler should use it.
+
+   Player actions become explicit commands such as `POUR_JUG`, `DIAL_CODE`, `CUT_DECK`, `REQUEST_HINT`, and `SIGN_IN`. Commands check their prerequisites before changing state. Repeated clicks cannot award the same item twice.
+
+   **Remember me gets a separate setting.** Solving its garden puzzle enables a recognized return visit after the first successful journey. Forget me disables that convenience. Signing out preserves completed trials. Starting a new journey creates a fresh save slot.
+
+5. **Build Easter eggs through a content registry.**
+
+   Each entry should declare its prerequisite, trigger, effect, discovery reward, and replay behavior. This makes the references easy to implement and verify.
+
+   | Feature group | Example trigger and payoff |
+   |---|---|
+   | **Agatha’s interference** | Password dots become pearls, the visibility eye watches you, her ribbon reveals where the dots went |
+   | **Agnes’s investigation** | Forgot username opens a noir case drawer containing the correct borrowing card |
+   | **Teen’s sigil** | Inspecting the card after Lilia’s trial briefly resolves its concealed identity |
+   | **Jen’s kitchen** | A pumpkin follows every pour, an oven mitt switches off the ominous timer |
+   | **Alice’s recording** | Reverse Track Four for an optional message, finish the code to resolve the room’s musical motif |
+   | **Lilia’s memories** | Appointment notes refer to conversations that have yet to happen |
+   | **Salem Seven** | Seven silhouettes pass behind a cabin window during an optional inspection |
+   | **Rio’s appearance** | A red flower introduces the session-expired joke and offers Resume |
+   | **Rabbit hunt** | Three hiding places lead to a muddy card stamp and the rabbit wearing the clerk’s glasses |
+   | **WandaVision television** | Sponsor commercial, changing portrait actor, test card, persistent reflection |
+   | **Vision annex** | Follow maintenance records to distinguish an original casing from an original memory module |
+   | **Volume challenge tribute** | The obvious knob changes subtitles, cabinet speaker doors control the in-world sound |
+   | **Road reveal** | The rug already contains the route, opening props correspond to every trial |
+   | **Final account** | The renewal receipt unrolls down the Road, followed by one last stamp after the TV goes dark |
+
+   The optional Vision puzzle needs a declared identity rule. Both terminals can claim continuity, while a physical receipt and the library’s printed policy establish which answer its system accepts. That preserves the philosophical joke and gives the player a determinate solution.
+
+   Discoveries go into a notebook. After completing the main route, players can request gentle room-level clues for anything they missed.
+
+6. **Coordinate animation through named, interruptible cues.**
+
+   | Layer | Examples | Behavior |
+   |---|---|---|
+   | Ambient | Smoke, fireflies, bubbling cauldron | Pauses when the page is hidden |
+   | Object response | Jug pours, mushroom toggles, card quarrels | Follows an accepted action |
+   | Character | Agatha steals dots, Death offers a flower | Has a defined final pose |
+   | Puzzle reward | Flower blooms, studio resolves, door opens | Progress saves before playback |
+   | Scene transition | Cottage wall opens, table perspective reverses | Loads the destination before travel |
+   | Optional encounter | Commercial, silhouettes, final stamp | Uses the discovery registry |
+
+   Every cue needs a duration, cancellation behavior, final pose, and reduced-motion equivalent. Skip should move it directly to its final pose.
+
+   Start audio after an explicit player interaction and retain visual versions of every musical clue. Browser autoplay restrictions make this necessary for dependable playback. [MDN](https://developer.mozilla.org/en-US/docs/Web/Media/Guides/Autoplay?utm_source=chatgpt.com)
+
+   System reduced-motion preferences should affect the canvas as well as CSS. The tower inversion can become two still perspectives with an explicit seat label. [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/%40media/prefers-reduced-motion?utm_source=chatgpt.com)
+
+7. **Turn the references into an asset system.**
+
+   Use the cottage images for silhouettes, dusk colors, ivy, and amber windows. Use the isometric room for interior staging, the purple bedroom for the rug reveal, the garden for magical lighting, and the character references for portraits and roaming sprites.
+
+   Separate each room into background, architecture, furniture, interactive objects, characters, foreground, and lighting. Dialogue and required clues should use live text.
+
+   Give every interactive object a stable ID, position, hotspot, accessible name, inspection description, and command. Derive the illustrated hotspot and its keyboard-accessible control from that same definition.
+
+   On phones, keep the whole-room overview and open puzzles in a larger detail panel. This gives the card handles, phone dial, and spirit lamps usable touch targets.
+
+8. **Design explicitly for interruption and eventual success.**
+
+   Save accepted moves and milestones to IndexedDB. Keep a previous checkpoint, validate loaded saves, and detect stale revisions when two tabs are open. IndexedDB’s transaction and durability behavior informs how these checkpoints should be handled. [MDN](https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction/durability?utm_source=chatgpt.com)
+
+   The green hint lamp supplies three levels of help, ending with a demonstrated legal move. Hints preserve access to the account and discoveries.
+
+   A ringing timer, session-expired flower, failed animation, muted audio, or missing optional texture must leave the required route recoverable. A failed scene load keeps the current room available with Retry. A renderer fallback offers the same puzzles through illustrated DOM controls.
+
+9. **Build in passes that each end somewhere playable.**
+
+   | Pass | Deliverable |
+   |---|---|
+   | A | Complete route with simple controls, saves, sign-in, and renewal |
+   | B | Cottage, alias card, password theft, garden, hint lamp |
+   | C | Kitchen and studio with their journals and rewards |
+   | D | Cabin and tower, including opposite-seat confirmation |
+   | E | Greenhouse, cottage return, unbinding, rug reveal, receipt |
+   | F | Vision annex and the full discovery catalogue |
+   | G | Sound, responsive layouts, fallbacks, performance, device testing |
+
+   The detailed plan estimates roughly **18–26 focused working days with usable assets**, with additional time needed for substantial original art and music production.
+
+The sample mathematics is verified. The application, browser interactions, save recovery, animation timing, and performance budgets still need implementation and testing.

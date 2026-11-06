@@ -1,0 +1,13 @@
+{
+  "zoom": 2,
+  "width": 640,
+  "height": 360,
+  "density": 2,
+  "scroll": [
+    0,
+    0
+  ],
+  "horizontalOverflow": false,
+  "draftRetained": true,
+  "dialReachable": true
+}

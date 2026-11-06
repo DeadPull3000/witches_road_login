@@ -1,0 +1,12 @@
+[
+  {
+    "profile": "cottage-clearing",
+    "changingFrames": true,
+    "identicalReducedMotionFrames": true
+  },
+  {
+    "profile": "greenhouse",
+    "changingFrames": true,
+    "identicalReducedMotionFrames": true
+  }
+]

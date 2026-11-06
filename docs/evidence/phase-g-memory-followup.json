@@ -1,0 +1,399 @@
+{
+  "browser": "156.0.8078.81",
+  "tracing": false,
+  "reducedMotion": true,
+  "samples": [
+    {
+      "circuit": 1,
+      "connectedNodes": 215,
+      "documents": 1,
+      "nodes": 454,
+      "jsEventListeners": 205,
+      "usedSize": 7582472,
+      "embedderHeapUsedSize": 2558760
+    },
+    {
+      "circuit": 2,
+      "connectedNodes": 215,
+      "documents": 1,
+      "nodes": 538,
+      "jsEventListeners": 208,
+      "usedSize": 7868608,
+      "embedderHeapUsedSize": 2569088
+    },
+    {
+      "circuit": 3,
+      "connectedNodes": 215,
+      "documents": 1,
+      "nodes": 622,
+      "jsEventListeners": 208,
+      "usedSize": 8005028,
+      "embedderHeapUsedSize": 2636456
+    },
+    {
+      "circuit": 4,
+      "connectedNodes": 215,
+      "documents": 1,
+      "nodes": 706,
+      "jsEventListeners": 208,
+      "usedSize": 8113160,
+      "embedderHeapUsedSize": 2717960
+    },
+    {
+      "circuit": 5,
+      "connectedNodes": 215,
+      "documents": 1,
+      "nodes": 790,
+      "jsEventListeners": 208,
+      "usedSize": 8162988,
+      "embedderHeapUsedSize": 2749104
+    },
+    {
+      "circuit": 6,
+      "connectedNodes": 215,
+      "documents": 1,
+      "nodes": 874,
+      "jsEventListeners": 205,
+      "usedSize": 8234920,
+      "embedderHeapUsedSize": 2518848
+    }
+  ],
+  "detached": [
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "DIALOG",
+      "retainedNodes": 71
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    },
+    {
+      "name": "IMG",
+      "retainedNodes": 1
+    }
+  ]
+}

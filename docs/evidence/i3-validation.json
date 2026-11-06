@@ -1,0 +1,44 @@
+{
+  "date": "2026-11-04",
+  "phase": "I3 — coven and instrument rooms",
+  "command": "npm run check",
+  "result": "passed",
+  "typecheck": "passed",
+  "unitTests": { "passed": 114, "files": 13, "newCases": 10 },
+  "productionBuild": "passed",
+  "productionAssets": {
+    "css": "index-H6Ke11re.css",
+    "entry": "index-DIkgyVSM.js",
+    "renderer": "renderer-Cxa10UDd.js"
+  },
+  "browserTests": {
+    "passed": 96,
+    "desktopChromium": 48,
+    "phoneChromiumEmulation": 48,
+    "newWorkflows": 6,
+    "newProjectCases": 12,
+    "workers": 1,
+    "retries": 0,
+    "skipped": 0,
+    "expectedFailures": 0,
+    "suiteMinutes": 24.5
+  },
+  "workflowCoverage": [
+    "Unique coven-token relocation, wrong-match rejection, keyboard placement and reload",
+    "Shared vessel geometry, source-specific legal tools, actual volumes, accepted pour and reduced motion",
+    "Telephone draft through closing, object pages, menus, reframing and reload; saved mix/playback",
+    "Four readable spirit statements, keyboard lamps, failed check without reward, short-landscape planchette access and protected completion",
+    "Eight room/size combinations per project, minimum targets, one canvas/audio context, no document scroll and one feedback surface",
+    "Held save completion keeps old quantities and suppresses motion until publication; travel cannot replay a pour"
+  ],
+  "menuRegression": "Trace confirmed native dialog dismissal could precede clearing main.inert and lose fast input. Close and Escape now update React state directly. The recording workflow checks reactivation after the dismissal microtask and immediate typing after Close/Escape; the legacy synchronized-studio test passes on both projects.",
+  "timerRegression": "Checks 40-second start, 20 active seconds, exact countdown preservation through 80 simulated menu seconds, and expiry after resuming. Menu-entry value is captured after the real click rather than assuming zero click time.",
+  "timeouts": "Full routes use 90 seconds for additional physical selection actions; multi-room reframing uses 90 seconds; ordinary instrument workflows retain 30 seconds. Existing save/audio/puzzle assertions are retained.",
+  "lifecycle": "One persistent Pixi application and audio engine through room/view and journey changes. Explicit renderer retry or browser reload may recreate the renderer. Four legacy working drawings and puzzle-panel branches retired.",
+  "evidence": { "screenshots": 20, "source": "Final passing gate", "telephoneDetails": "390 × 640 with large text in both projects", "log": "i3-check.log" },
+  "traceRecording": "Retain-on-failure action/network/DOM/source records; continuous filmstrip disabled; explicit and failure screenshots retained.",
+  "changesAfterGate": "Documentation and evidence only.",
+  "scope": "Threshold, kitchen, studio and cabin working objects and responsive foregrounds. Card table, greenhouse and garden continue in I4; cottage return and borrowing desk in I5.",
+  "deviceLimits": "Phone emulation is not real-device audio, memory or frame-rate testing. Further portrait scenery, drawn poses, 200% browser zoom/accessibility and Firefox/WebKit remain in I6/release review.",
+  "dependenciesAndArt": "No dependencies or raster art assets added. Existing show-inspired sprites/paintings reused; native SVG/CSS instruments and live labels authored in the repository."
+}

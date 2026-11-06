@@ -1,0 +1,140 @@
+{
+  "method": "FFmpeg libwebp lossless, compression_level=6, q=100. Decoded RGBA compared, ignoring RGB only where alpha=0.",
+  "assets": [
+    {
+      "source": "threshold/coven-cellar.png",
+      "runtime": "threshold/coven-cellar.webp",
+      "sourceBytes": 2851031,
+      "runtimeBytes": 2135912,
+      "visiblePixelsIdentical": true,
+      "decodedPixels": 1573352,
+      "dimensions": "1672x941"
+    },
+    {
+      "source": "kitchen/kitchen-tide.png",
+      "runtime": "kitchen/kitchen-tide.webp",
+      "sourceBytes": 2267721,
+      "runtimeBytes": 1811900,
+      "visiblePixelsIdentical": true,
+      "decodedPixels": 1573352,
+      "dimensions": "1672x941"
+    },
+    {
+      "source": "kitchen/jen-road.png",
+      "runtime": "kitchen/jen-road.webp",
+      "sourceBytes": 2067595,
+      "runtimeBytes": 1002454,
+      "visiblePixelsIdentical": true,
+      "decodedPixels": 1572864,
+      "dimensions": "1024x1536"
+    },
+    {
+      "source": "studio/studio-amber.png",
+      "runtime": "studio/studio-amber.webp",
+      "sourceBytes": 2667962,
+      "runtimeBytes": 2097564,
+      "visiblePixelsIdentical": true,
+      "decodedPixels": 1573352,
+      "dimensions": "1672x941"
+    },
+    {
+      "source": "studio/alice-road.png",
+      "runtime": "studio/alice-road.webp",
+      "sourceBytes": 1907859,
+      "runtimeBytes": 869248,
+      "visiblePixelsIdentical": true,
+      "decodedPixels": 1572864,
+      "dimensions": "1024x1536"
+    },
+    {
+      "source": "cabin/cabin-violet.png",
+      "runtime": "cabin/cabin-violet.webp",
+      "sourceBytes": 2710799,
+      "runtimeBytes": 2124896,
+      "visiblePixelsIdentical": true,
+      "decodedPixels": 1573352,
+      "dimensions": "1672x941"
+    },
+    {
+      "source": "tower/tower-divination.png",
+      "runtime": "tower/tower-divination.webp",
+      "sourceBytes": 3083118,
+      "runtimeBytes": 2412850,
+      "visiblePixelsIdentical": true,
+      "decodedPixels": 1573352,
+      "dimensions": "1672x941"
+    },
+    {
+      "source": "tower/lilia-road.png",
+      "runtime": "tower/lilia-road.webp",
+      "sourceBytes": 1991309,
+      "runtimeBytes": 952090,
+      "visiblePixelsIdentical": true,
+      "decodedPixels": 1572864,
+      "dimensions": "1024x1536"
+    },
+    {
+      "source": "greenhouse/greenhouse-earth.png",
+      "runtime": "greenhouse/greenhouse-earth.webp",
+      "sourceBytes": 3074480,
+      "runtimeBytes": 2394014,
+      "visiblePixelsIdentical": true,
+      "decodedPixels": 1573352,
+      "dimensions": "1672x941"
+    },
+    {
+      "source": "greenhouse/rio-road.png",
+      "runtime": "greenhouse/rio-road.webp",
+      "sourceBytes": 1980642,
+      "runtimeBytes": 976294,
+      "visiblePixelsIdentical": true,
+      "decodedPixels": 1572864,
+      "dimensions": "1024x1536"
+    },
+    {
+      "source": "cottage/cottage-room.png",
+      "runtime": "cottage/cottage-room.webp",
+      "sourceBytes": 2616529,
+      "runtimeBytes": 2039060,
+      "visiblePixelsIdentical": true,
+      "decodedPixels": 1573352,
+      "dimensions": "1672x941"
+    },
+    {
+      "source": "library/library-afterhours.png",
+      "runtime": "library/library-afterhours.webp",
+      "sourceBytes": 2598416,
+      "runtimeBytes": 2064178,
+      "visiblePixelsIdentical": true,
+      "decodedPixels": 1573352,
+      "dimensions": "1672x941"
+    },
+    {
+      "source": "cottage/cottage-room-portrait.png",
+      "runtime": "cottage/cottage-room-portrait.webp",
+      "sourceBytes": 2580324,
+      "runtimeBytes": 2033178,
+      "visiblePixelsIdentical": true,
+      "decodedPixels": 1571562,
+      "dimensions": "981x1602"
+    },
+    {
+      "source": "library/library-afterhours-portrait.png",
+      "runtime": "library/library-afterhours-portrait.webp",
+      "sourceBytes": 2809753,
+      "runtimeBytes": 2250446,
+      "visiblePixelsIdentical": true,
+      "decodedPixels": 1573352,
+      "dimensions": "941x1672"
+    },
+    {
+      "source": "cottage/agatha-road.png",
+      "runtime": "world/agatha-road.webp",
+      "sourceBytes": 2011083,
+      "runtimeBytes": 1000794,
+      "visiblePixelsIdentical": true,
+      "decodedPixels": 1572864,
+      "dimensions": "1024x1536"
+    }
+  ]
+}

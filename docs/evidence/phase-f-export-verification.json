@@ -1,0 +1,32 @@
+{
+  "method": "FFmpeg libwebp lossless, compression_level=6, q=100. Decoded RGBA compared, ignoring RGB only where alpha=0.",
+  "assets": [
+    {
+      "source": "vision/vision-annex-wide.png",
+      "runtime": "vision/vision-annex-wide.webp",
+      "sourceBytes": 2709461,
+      "runtimeBytes": 1711804,
+      "visiblePixelsIdentical": true,
+      "decodedPixels": 1573352,
+      "dimensions": "1672x941"
+    },
+    {
+      "source": "vision/vision-annex-portrait.png",
+      "runtime": "vision/vision-annex-portrait.webp",
+      "sourceBytes": 2836056,
+      "runtimeBytes": 1730328,
+      "visiblePixelsIdentical": true,
+      "decodedPixels": 1573352,
+      "dimensions": "941x1672"
+    },
+    {
+      "source": "vision/vision-pale.png",
+      "runtime": "vision/vision-pale.webp",
+      "sourceBytes": 1891941,
+      "runtimeBytes": 826854,
+      "visiblePixelsIdentical": true,
+      "decodedPixels": 1572864,
+      "dimensions": "1024x1536"
+    }
+  ]
+}

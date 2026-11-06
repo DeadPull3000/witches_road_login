@@ -1,0 +1,18 @@
+{
+  "zoom": 2,
+  "before": {
+    "viewport": [
+      1280,
+      800
+    ],
+    "density": 1
+  },
+  "after": {
+    "viewport": [
+      640,
+      400
+    ],
+    "density": 2
+  },
+  "aliasAccepted": true
+}

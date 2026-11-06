@@ -1,0 +1,12 @@
+{
+  "engine": "webkit",
+  "version": "27.2",
+  "viewport": {
+    "width": 1280,
+    "height": 800
+  },
+  "audioContext": "undefined",
+  "audioRequired": true,
+  "retryVisible": true,
+  "exportDownloaded": true
+}

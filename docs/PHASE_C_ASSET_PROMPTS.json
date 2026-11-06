@@ -1,0 +1,26 @@
+{
+  "method": "built-in image_gen",
+  "date": "2026-11-04",
+  "assets": [
+    {
+      "path": "public/assets/kitchen/jen-road.png",
+      "transparent": true,
+      "prompt": "Use case: stylized-concept. Asset type: one transparent full-body pixel-art game character, matching a detailed 16-bit cozy magical adventure. Subject: Jennifer Kale from Agatha All Along, recognizable Sasheer Zamata likeness translated into elegant pixel art; Black woman with warm brown skin and long dark natural curls, assured unimpressed expression. Wear her recognizable soft baby-pink long-sleeved flowing Road dress with draped layered fabric, practical dark shoes, subtle gold jewelry. Three-quarter view facing left, one hand holding a small pale ceramic measuring cup, other hand loosely at waist. Distinct grown-up face and long pink silhouette; warm amber rim lighting, cool blue reflected light, crisp plum pixel outlines and clustered highlights. Full figure, feet entirely visible, comfortable alpha margin, character fills most of portrait frame. Genuine transparent background, no ground, no cast shadow, no text, no logos, no watermark, no sprite grid. Keep her actual character identity and Road wardrobe inspiration, not a generic pointed-hat witch."
+    },
+    {
+      "path": "public/assets/kitchen/kitchen-tide.png",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept. Asset type: one 16:9 landscape pixel-art game background, environment only. Primary request: a small readable kitchen inspired by the beach-mansion water trial in Agatha All Along, adapted into a cozy browser puzzle room. Three-quarter shallow interior view. Blue-green coastal cabinets, pale marble counter, cream paneling, brass fittings and warm pendant lamps; tall arched windows beyond the counter show an uncanny dark blue sea and violet roots. The kitchen island spans the lower left and center, a clear pale worktop at about 40–55 percent across and 65–75 percent down is empty for two separately rendered measuring jugs. A small oven/timer alcove on the left, one wooden stool, shelves of glass potion bottles and a little leafy herb. Keep the right foreground floor open for a separate full-body Jen sprite. Calm warm/cool contrast, soft pink reflection hints at Jen's magic, plum outlines and crisp clustered 16-bit pixels matching a detailed cozy forest-cottage adventure. Tangible wood, stone and glass; richly atmospheric but clear at small scale. No people, no jugs on the main worktop, no writing, no numbers, no UI, no text, no logos, no watermark. Complete wide background painting, not a screenshot or collage."
+    },
+    {
+      "path": "public/assets/studio/alice-road.png",
+      "transparent": true,
+      "prompt": "Use case: stylized-concept. Asset type: one transparent full-body detailed 16-bit pixel-art character for a cozy magical browser adventure, stylistically matching the Agatha and Jen characters. Subject: Alice Wu-Gulliver from Agatha All Along, recognizable Ali Ahn character: East Asian woman with a thoughtful tough expression, long shaggy black hair with conspicuous dark red streaks framing her face. Show-inspired dark bomber jacket with subtle orange embroidered flame/bird motifs, burgundy patterned long-sleeve top, layered small protective pendant necklaces, gray wide-leg jeans, dark grommet belt and practical black boots. Three-quarter pose facing slightly left, holding a plain small black vinyl record by the rim at her side, other hand relaxed. Orange/amber edge light and plum shadows, crisp pixel clusters, distinctive human face and practical Road outfit rather than a fantasy robe. Full body and both boots visible, fill most of portrait frame with alpha margin. Genuine transparent background, no ground, no cast shadow, no labels, no text, no logos, no watermark, no sprite grid."
+    },
+    {
+      "path": "public/assets/studio/studio-amber.png",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept. Asset type: one 16:9 landscape pixel-art game background, environment only. A cozy uncanny retro recording studio inspired by the Agatha All Along music trial and its richly textured mid-century set. Shallow three-quarter interior view, walnut paneling, geometric amber stained-glass windows, russet acoustic cloth and mossy stone accents, warm orange practical lamps with violet forest shadows outside. A vintage mixing desk and reel-to-reel machine sit along the back left. In the left foreground a low wood cabinet with a plain black turntable and room for an interactive record; a brass rotary telephone on a side table near the center; twin large brown cabinet speakers at the rear. Keep a clean foreground floor on the right for a separately composited Alice sprite, and readable uncluttered object silhouettes at 640 by 360 logical game scale. Detailed 16-bit pixel clusters, dark plum outlines, amber/teal contrast, tangible inviting materials matching the forest cottage and Jen kitchen art. No characters, no lettering, no numbers, no labels on equipment, no interface, no logos, no watermark. Complete wide background painting, not a screenshot or collage."
+    }
+  ]
+}

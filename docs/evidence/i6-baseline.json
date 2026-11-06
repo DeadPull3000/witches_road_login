@@ -1,0 +1,368 @@
+[
+  {
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "idle": {
+      "fps": 25.2,
+      "framebuffer": [
+        1280,
+        800
+      ],
+      "canvasRect": [
+        1280,
+        800
+      ],
+      "scrolling": [
+        1280,
+        800
+      ]
+    }
+  },
+  {
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "settings": {
+      "fps": 12.3,
+      "framebuffer": [
+        1280,
+        800
+      ],
+      "canvasRect": [
+        1280,
+        800
+      ],
+      "scrolling": [
+        1280,
+        800
+      ]
+    }
+  },
+  {
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "scene": "threshold",
+    "fps": 25.8,
+    "framebuffer": [
+      1280,
+      800
+    ],
+    "canvasRect": [
+      1280,
+      800
+    ],
+    "scrolling": [
+      1280,
+      800
+    ]
+  },
+  {
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "scene": "studio",
+    "fps": 24.6,
+    "framebuffer": [
+      1280,
+      800
+    ],
+    "canvasRect": [
+      1280,
+      800
+    ],
+    "scrolling": [
+      1280,
+      800
+    ]
+  },
+  {
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "scene": "inside",
+    "fps": 24.2,
+    "framebuffer": [
+      1280,
+      800
+    ],
+    "canvasRect": [
+      1280,
+      800
+    ],
+    "scrolling": [
+      1280,
+      800
+    ]
+  },
+  {
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "scene": "account",
+    "fps": 25.9,
+    "framebuffer": [
+      1280,
+      800
+    ],
+    "canvasRect": [
+      1280,
+      800
+    ],
+    "scrolling": [
+      1280,
+      800
+    ]
+  },
+  {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "idle": {
+      "fps": 29.8,
+      "framebuffer": [
+        585,
+        1266
+      ],
+      "canvasRect": [
+        390,
+        844
+      ],
+      "scrolling": [
+        390,
+        844
+      ]
+    }
+  },
+  {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "settings": {
+      "fps": 29.3,
+      "framebuffer": [
+        585,
+        1266
+      ],
+      "canvasRect": [
+        390,
+        844
+      ],
+      "scrolling": [
+        390,
+        844
+      ]
+    }
+  },
+  {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "scene": "threshold",
+    "fps": 29.5,
+    "framebuffer": [
+      585,
+      1266
+    ],
+    "canvasRect": [
+      390,
+      844
+    ],
+    "scrolling": [
+      390,
+      844
+    ]
+  },
+  {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "scene": "studio",
+    "fps": 29.3,
+    "framebuffer": [
+      585,
+      1266
+    ],
+    "canvasRect": [
+      390,
+      844
+    ],
+    "scrolling": [
+      390,
+      844
+    ]
+  },
+  {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "scene": "inside",
+    "fps": 29.6,
+    "framebuffer": [
+      585,
+      1266
+    ],
+    "canvasRect": [
+      390,
+      844
+    ],
+    "scrolling": [
+      390,
+      844
+    ]
+  },
+  {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "scene": "account",
+    "fps": 29.9,
+    "framebuffer": [
+      585,
+      1266
+    ],
+    "canvasRect": [
+      390,
+      844
+    ],
+    "scrolling": [
+      390,
+      844
+    ]
+  },
+  {
+    "viewport": {
+      "width": 360,
+      "height": 640
+    },
+    "idle": {
+      "fps": 30,
+      "framebuffer": [
+        540,
+        960
+      ],
+      "canvasRect": [
+        360,
+        640
+      ],
+      "scrolling": [
+        360,
+        640
+      ]
+    }
+  },
+  {
+    "viewport": {
+      "width": 360,
+      "height": 640
+    },
+    "settings": {
+      "fps": 29.5,
+      "framebuffer": [
+        540,
+        960
+      ],
+      "canvasRect": [
+        360,
+        640
+      ],
+      "scrolling": [
+        360,
+        640
+      ]
+    }
+  },
+  {
+    "viewport": {
+      "width": 360,
+      "height": 640
+    },
+    "scene": "threshold",
+    "fps": 30,
+    "framebuffer": [
+      540,
+      960
+    ],
+    "canvasRect": [
+      360,
+      640
+    ],
+    "scrolling": [
+      360,
+      640
+    ]
+  },
+  {
+    "viewport": {
+      "width": 360,
+      "height": 640
+    },
+    "scene": "studio",
+    "fps": 29.4,
+    "framebuffer": [
+      540,
+      960
+    ],
+    "canvasRect": [
+      360,
+      640
+    ],
+    "scrolling": [
+      360,
+      640
+    ]
+  },
+  {
+    "viewport": {
+      "width": 360,
+      "height": 640
+    },
+    "scene": "inside",
+    "fps": 29.5,
+    "framebuffer": [
+      540,
+      960
+    ],
+    "canvasRect": [
+      360,
+      640
+    ],
+    "scrolling": [
+      360,
+      640
+    ]
+  },
+  {
+    "viewport": {
+      "width": 360,
+      "height": 640
+    },
+    "scene": "account",
+    "fps": 29.6,
+    "framebuffer": [
+      540,
+      960
+    ],
+    "canvasRect": [
+      360,
+      640
+    ],
+    "scrolling": [
+      360,
+      640
+    ]
+  }
+]

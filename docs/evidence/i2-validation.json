@@ -1,0 +1,30 @@
+{
+  "date": "2026-11-04",
+  "phase": "I2 — shared world interface",
+  "command": "npm run check",
+  "result": "passed",
+  "typecheck": "passed",
+  "unitTests": { "passed": 104, "files": 12 },
+  "productionBuild": "passed",
+  "browserTests": {
+    "passed": 84,
+    "desktopChromium": 42,
+    "phoneChromiumEmulation": 42,
+    "workers": 1,
+    "retries": 0,
+    "skipped": 0,
+    "expectedFailures": 0,
+    "suiteMinutes": 20.9
+  },
+  "newBrowserCases": "Six workflows on both projects: map/focus/text retention, saved slots/preferences, all-room canvas/audio persistence and guarded library access, obsolete room loading, sound/menu-paused timing, and saved-list/file-read retry.",
+  "recoveryRegression": "Context loss retains usable card controls and room travel; explicit renderer retry preserves the accepted garden move. Forced GPU draw failure retains the alias and saving.",
+  "lifecycle": "One Pixi application and one audio context through normal room/view and journey changes. Explicit renderer retry or browser reload may recreate the renderer.",
+  "resourceLimits": "Latest-destination texture installation with reference-counted leases; obsolete network requests may finish before their results are released.",
+  "renderBudgets": "Framebuffer approximately 2 million pixels; density at most 1.5; 30 FPS cap in portrait or behind surfaces, 45 in unobscured landscape; hidden/reduced-motion ticker paused. These are configured caps, not real-device measurements.",
+  "traceRecording": "Retain-on-failure action/network/DOM/source records; continuous filmstrip disabled; explicit and failure screenshots retained.",
+  "evidence": "Ten reviewed desktop/phone screenshots copied from the final passing gate; i2-check.log retains command output.",
+  "changesAfterGate": "Documentation and evidence only.",
+  "scope": "All locations share the full-viewport world and kit. Direct room instruments and final portrait compositions remain in I3–I5.",
+  "deviceLimits": "Phone emulation is not real-device performance/audio testing. Zoom/accessibility review and Firefox/WebKit remain in I6/release review.",
+  "dependenciesAndArt": "No new dependencies or raster assets; existing show-inspired sprites and paintings reused with code-native SVG/CSS surfaces."
+}
