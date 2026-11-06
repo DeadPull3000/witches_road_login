@@ -34,6 +34,7 @@ import './roadTrials.css';
 import './finale.css';
 import './encounters.css';
 import './trialSurfaces.css';
+import './parchment.css';
 
 type Surface = 'work' | 'rug' | 'objects' | 'encounter' | null;
 
@@ -184,15 +185,17 @@ export function WorldGame({ run, preferences, collection, busy, lastCommand, act
     if (!(field instanceof HTMLInputElement) || !root.current?.contains(field)) return;
     const surface = field.closest('[data-world-surface]');
     if (!surface) return;
-    const input = field.getBoundingClientRect(), paper = surface.getBoundingClientRect();
-    const heading = surface.querySelector('.world-paper-heading,.instrument-heading')?.getBoundingClientRect();
-    if (input.bottom > paper.bottom - 8 || input.top < (heading?.bottom ?? paper.top) + 8) field.scrollIntoView({ block: 'center', inline: 'nearest' });
+    const body = field.closest('.parchment-body');
+    const bounds = (body ?? surface).getBoundingClientRect();
+    const heading = body ? null : surface.querySelector('.instrument-heading')?.getBoundingClientRect();
+    const input = field.getBoundingClientRect();
+    if (input.bottom > bounds.bottom - 8 || input.top < (heading?.bottom ?? bounds.top) + 8) field.scrollIntoView({ block: 'center', inline: 'nearest' });
   }, [viewport.width, viewport.height, viewport.top]);
   useLayoutEffect(() => { mounted.current?.refresh(); }, [layout, run, reduced, theft, flourish, panelOpen, surface, sound.ready, viewport.density]);
   const markMissing = (url: string) => setMissing(previous => new Set(previous).add(url));
   const illustrationMissing = missing.has(layout.background) || Boolean(layout.character && missing.has(layout.character));
   const rendererStatus = illustrationMissing ? 'fallback' : renderer;
-  const feedback = <div className="world-response" role="status" aria-live="polite" data-testid="feedback"><span className="scene-art-caption">{sceneCaption(run)}</span>{message}</div>;
+  const feedback = <div className={paperOpen ? 'world-response' : 'world-response parchment'} role="status" aria-live="polite" data-testid="feedback"><span className="scene-art-caption">{sceneCaption(run)}</span>{message}</div>;
   const recovery = status === 'unsaved' && <aside className="world-storage-alert" aria-label="Journey saving"><p>Browser saving is unavailable. Export your unsaved moves before closing.</p><button onClick={retrySave}>Retry save</button><button onClick={exportJourney}>Export journey</button></aside>;
   const rendererRecovery = rendererStatus === 'fallback' && <div className="world-renderer-recovery"><span>Still illustration · every control remains available</span><button onClick={() => { setMissing(new Set()); setAttempt(value => value + 1); }}>Retry illustrated scene</button></div>;
   const returnName = objectReturn.current === 'encounter' && encounter ? `Return to ${ENCOUNTERS[encounter].title.toLowerCase()}` : instrument ? INSTRUMENTS[instrument].return : objectReturn.current === 'rug' ? FINALE_SURFACES.rug.return : primaryFinale ? FINALE_SURFACES[primaryFinale].return : 'Return to room notes';
@@ -288,20 +291,22 @@ export function WorldGame({ run, preferences, collection, busy, lastCommand, act
         frame={{ ...encounterFrame, width: Math.min(680, encounterFrame.width) }} surfaceRef={workPaper} close={close} skip={skipFlourish} flourish={flourish} clock={clock}>
         {feedback}{recovery}{rendererRecovery}
       </EncounterStage>}
-      <div ref={paper} data-world-surface={paperOpen || undefined} className={`world-paper world-borrowing-card ${run.currentScene !== 'cottage' ? 'world-room-surface' : ''} ${surface === 'objects' ? 'world-object-page' : ''}`} role="dialog" aria-modal="false" aria-label={surface === 'objects' ? 'Room objects' : 'Your borrowing card'} tabIndex={-1} hidden={!paperOpen} onKeyDown={event => { if (event.key === 'Escape') { event.stopPropagation(); close(); } }}>
+      <div ref={paper} data-world-surface={paperOpen || undefined} className={`world-paper world-borrowing-card parchment ${run.currentScene !== 'cottage' ? 'world-room-surface' : ''} ${surface === 'objects' ? 'world-object-page' : ''}`} role="dialog" aria-modal="false" aria-label={surface === 'objects' ? 'Room objects' : 'Your borrowing card'} tabIndex={-1} hidden={!paperOpen} onKeyDown={event => { if (event.key === 'Escape') { event.stopPropagation(); close(); } }}>
         <div className="world-paper-heading"><span>{surface === 'objects' ? 'FIELD NOTES · ROOM OBJECTS' : 'WESTVIEW PUBLIC LIBRARY · BORROWER RECORD'}</span>{paperOpen && clock}<button aria-label={surface === 'objects' ? 'Close room objects' : 'Close borrowing card'} onClick={close}>×</button></div>
-        {arrival && <fieldset className="world-card-controls" hidden={surface !== 'work'} aria-busy={busy}><legend className="sr-only">Agatha’s room controls</legend><ArrivalCard key={run.runId} run={run} act={dispatch} /></fieldset>}
-        {surface === 'objects' && instrument && <RoomRules scene={instrument} opposite={run.puzzles.tower.stage === 'confirming'} />}
-        {surface === 'objects' && <fieldset className="world-object-list" aria-label="Scene action list">
-          <legend>Objects on this page</legend>
-          {objects.length ? objects.map(object => {
-            const unavailable = disabled(object);
-            return <button key={object.id} data-prop-id={object.id} aria-disabled={unavailable || undefined} onClick={event => { if (!unavailable) inspect(object, event.currentTarget); }}>{object.label}</button>;
-          }) : <p>The five keepsakes and their labelled seats are on the coven circle.</p>}
-          <button onClick={() => open(objectReturn.current)}>{returnName}</button>
-        </fieldset>}
-        {paperOpen && <>{feedback}{recovery}{rendererRecovery}</>}
-        <span className="world-paper-seal" aria-hidden="true">W</span>
+        <div className="parchment-body">
+          {arrival && <fieldset className="world-card-controls" hidden={surface !== 'work'} aria-busy={busy}><legend className="sr-only">Agatha’s room controls</legend><ArrivalCard key={run.runId} run={run} act={dispatch} /></fieldset>}
+          {surface === 'objects' && instrument && <RoomRules scene={instrument} opposite={run.puzzles.tower.stage === 'confirming'} />}
+          {surface === 'objects' && <fieldset className="world-object-list" aria-label="Scene action list">
+            <legend>Objects on this page</legend>
+            {objects.length ? objects.map(object => {
+              const unavailable = disabled(object);
+              return <button key={object.id} data-prop-id={object.id} aria-disabled={unavailable || undefined} onClick={event => { if (!unavailable) inspect(object, event.currentTarget); }}>{object.label}</button>;
+            }) : <p>The five keepsakes and their labelled seats are on the coven circle.</p>}
+            <button onClick={() => open(objectReturn.current)}>{returnName}</button>
+          </fieldset>}
+          {paperOpen && <>{feedback}{recovery}{rendererRecovery}</>}
+          <span className="world-paper-seal" aria-hidden="true">W</span>
+        </div>
       </div>
     </>}
   </main>;

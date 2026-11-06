@@ -53,7 +53,7 @@ function ruleCopy(scene: InstrumentScene, opposite: boolean) {
 }
 export function InstrumentInstructions({ scene, opposite = false }: Props) {
   const { title, text } = ruleCopy(scene, opposite);
-  return <div className="instrument-intro"><h2>{title}</h2><p>{text}</p></div>;
+  return <div className="instrument-intro parchment"><h2>{title}</h2><p>{text}</p></div>;
 }
 
 /** The field notes transcribe the physical instructions in their reading order. */

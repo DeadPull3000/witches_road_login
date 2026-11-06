@@ -61,13 +61,13 @@ export function App({ session }: { session: GameSession }) {
 function WorldDialog({ panel, title, close, clock, children }: { panel: Panel; title: string; close: () => void; clock: ReactNode; children: ReactNode }) {
   const dialog = useRef<HTMLDialogElement>(null);
   useLayoutEffect(() => { dialog.current?.showModal(); }, []);
-  return <dialog className={`world-modal world-panel-${panel}`} ref={dialog} onClose={close} onCancel={event => { event.preventDefault(); close(); }} aria-labelledby="dialog-title" onKeyDown={event => {
+  return <dialog className={`world-modal world-panel-${panel} parchment`} ref={dialog} onClose={close} onCancel={event => { event.preventDefault(); close(); }} aria-labelledby="dialog-title" onKeyDown={event => {
     if (event.key !== 'Tab' || !dialog.current) return;
     const targets = [...dialog.current.querySelectorAll<HTMLElement>('button:not(:disabled),input:not(:disabled),select:not(:disabled),textarea:not(:disabled),a[href],[tabindex="0"]')].filter(element => element.getClientRects().length > 0 && !element.closest('[hidden]'));
     const first = targets[0], last = targets.at(-1);
     if (event.shiftKey && (document.activeElement === first || document.activeElement === dialog.current)) { event.preventDefault(); last?.focus(); }
     else if (!event.shiftKey && (document.activeElement === last || document.activeElement === dialog.current)) { event.preventDefault(); first?.focus(); }
-  }}><header><span className="dialog-bookmark" aria-hidden="true">W</span><h2 id="dialog-title">{title}</h2>{clock}<button onClick={close} aria-label="Close panel">×</button></header>{children}</dialog>;
+  }}><header><span className="dialog-bookmark" aria-hidden="true">W</span><h2 id="dialog-title">{title}</h2>{clock}<button onClick={close} aria-label="Close panel">×</button></header><div className="parchment-body">{children}</div></dialog>;
 }
 function download(filename: string, content: string) {
   const url = URL.createObjectURL(new Blob([content], { type: 'application/json' }));

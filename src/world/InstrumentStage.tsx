@@ -184,7 +184,7 @@ function SpiritTable({ run, busy, act }: ActionProps) {
         })}
       </div>
       <ol className="spirit-slips" aria-label="Four spirit statements">
-        {SPIRIT_STATEMENTS.map((statement, index) => <li key={statement}>
+        {SPIRIT_STATEMENTS.map((statement, index) => <li key={statement} className="parchment">
           <small>SPIRIT {['I', 'II', 'III', 'IV'][index]}</small><span>{statement}</span>
         </li>)}
       </ol>

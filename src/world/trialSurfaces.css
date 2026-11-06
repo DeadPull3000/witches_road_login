@@ -67,17 +67,10 @@
 .workbench-stage .instrument-heading b { color: var(--world-cream); font-size: clamp(19px, 2.25vw, 26px); }
 .workbench-stage .instrument-heading button { border-radius: 4px; border-color: var(--bench-trim); }
 .workbench-stage .instrument-intro {
-  position: relative;
   margin: 0 0 12px;
-  padding: 8px 13px 9px;
-  border: 1px solid #b48264;
-  border-radius: 2px;
-  background: linear-gradient(105deg, #e4c899, var(--world-paper) 40%, #dfc396);
-  box-shadow: 1px 3px 0 #1d1420a1;
-  color: var(--world-ink);
 }
-.workbench-stage .instrument-intro h2 { margin: 0 0 3px; color: #422d2d; font-size: clamp(20px, 2.25vw, 27px); }
-.workbench-stage .instrument-intro p { color: var(--world-ink); font: 1rem/1.4 Georgia, serif; }
+.workbench-stage .instrument-intro h2 { margin: 0 0 3px; font-size: clamp(20px, 2.25vw, 27px); }
+.workbench-stage .instrument-intro p { font: 1rem/1.4 Georgia, serif; }
 .workbench-stage .instrument-end { margin-top: 9px; }
 .workbench-stage .instrument-end .instrument-tools { margin: 8px 0; }
 .workbench-stage .instrument-tools button {
@@ -88,8 +81,6 @@
 }
 .workbench-stage .world-response {
   margin: 9px 0 0;
-  padding: 7px 0 2px;
-  color: #f4dfbd;
 }
 .workbench-stage .world-response .scene-art-caption { display: none; }
 .workbench-stage .instrument-door { border-color: var(--bench-trim); }
@@ -311,25 +302,10 @@
 .world-viewport[data-paused=true] .trial-room-props .lamp-flame { animation-play-state: paused; }
 .spirit-slips, .table-memories { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; padding: 0; margin: 8px 0; list-style: none; }
 .spirit-slips li, .table-memories li {
-  position: relative;
-  padding: 5px 8px;
-  border: 1px solid #a87e65;
-  border-radius: 2px;
-  background: linear-gradient(114deg, #d8b791, var(--world-paper) 34%, #dfc29b);
-  box-shadow: 1px 2px #241822b0;
-  color: var(--world-ink);
+  padding: 7px 10px 8px;
   font: 1rem/1.3 Georgia, serif;
 }
 .spirit-slips small, .table-memories small { display: block; color: #6d4b3f; font: 9px/1.16 monospace; letter-spacing: .075em; margin-bottom: 2px; }
-.spirit-slips li::after, .table-memories li::after {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 9px;
-  height: 9px;
-  background: linear-gradient(45deg, #bc996e 50%, #805b4c 52%, #644344 53%);
-  content: '';
-}
 .instrument-stage .planchette-control {
   display: flex;
   align-items: center;
@@ -482,7 +458,6 @@ html[data-text=large] .confirmation-rack b, html[data-text=large] .vine-stone-ta
 @media (max-width: 720px) {
   .instrument-stage.workbench-stage[data-expanded=true] { padding-inline: 11px; scroll-padding-top: 65px; }
   .workbench-stage .instrument-heading { margin-inline: -11px; padding-inline: 10px 8px; }
-  .workbench-stage .instrument-intro { padding-inline: 9px; }
   .coven-keepsakes { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; }
   .instrument-stage .coven-token { grid-template-columns: 26px minmax(0, 1fr); gap: 1px 4px; padding: 5px 3px; }
   .coven-token .token-symbol { min-width: 23px; min-height: 25px; font-size: 18px; }

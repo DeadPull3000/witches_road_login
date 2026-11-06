@@ -77,7 +77,7 @@ function CottageDoor({ run, busy, act, active, geometryKey }: WorkProps & { acti
   const stitched = run.milestones.unbindingCompleted;
   const recognized = run.rememberEnabled && run.milestones.hasSignedInOnce;
   return <>
-    <div className="instrument-intro">
+    <div className="instrument-intro parchment">
       <h2>The way was here all along.</h2>
       <p>The cup, the record, the lamps, the cards and the flower. Familiar things, seen differently.</p>
     </div>
@@ -120,7 +120,7 @@ function BorrowingDesk({ run, busy, act, flourish, openDateStamp }: WorkProps & 
   }
 
   return <>
-    <div className="instrument-intro">
+    <div className="instrument-intro parchment">
       <h2>Your shelf, at last.</h2>
       <p>One book. Five trials. A perfectly reasonable library policy.</p>
     </div>

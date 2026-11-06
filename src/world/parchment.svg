@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="112" viewBox="0 0 160 112">
+  <defs>
+    <linearGradient id="sheet" x2="100%" y2="16%">
+      <stop stop-color="#9d683c"/>
+      <stop offset=".12" stop-color="#dfb680"/>
+      <stop offset=".34" stop-color="#f2dcaf"/>
+      <stop offset=".72" stop-color="#f0d7a5"/>
+      <stop offset=".9" stop-color="#dcb17c"/>
+      <stop offset="1" stop-color="#99633e"/>
+    </linearGradient>
+    <linearGradient id="roll" x2="0%" y2="100%">
+      <stop stop-color="#855436"/>
+      <stop offset=".27" stop-color="#d9a771"/>
+      <stop offset=".46" stop-color="#f0ca8f"/>
+      <stop offset=".72" stop-color="#bc8751"/>
+      <stop offset="1" stop-color="#72452c"/>
+    </linearGradient>
+    <radialGradient id="patina">
+      <stop stop-color="#95603c" stop-opacity=".24"/>
+      <stop offset="1" stop-color="#95603c" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="fibres" width="19" height="17" patternUnits="userSpaceOnUse">
+      <path d="m2 4 2-.25m6 5 1.4.2m3 4 2-.4M3 15l1.4.2" fill="none" stroke="#7a4d32" stroke-width=".28" opacity=".14"/>
+    </pattern>
+    <path id="page" d="M14 9Q52 12 83 9t64 0l-2 12 4 7-3 10 3 9-2 9 3 8-3 9 2 10-4 11 2 9q-36-3-66 0t-67 0l2-8-5-6 3-9-3-8 3-9-4-8 3-8-2-9 3-8-3-8 3-8-2-6Z"/>
+    <clipPath id="paper-edge"><use href="#page"/></clipPath>
+    <g id="curl">
+      <path d="M11 5Q45 3 80 5t69 0l1 13q-36-2-71 0t-68 0Z" fill="#4b2c24" opacity=".44" transform="translate(0 2)"/>
+      <path d="M11 4Q45 2 80 4t69 0l1 12q-36-2-71 0t-68 0Z" fill="url(#roll)" stroke="#69452e" stroke-width="1.1"/>
+      <path d="M18 7Q50 6 79 7t63 0m-123 6q35-1 62 0t58 0" fill="none" stroke="#f8d9a4" stroke-width=".85" opacity=".55"/>
+      <ellipse cx="10" cy="10" rx="8" ry="8" fill="#8b5737" stroke="#5e3a28"/>
+      <ellipse cx="10" cy="10" rx="5.2" ry="5.4" fill="#d0a06d"/>
+      <path d="M7 12q-2-5 3-5t3 5q-3 3-4-1" fill="none" stroke="#68422d" stroke-width="1.15" stroke-linecap="round"/>
+      <ellipse cx="150" cy="10" rx="7.4" ry="7.8" fill="#9b653f" stroke="#69452e"/>
+      <path d="M147 13q-2-5 2-6 5-1 4 4-1 3-4 1" fill="none" stroke="#e0b67d" stroke-width="1.25" stroke-linecap="round"/>
+    </g>
+  </defs>
+  <use href="#page" fill="#24151a" opacity=".32" transform="translate(0 2)"/>
+  <use href="#page" fill="url(#sheet)" stroke="#95613a" stroke-width="1.1" stroke-linejoin="round"/>
+  <g clip-path="url(#paper-edge)" fill="url(#patina)">
+    <ellipse cx="26" cy="28" rx="39" ry="23"/>
+    <ellipse cx="136" cy="87" rx="44" ry="28"/>
+  </g>
+  <use href="#page" fill="url(#fibres)"/>
+  <path d="m16 25 5 4-3 3m126 9-6 4 4 2M14 73l7-2-3 5m124 8-3-5 6 1" fill="none" stroke="#99633d" stroke-width=".8" opacity=".55"/>
+  <use href="#curl"/>
+  <use href="#curl" transform="translate(160 112) rotate(180)"/>
+</svg>

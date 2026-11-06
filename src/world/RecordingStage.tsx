@@ -109,7 +109,7 @@ export function RecordingStage({
                 <span>CHANNEL {index + 1}</span>
                 <Meter enabled={studio.channels[index]} />
                 <i className="fader-track" aria-hidden="true"><i /></i>
-                <small className="studio-lyric">Divide by <strong>{clue.divisor}</strong><br />remainder <strong>{clue.remainder}</strong></small>
+                <small className="studio-lyric parchment">Divide by <strong>{clue.divisor}</strong><br />remainder <strong>{clue.remainder}</strong></small>
                 <em>{studio.channels[index] ? 'OPEN' : 'CLOSED'}</em>
               </button>)}
             </div>
@@ -150,7 +150,7 @@ export function RecordingStage({
 
 function StudioSpeech({ cue, talk, dock, style }: { cue: Cue | null; talk: () => void; dock: StudioDock; style?: CSSProperties }) {
   return <aside className="studio-speaker" data-position={dock} style={style} aria-label="Alice">
-    {cue && <div key={`${cue.kind}:${cue.revision}`} className="studio-bubble" data-testid="alice-comment" data-reaction={cue.kind}>
+    {cue && <div key={`${cue.kind}:${cue.revision}`} className="studio-bubble parchment" data-testid="alice-comment" data-reaction={cue.kind}>
       <b>Alice</b><p>{ALICE_REACTIONS[cue.kind]}</p>
     </div>}
     <button className="studio-speak" aria-label={cue ? 'Dismiss Alice’s comment' : 'Speak with Alice'} onClick={talk}>

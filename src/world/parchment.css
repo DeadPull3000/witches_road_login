@@ -1,0 +1,55 @@
+/* The nine-slice trim keeps the curled ends the same size as the writing area grows. */
+.parchment {
+  --parchment-roll: 11px;
+  --parchment-edge: 14px;
+  --parchment-ink: #3b261c;
+  color: var(--parchment-ink);
+  border: 1px solid transparent;
+  border-image: url('./parchment.svg?inline') 21 25 fill / var(--parchment-roll) var(--parchment-edge) stretch;
+  border-radius: 0;
+  background: none;
+}
+
+.parchment:is(.world-paper, .world-modal, .entrance-card) {
+  --parchment-roll: 16px;
+  --parchment-edge: 23px;
+  filter: drop-shadow(0 9px 14px #190c24a8);
+}
+
+.world-paper.parchment:not([hidden]),
+.world-modal.parchment[open],
+.entrance-card.parchment {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.parchment-body {
+  min-height: 0;
+  min-width: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 5px 6px;
+  margin-inline: -6px;
+  scrollbar-color: #a67950 #efd8ab;
+}
+
+.parchment:is(.studio-bubble, .world-response, .spirit-slips li, .table-memories li, .reader-claims p) {
+  --parchment-roll: 8px;
+  --parchment-edge: 11px;
+}
+
+.studio-lyric.parchment {
+  --parchment-roll: 5px;
+  --parchment-edge: 6px;
+}
+
+@media (forced-colors: active) {
+  .parchment {
+    border-color: CanvasText;
+    border-image: none;
+    background: Canvas;
+    color: CanvasText;
+    filter: none;
+  }
+}

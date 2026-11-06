@@ -38,13 +38,13 @@ export function VisionConsole({ run, busy, act, onIntercom }: {
   const selectDisabled = busy || solved;
   const submitDisabled = selectDisabled || selection === null;
   return <>
-    <div className="instrument-intro">
+    <div className="instrument-intro parchment">
       <h2>Which reader keeps the card?</h2>
       <p>{VISION_INSTRUCTIONS}</p>
     </div>
     <div className="reader-claims" aria-label="Reader statements">
-      <p><b>First voice</b> “I remember your alias, {run.alias}. You have one library book.”</p>
-      <p><b>Second voice</b> “{run.alias}. One borrowed book. I have the very same record.”</p>
+      <p className="parchment"><b>First voice</b> “I remember your alias, {run.alias}. You have one library book.”</p>
+      <p className="parchment"><b>Second voice</b> “{run.alias}. One borrowed book. I have the very same record.”</p>
     </div>
     <VisionRecords />
     <div className="vision-bench">

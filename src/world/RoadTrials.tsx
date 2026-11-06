@@ -22,7 +22,7 @@ function ChairDrawing({ moon }: { moon: boolean }) {
 export function LiliaTable({run,busy,act}:Props){
   const p=run.puzzles.tower,opposite=p.stage==='confirming';
   const memories = <ol className="table-memories" aria-label="Four card memories">
-    {TAROT_MEMORIES.map((text, index) => <li key={text}><small>APPOINTMENT {['I', 'II', 'III', 'IV'][index]}</small>{text}</li>)}
+    {TAROT_MEMORIES.map((text, index) => <li key={text} className="parchment"><small>APPOINTMENT {['I', 'II', 'III', 'IV'][index]}</small>{text}</li>)}
   </ol>;
   return <>
     <InstrumentInstructions scene="tower" opposite={opposite} />
