@@ -42,7 +42,9 @@ Jen's pink Road-inspired silhouette and Alice's dark jacket/red-streaked hair co
 
 Each room loads only its own image bundle. A shared resource pool serializes unloading and re-acquisition so revisits do not receive destroyed textures. PNG optimization and real-device texture-memory measurements remain release work.
 
-Audio is an original, deterministic eight-beat score synthesized in Web Audio, with three equal-length six-second stems, a separate ambience bus and short interaction tones. No show soundtrack or recorded dialogue is included. All stem buffers are prepared before a common scheduled start time. Playback uses the scheduling and looping behavior documented by [MDN AudioBufferSourceNode.start](https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode/start) and [loop](https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode/loop); gesture recovery uses [AudioContext.resume](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/resume).
+Web Audio synthesizes the room score, a separate ambience bus, and short interaction tones. The three six-second stems share a scheduled start.
+
+The background chant comes from the supplied recording of *The Ballad of the Witches’ Road (Sacred Chant Version)* from *Agatha All Along*, identified as MarvelMusicVEVO in the source filename. The game uses a 74.5-second mono edit from 00:04.1 to 01:18.6, with normalized loudness and fades at both ends. The chant shares the Music volume control with the room score, rises at the coven threshold, and fades out for Alice’s mixer puzzle. [Game audio asset](../src/audio/witches-road-chant.mp3)
 
 ## Phase D additions
 

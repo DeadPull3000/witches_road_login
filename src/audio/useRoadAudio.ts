@@ -3,9 +3,10 @@ import { AudioEngine } from './engine';
 import type { GameSession } from '../game/session';
 import type { Command } from '../game/commands';
 import { DEFAULT_PREFERENCES, type Preferences, type RunState } from '../game/state';
+import chantUrl from './witches-road-chant.mp3?url';
 
 export function useRoadAudio(session: GameSession, run: RunState, preferences: Preferences, lastCommand: Command | null) {
-  const [engine] = useState(() => new AudioEngine());
+  const [engine] = useState(() => new AudioEngine(() => new AudioContext(), chantUrl));
   const status = useSyncExternalStore(engine.subscribe, engine.getSnapshot);
   const [entered, setEntered] = useState(false), [starting, setStarting] = useState(false);
   const previous = useRef({ id: run.runId, revision: run.revision });
@@ -17,6 +18,7 @@ export function useRoadAudio(session: GameSession, run: RunState, preferences: P
     if (lastCommand.type === 'JUG') engine.effect(lastCommand.move.startsWith('pour') ? 'pour' : lastCommand.move.startsWith('fill') ? 'fill' : 'empty');
     if (lastCommand.type === 'DIAL_CODE') engine.effect(run.puzzles.studio.solved ? 'success' : 'dial');
     if (lastCommand.type === 'KITCHEN_TIMER') engine.effect('timer');
+    if (lastCommand.type === 'TRIAL_TIMEOUT') engine.effect('shadow');
     if (lastCommand.type === 'TOGGLE_LAMP') engine.effect('lamp');
     if (lastCommand.type === 'CHECK_LAMPS') engine.effect(run.puzzles.cabin.solved ? 'success' : 'shadow');
     if (['MOVE_DECK', 'PICK_CONFIRM', 'CLEAR_CONFIRM'].includes(lastCommand.type)) engine.effect('card');

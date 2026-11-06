@@ -1,4 +1,4 @@
-/** An original eight-beat miniature; no show recordings or melodies are used. */
+/** Original eight-beat phrases for the synthesized room score. */
 export const SCORE_RATE = 22050;
 export const SCORE_SECONDS = 6;
 const frequency = (midi: number) => 440 * 2 ** ((midi - 69) / 12);

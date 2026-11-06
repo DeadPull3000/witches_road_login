@@ -8,11 +8,24 @@ type Mix = { channels: boolean[]; speakersOpen: boolean; reversed: boolean };
 type Loop = { source: AudioBufferSourceNode; gain: GainNode };
 const moodFor = (scene: SceneId): ScoreMood => scene === 'account' ? 'library' : scene === 'studio' || scene === 'cabin' || scene === 'tower' || scene === 'vision' ? scene : scene === 'greenhouse' || scene === 'garden' ? 'earth' : 'road';
 const STEM_FADE_SECONDS = .14;
+const CHANT_LEVEL: Record<SceneId, number> = {
+  cottage: .29,
+  threshold: .72,
+  kitchen: .25,
+  studio: 0,
+  cabin: .21,
+  tower: .25,
+  greenhouse: .46,
+  garden: .27,
+  account: .15,
+  vision: .1,
+};
 
 export class AudioEngine {
   private context: AudioContext | null = null;
   private master?: GainNode; private ambience?: GainNode; private music?: GainNode; private effects?: GainNode;
   private loops: Loop[] = []; private ambienceSource?: AudioBufferSourceNode;
+  private chant?: Loop; private chantRequest?: AbortController;
   private fading: Loop[] = []; private stemsAt = 0;
   private oneShots = new Set<AudioScheduledSourceNode>();
   private listeners = new Set<() => void>(); private status: SoundStatus = 'off';
@@ -20,7 +33,7 @@ export class AudioEngine {
   private mix: Mix = { channels: [false, false, false], speakersOpen: true, reversed: false };
   private epoch = 0; private closed = false; private enabling?: Promise<void>;
   private hidden = false; private visibilityRequest = 0;
-  constructor(private factory: () => AudioContext = () => new AudioContext()) {}
+  constructor(private factory: () => AudioContext = () => new AudioContext(), private chantUrl?: string) {}
   subscribe = (listener: () => void) => { this.listeners.add(listener); return () => this.listeners.delete(listener); };
   getSnapshot = () => this.status;
   private publish(status: SoundStatus) { if (status !== this.status) { this.status = status; this.listeners.forEach(listener => listener()); } }
@@ -52,6 +65,7 @@ export class AudioEngine {
       if (!this.loops.length) this.startStems(false);
       if (!this.ambienceSource) this.startAmbience();
       this.applyGains(); this.publish(this.preferences.muted ? 'off' : 'playing');
+      if (!this.preferences.muted) void this.startChant(this.context);
     } catch { if (!this.closed && !this.hidden) this.publish(this.context ? 'blocked' : 'unavailable'); }
   }
   private async resume() {
@@ -110,6 +124,42 @@ export class AudioEngine {
     const buffer = this.buffer(createAmbience()), source = this.context!.createBufferSource(); source.buffer = buffer; source.loop = true;
     source.connect(this.ambience!); source.start(this.context!.currentTime + .04); this.ambienceSource = source;
   }
+  private async startChant(context: AudioContext) {
+    if (!this.chantUrl || this.chant || this.chantRequest || this.closed) return;
+    const request = new AbortController();
+    this.chantRequest = request;
+    const release = () => { if (this.chantRequest === request) this.chantRequest = undefined; };
+    const timeout = setTimeout(() => { release(); request.abort(); }, 8000);
+    try {
+      const response = await fetch(this.chantUrl, { signal: request.signal });
+      if (!response.ok) return;
+      const data = await response.arrayBuffer();
+      if (request.signal.aborted) return;
+      const buffer = await context.decodeAudioData(data);
+      if (request.signal.aborted) return;
+
+      const source = context.createBufferSource(), gain = context.createGain();
+      const loop = { source, gain };
+      try {
+        source.buffer = buffer;
+        source.loop = true;
+        gain.gain.value = 0;
+        source.connect(gain);
+        gain.connect(this.music!);
+        source.start(context.currentTime + .04);
+        this.chant = loop;
+        this.applyGains();
+      } catch {
+        this.chant = undefined;
+        this.stopLoop(loop);
+      }
+    } catch {
+      // The room score and effects are already running. An explicit enable can retry the chant.
+    } finally {
+      clearTimeout(timeout);
+      release();
+    }
+  }
   private applyGains() {
     if (!this.context || !this.master) return;
     const at = this.context.currentTime;
@@ -119,9 +169,11 @@ export class AudioEngine {
     gain(this.ambience, this.preferences.ambienceVolume * (this.scene === 'cabin' ? .8 : this.scene === 'tower' ? .65 : 1));
     gain(this.music, this.preferences.musicVolume * (this.scene === 'studio' ? this.mix.speakersOpen ? 1 : .12 : this.scene === 'cabin' ? .5 : .7));
     gain(this.effects, this.preferences.effectsVolume);
+    const chantLevel = this.chant ? CHANT_LEVEL[this.scene] : 0;
+    this.chant?.gain.gain.setTargetAtTime(chantLevel, at, .24);
     const stemTime = Math.max(at, this.stemsAt);
     this.loops.forEach((loop, i) => {
-      const level = this.scene === 'studio' ? Number(this.mix.channels[i]) : [.6, .25, .5][i];
+      const level = this.scene === 'studio' ? Number(this.mix.channels[i]) : [.6, .25, .5][i] * (1 - chantLevel);
       loop.gain.gain.cancelScheduledValues(stemTime);
       loop.gain.gain.setTargetAtTime(level, stemTime, .025);
     });
@@ -164,6 +216,8 @@ export class AudioEngine {
   private stopLoops() { this.loops.forEach(loop => this.stopLoop(loop)); this.loops = []; }
   dispose() {
     this.closed = true; this.stopLoops(); this.clearFade(); this.ambienceSource?.stop(); this.ambienceSource?.disconnect();
+    this.chantRequest?.abort();
+    if (this.chant) { this.stopLoop(this.chant); this.chant = undefined; }
     for (const source of this.oneShots) { try { source.stop(); } catch { /* Already ended. */ } source.disconnect(); }
     this.oneShots.clear(); void this.context?.close().catch(() => undefined); this.listeners.clear();
   }

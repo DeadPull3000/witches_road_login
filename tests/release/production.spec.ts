@@ -3,7 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { completedRun } from '../helpers';
 import { travelViaMap } from '../e2e/support';
 
-type AudioProbe = { contexts: number; analyser?: AnalyserNode };
+type AudioProbe = { contexts: number; chantStarts: number; chantGain?: GainNode; analyser?: AnalyserNode };
 type MeasuredWindow = Window & { releaseAudio?: AudioProbe };
 const renderer = (page: Page) => page.getByTestId('world-renderer');
 const world = (page: Page) => page.getByTestId('scene-stage');
@@ -17,13 +17,15 @@ const rooms = [
 
 async function installMeter(page: Page) {
   await page.addInitScript(() => {
-    const meter: AudioProbe = (window as MeasuredWindow).releaseAudio = { contexts: 0 };
+    const meter: AudioProbe = (window as MeasuredWindow).releaseAudio = { contexts: 0, chantStarts: 0 };
+    const gains = new WeakMap<AudioBufferSourceNode, GainNode>();
     const Context = window.AudioContext, connect = AudioNode.prototype.connect;
     window.AudioContext = class extends Context {
       constructor(options?: AudioContextOptions) { super(options); meter.contexts++; }
     };
     AudioNode.prototype.connect = function (this: AudioNode, ...args: unknown[]) {
       const result = Reflect.apply(connect, this, args);
+      if (this instanceof AudioBufferSourceNode && args[0] instanceof GainNode) gains.set(this, args[0]);
       if (this instanceof GainNode && args[0] === this.context.destination) {
         const analyser = this.context.createAnalyser();
         Reflect.apply(connect, this, [analyser]);
@@ -31,8 +33,19 @@ async function installMeter(page: Page) {
       }
       return result;
     } as typeof connect;
+    const start = AudioBufferSourceNode.prototype.start;
+    AudioBufferSourceNode.prototype.start = function (...args: Parameters<typeof start>) {
+      if (this.loop && this.buffer && this.buffer.duration > 70) {
+        meter.chantStarts++;
+        meter.chantGain = gains.get(this);
+      }
+      return Reflect.apply(start, this, args);
+    };
   });
 }
+
+const chantStarts = (page: Page) => page.evaluate(() => (window as MeasuredWindow).releaseAudio?.chantStarts ?? 0);
+const chantLevel = (page: Page) => page.evaluate(() => (window as MeasuredWindow).releaseAudio?.chantGain?.gain.value ?? 0);
 
 async function peak(page: Page) {
   return page.evaluate(() => {
@@ -108,7 +121,8 @@ test('the packaged game loads only versioned runtime art, keeps room leases boun
   const files = await readdir('dist/assets');
   expect((await readdir('dist')).sort()).toEqual(['assets', 'index.html']);
   expect(files.filter(file => file.endsWith('.webp'))).toHaveLength(22);
-  expect(files.every(file => /-[\w-]{8}\.(?:webp|js|css)$/.test(file))).toBe(true);
+  expect(files.filter(file => /^witches-road-chant-[\w-]{8}\.mp3$/.test(file))).toHaveLength(1);
+  expect(files.every(file => /-[\w-]{8}\.(?:webp|js|css|mp3)$/.test(file))).toBe(true);
   const index = await readFile('dist/index.html', 'utf8');
   expect(index).toMatch(/src="\.\/assets\//);
   expect(index).toMatch(/href="\.\/assets\//);
@@ -121,18 +135,22 @@ test('the packaged game loads only versioned runtime art, keeps room leases boun
   await installMeter(page);
   await page.goto('./');
   expect(await page.evaluate(() => (window as MeasuredWindow).releaseAudio?.contexts)).toBe(0);
+  expect(requests.some(path => path.endsWith('.mp3'))).toBe(false);
   const start = performance.now();
   const enter = button(page, 'Enter the Road with sound');
   if (isMobile) await enter.tap(); else await enter.click();
   await waitForAudio(page);
   const entryMs = Math.round(performance.now() - start);
   const entryArt = await ready(page, 'cottage');
+  await expect.poll(() => chantStarts(page)).toBe(1);
+  await expect.poll(() => chantLevel(page)).toBeGreaterThan(.2);
   await expect.poll(() => peak(page)).toBeGreaterThan(.00001);
   const entryPeak = await peak(page);
   const opening = await network(page, true);
   const openingBytes = opening.reduce((total, item) => total + item.transferBytes, 0);
   expect(openingBytes).toBeLessThan(5_000_000);
   const openingArt = opening.filter(item => item.file.endsWith('.webp') && item.transferBytes > 0);
+  expect(opening.filter(item => item.file.endsWith('.mp3') && item.encodedBytes > 0)).toHaveLength(1);
   expect(openingArt).toHaveLength(2);
   expect(openingArt.some(item => item.file.startsWith(isMobile ? 'cottage-dusk-portrait-' : 'cottage-dusk-'))).toBe(true);
   await button(page, 'Close borrowing card').click();
@@ -165,6 +183,11 @@ test('the packaged game loads only versioned runtime art, keeps room leases boun
       const travelStart = performance.now();
       await travelViaMap(page, name);
       const art = await ready(page, scene);
+      if (circuit === 1) {
+        if (scene === 'threshold') await expect.poll(() => chantLevel(page)).toBeGreaterThan(.55);
+        if (scene === 'studio') await expect.poll(() => chantLevel(page)).toBeLessThan(.005);
+        if (scene === 'greenhouse') await expect.poll(() => chantLevel(page)).toBeGreaterThan(.3);
+      }
       expect(art.activeImages).toBeGreaterThan(0);
       expect(art.leasedImages).toBe(art.activeImages);
       expect(art.leasedImages).toBeLessThanOrEqual(2);
@@ -203,6 +226,8 @@ test('the packaged game loads only versioned runtime art, keeps room leases boun
   await page.locator('.road-receipt').scrollIntoViewIfNeeded();
   await page.screenshot({ path: info.outputPath('receipt.png'), scale: 'css' });
   expect(await page.evaluate(() => (window as MeasuredWindow).releaseAudio?.contexts)).toBe(1);
+  expect(await chantStarts(page)).toBe(1);
+  expect(requests.filter(path => path.endsWith('.mp3'))).toHaveLength(1);
   expect(requests.every(path => path.startsWith('/release/witches-road/'))).toBe(true);
   expect(failures).toEqual([]);
   const results = {

@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { AudioEngine } from '../../src/audio/engine';
 import { createAmbience, createStem, reverseSamples, SCORE_RATE, SCORE_SECONDS } from '../../src/audio/score';
 import { DEFAULT_PREFERENCES } from '../../src/game/state';
@@ -30,10 +30,11 @@ class Context {
   createBufferSource() { const source = new Source(() => this.currentTime); this.sources.push(source); return source; }
   createOscillator() { return this.createBufferSource(); }
   createBuffer(_channels: number, length: number) { if (this.failBuffer) throw new Error('Test audio buffer failure'); this.currentTime += this.bufferCostSeconds; const data = new Float32Array(length); return { getChannelData: () => data }; }
+  async decodeAudioData(_data: ArrayBuffer) { return { duration: 74.5 }; }
   async resume() { if (this.failResume) throw new Error('Autoplay blocked'); this.state = 'running'; }
   async suspend() { this.state = 'suspended'; } async close() { this.state = 'closed'; }
 }
-const setup = () => { const context = new Context(); const engine = new AudioEngine(() => context as unknown as AudioContext); engine.configure({ ...DEFAULT_PREFERENCES, muted: false }); engine.setScene('studio'); return { engine, context }; };
+const setup = (chantUrl?: string) => { const context = new Context(); const engine = new AudioEngine(() => context as unknown as AudioContext, chantUrl); engine.configure({ ...DEFAULT_PREFERENCES, muted: false }); engine.setScene('studio'); return { engine, context }; };
 
 describe('original audio buffers', () => {
   it('creates three finite, bounded, distinct voices of identical loop length', () => {
@@ -160,5 +161,85 @@ describe('synchronized Web Audio lifecycle', () => {
     context.failBuffer = false; await engine.enable(); expect(engine.getSnapshot()).toBe('playing');
     expect(context.sources.filter(source => !source.stops)).toHaveLength(4);
     engine.dispose(); expect(context.sources.every(source => source.stops === 1)).toBe(true);
+  });
+});
+
+describe('background chant', () => {
+  const url = '/assets/witches-road-chant.mp3';
+  const audioResponse = () => new Response(new Uint8Array([1, 2, 3]));
+  afterEach(() => { vi.unstubAllGlobals(); });
+
+  it('loads after entry and keeps one continuous loop on the Music bus across rooms and visibility changes', async () => {
+    const request = vi.fn(async () => audioResponse());
+    vi.stubGlobal('fetch', request);
+    const { engine, context } = setup(url);
+    engine.setScene('cottage');
+    expect(request).not.toHaveBeenCalled();
+    try {
+      await Promise.all([engine.enable(), engine.enable()]);
+      await vi.waitFor(() => expect(context.sources).toHaveLength(5));
+      const chant = context.sources[4], chantGain = chant.target!, music = chantGain.target as Gain;
+      const openingLevel = chantGain.gain.value;
+      expect(request).toHaveBeenCalledTimes(1);
+      expect(request).toHaveBeenCalledWith(url, { signal: expect.any(AbortSignal) });
+      expect(chant.loop).toBe(true);
+      expect(music).toBe(context.gains[2]);
+      expect(openingLevel).toBeGreaterThan(0);
+      engine.setScene('threshold');
+      expect(chantGain.gain.value).toBeGreaterThan(openingLevel);
+      expect(context.sources[0].target!.gain.value).toBeLessThan(.3);
+      engine.setRoom('studio', { channels: [true, false, true], speakersOpen: true, reversed: true });
+      expect(chantGain.gain.value).toBe(0);
+      expect(context.sources.slice(-3).map(source => source.target!.gain.value)).toEqual([1, 0, 1]);
+      engine.setScene('greenhouse');
+      expect(chantGain.gain.value).toBeGreaterThan(openingLevel);
+      engine.configure({ ...DEFAULT_PREFERENCES, musicVolume: 0 });
+      expect(music.gain.value).toBe(0);
+      expect(context.gains[1].gain.value).toBeGreaterThan(0);
+      engine.configure({ ...DEFAULT_PREFERENCES, muted: true });
+      expect(context.gains[0].gain.value).toBe(0);
+      await engine.setHidden(true);
+      engine.configure(DEFAULT_PREFERENCES);
+      await engine.setHidden(false);
+      await engine.enable();
+      expect(request).toHaveBeenCalledTimes(1);
+      expect(chant.stops).toBe(0);
+    } finally { engine.dispose(); }
+    expect(context.sources[4].stops).toBe(1);
+  });
+
+  it('keeps required audio running through an asset or decoder failure and retries on enable', async () => {
+    const request = vi.fn(async () => audioResponse()).mockResolvedValueOnce(new Response(null, { status: 503 }));
+    vi.stubGlobal('fetch', request);
+    const { engine, context } = setup(url);
+    const decode = vi.spyOn(context, 'decodeAudioData').mockRejectedValueOnce(new Error('Test decoder failure'));
+    try {
+      await engine.enable();
+      expect(engine.getSnapshot()).toBe('playing');
+      expect(context.sources).toHaveLength(4);
+      await engine.enable();
+      await vi.waitFor(() => expect(decode).toHaveBeenCalledOnce());
+      expect(engine.getSnapshot()).toBe('playing');
+      expect(context.sources).toHaveLength(4);
+      await engine.enable();
+      await vi.waitFor(() => expect(context.sources).toHaveLength(5));
+      expect(request).toHaveBeenCalledTimes(3);
+    } finally { engine.dispose(); }
+  });
+
+  it('aborts a pending chant on disposal and ignores a late decode', async () => {
+    const request = vi.fn(async (_url: string, _init: RequestInit) => audioResponse());
+    vi.stubGlobal('fetch', request);
+    const { engine, context } = setup(url);
+    let finish!: (buffer: { duration: number }) => void;
+    const decode = vi.spyOn(context, 'decodeAudioData').mockImplementation(() => new Promise(resolve => { finish = resolve; }));
+    try {
+      await engine.enable();
+      await vi.waitFor(() => expect(decode).toHaveBeenCalledOnce());
+    } finally { engine.dispose(); }
+    expect(request.mock.calls[0][1].signal!.aborted).toBe(true);
+    finish({ duration: 74.5 });
+    await Promise.resolve();
+    expect(context.sources).toHaveLength(4);
   });
 });
