@@ -7,6 +7,7 @@ import { TarotSymbol, TarotTable } from '../ui/TarotTable';
 import { VineMap } from '../ui/VineMap';
 import { CAP_POSITIONS, capNeighbours, confirmationChoices, TAROT_MEMORIES } from './trialLayout';
 import { InstrumentInstructions } from './RoomRules';
+import { ObjectPlaque } from './ObjectPlaque';
 
 type Props={run:RunState;busy:boolean;act:(command:Command)=>Promise<void>};
 function ChairDrawing({ moon }: { moon: boolean }) {
@@ -45,13 +46,13 @@ export function LiliaTable({run,busy,act}:Props){
       {opposite ? <>
         <button disabled={busy || p.solved} onClick={() => void act({ type: 'CLEAR_CONFIRM' })}>Clear confirmation</button>
         {!p.solved && <button disabled>↶ Undo last move</button>}
-        <button className="table-confirm" disabled={busy || p.solved || p.confirmation.length !== 5}
-          onClick={() => void act({ type: 'CONFIRM_DECK' })}>Confirm password</button>
+        <ObjectPlaque className="table-confirm" marker="✧" label="Confirm password" disabled={busy || p.solved || p.confirmation.length !== 5}
+          onClick={() => void act({ type: 'CONFIRM_DECK' })} />
       </> : <>
         <button disabled={busy} onClick={() => void act({ type: 'MOVE_DECK', move: 'cut' })}><span aria-hidden>↷</span>CUT</button>
         <button disabled={busy} onClick={() => void act({ type: 'MOVE_DECK', move: 'quarrel' })}><span aria-hidden>⇄</span>QUARREL</button>
         <button disabled={busy} onClick={() => void act({ type: 'UNDO' })}>↶ Undo last move</button>
-        <button className="table-confirm" disabled={busy} onClick={() => void act({ type: 'SUBMIT_DECK' })}>Set the arrangement</button>
+        <ObjectPlaque className="table-confirm" marker="▱" label="Set the arrangement" disabled={busy} onClick={() => void act({ type: 'SUBMIT_DECK' })} />
       </>}
       {!p.solved && <button disabled={busy} onClick={() => void act({ type: 'RESET_PUZZLE' })}>Reset this puzzle</button>}
     </div>
@@ -84,7 +85,11 @@ export function RememberingRing({run,busy,act}:Props){
     <div className="remembering-ring" role="group" aria-label="Eight remembering caps"><svg className="cap-circle" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><ellipse cx="50" cy="50" rx="37" ry="35"/><path d="M50 8v8m0 68v8M7 50h8m70 0h8"/></svg><div className="ring-centre" aria-hidden><span>✧</span><small>REMEMBER<br/>THE WAY HOME</small></div>{p.lights.map((lit,index)=><button className="remembering-cap" style={{left:`${CAP_POSITIONS[index].x}%`,top:`${CAP_POSITIONS[index].y}%`}} data-lit={lit} key={index} aria-pressed={lit} aria-label={`Cap ${index+1}: ${lit?'lit':'unlit'}`} disabled={busy||p.solved} onFocus={()=>describe(index)} onPointerEnter={()=>describe(index)} onClick={()=>void act({type:'TOGGLE_MUSHROOM',index})}><Mushroom lit={lit}/><b>{index+1}</b><small>{lit?'LIT':'UNLIT'}</small></button>)}</div>
     <p className="cap-preview" role="status">{preview||'Each numbered cap changes itself and its two neighbors; cap 1 also changes 8.'}</p>
     {p.solved&&<p className="garden-remembered">✧ The garden remembers. Recognition starts after your first sign-in.</p>}
-    <div className="garden-sign-tools">{run.rememberEnabled&&<button disabled={busy} onClick={()=>void act({type:'FORGET_ME'})}>Forget me</button>}{p.solved&&!run.rememberEnabled&&<button disabled={busy} onClick={()=>void act({type:'REMEMBER_ME'})}>Remember this journey again</button>}<button className="garden-return" disabled={busy} onClick={()=>void act({type:'ENTER_SCENE',scene:'cottage'})}>Return to cottage</button></div>
+    <div className="garden-sign-tools">
+      {run.rememberEnabled && <ObjectPlaque marker="⌁" label="Forget me" disabled={busy} onClick={() => void act({ type: 'FORGET_ME' })} />}
+      {p.solved && !run.rememberEnabled && <ObjectPlaque marker="✿" label="Remember this journey again" disabled={busy} onClick={() => void act({ type: 'REMEMBER_ME' })} />}
+      <ObjectPlaque className="garden-return" marker="↗" label="Return to cottage" disabled={busy} onClick={() => void act({ type: 'ENTER_SCENE', scene: 'cottage' })} />
+    </div>
   </>;
 }
 

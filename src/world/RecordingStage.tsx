@@ -7,6 +7,7 @@ import { RoadEmblem } from '../ui/RoadEmblem';
 import { INSTRUMENTS } from './instruments';
 import { rectStyle, type Rect, type WorldLayout } from './layout';
 import { InstrumentInstructions } from './RoomRules';
+import { ObjectPlaque } from './ObjectPlaque';
 import type { StudioDock, StudioPlacement } from './studioLayout';
 import './recordingStudio.css';
 
@@ -24,7 +25,6 @@ type Props = {
   character: string | null;
   onCharacterError: () => void;
   surfaceRef: RefObject<HTMLDivElement | null>;
-  open: () => void;
   close: () => void;
   lastCommand: Command | null;
   clock: ReactNode;
@@ -37,14 +37,14 @@ const relativeTo = (rect: Rect, frame: Rect): Rect => ({ ...rect, x: rect.x - fr
 
 export function RecordingStage({
   run, act, busy, expanded, obscured, active, reduced, geometryKey, placement, layout, character,
-  onCharacterError, surfaceRef, open, close, lastCommand, clock, children,
+  onCharacterError, surfaceRef, close, lastCommand, clock, children,
 }: Props) {
   const studio = run.puzzles.studio;
   const [code, setCode] = useState(studio.attempt);
   const [cue, setCue] = useState<Cue | null>(null);
   const previous = useRef(run);
   const working = expanded && !obscured;
-  const { dock, frame, tag, speaker, benchWidth, headingHeight, speakerHeight } = placement;
+  const { dock, frame, speaker, benchWidth, headingHeight, speakerHeight } = placement;
 
   useEffect(() => { if (!lastCommand) setCode(studio.attempt); }, [studio.attempt, lastCommand]);
   useEffect(() => { setCue(working ? { kind: 'listening', revision: -1 } : null); }, [working]);
@@ -77,8 +77,6 @@ export function RecordingStage({
     <div className="studio-overview" hidden={working} aria-hidden="true">
       <RoomGear studio={studio} rect={relativeTo(layout.backgroundRect, frame)} />
     </div>
-    <button className="instrument-approach studio-approach" style={rectStyle(relativeTo(tag, frame))}
-      hidden={working || obscured} onClick={open}>{meta.approach}<span aria-hidden="true"> ↗</span></button>
     <div className="studio-host-layer" aria-hidden="true">
       {character && <StudioActor character={character} onError={onCharacterError}
         rect={relativeTo(working ? placement.actor : layout.actor, frame)} dock={working ? dock : 'room'}
@@ -121,7 +119,7 @@ export function RecordingStage({
               <div className="telephone-dial">
                 <input id="code" inputMode="numeric" pattern="[0-9]{2}" maxLength={2} value={code} disabled={busy || studio.solved}
                   onChange={event => setCode(event.target.value.replace(/\D/g, '').slice(0, 2))} required autoComplete="off" />
-                <button disabled={busy || studio.solved} aria-label="Dial the number">Dial</button>
+                <ObjectPlaque type="submit" marker="↻" label="Dial" disabled={busy || studio.solved} aria-label="Dial the number" />
               </div>
             </div>
           </form>
@@ -137,9 +135,7 @@ export function RecordingStage({
         </div>
         {studio.solved && <div className="instrument-exit">
           <RoadEmblem kind="record" /><span>Seal earned. Your work is safe.</span>
-          <button className="instrument-door" disabled={busy} onClick={() => void act({ type: 'ENTER_SCENE', scene: 'cabin' })}>
-            Continue to Agatha’s cabin <span aria-hidden="true">↗</span>
-          </button>
+          <ObjectPlaque className="instrument-door" marker="↗" label="Continue to Agatha’s cabin" disabled={busy} onClick={() => void act({ type: 'ENTER_SCENE', scene: 'cabin' })} />
         </div>}
         {working && <div className="studio-feedback">{children}</div>}
       </div>

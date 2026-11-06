@@ -152,9 +152,9 @@ function projectedObject(object: Rect, plane: Projection): Rect {
 }
 /** Place the approach plaque by its prop. When the camera crops the prop, keep the plaque at the nearest edge. */
 export function worldApproachBounds(object: SceneObject, layout: WorldLayout): Rect {
-  return approachPlaque(roomObjectRect(object, layout), layout);
+  return plaqueBounds(roomObjectRect(object, layout), layout);
 }
-function approachPlaque(prop: Rect, layout: WorldLayout): Rect {
+export function plaqueBounds(prop: Rect, layout: WorldLayout): Rect {
   const width = Math.min(layout.framing === 'portrait' ? 160 : 184, layout.width - 32);
   const height = 48;
   return {
@@ -164,17 +164,32 @@ function approachPlaque(prop: Rect, layout: WorldLayout): Rect {
     height,
   };
 }
+
+/** Keep projected plaques legible when a narrow camera crops their objects together. */
+export function placePlaque(preferred: Rect, occupied: readonly Rect[], layout: WorldLayout): Rect | null {
+  const gap = 8;
+  const { width, height } = preferred;
+  const xs = [preferred.x, 14, layout.width - width - 14, ...occupied.flatMap(rect => [rect.x - width - gap, rect.x + rect.width + gap])];
+  const ys = [preferred.y, 60, layout.height - height - 96, ...occupied.flatMap(rect => [rect.y - height - gap, rect.y + rect.height + gap])];
+  const candidates = xs.flatMap(x => ys.map(y => ({ x, y, width, height })))
+    .filter(rect => rect.x >= 14 && rect.x + width <= layout.width - 14 && rect.y >= 60 && rect.y + height <= layout.height - 96)
+    .filter(rect => occupied.every(other =>
+      rect.x + width + gap <= other.x || other.x + other.width + gap <= rect.x ||
+      rect.y + height + gap <= other.y || other.y + other.height + gap <= rect.y));
+  const distance = (rect: Rect) => (rect.x - preferred.x) ** 2 + (rect.y - preferred.y) ** 2;
+  return candidates.sort((a, b) => distance(a) - distance(b))[0] ?? null;
+}
 export function worldEncounterBounds(object: SceneObject, layout: WorldLayout): Rect | null {
   if (object.command.type !== 'INSPECT_ENCOUNTER') return null;
   const { prop } = object.command;
   if (layout.width < 900 && ['caseDrawer', 'sigilCard', 'rabbitPortrait'].includes(prop)) return null;
-  if (layout.libraryDetails && prop === 'returnDate') return null;
   let anchor = project(object, layout.plane);
   if (layout.cottageDetails && prop === 'television') anchor = project({ x: 820, y: 905 }, layout.camera);
   if (layout.cottageDetails && prop === 'portrait') anchor = project({ x: 215, y: 422 }, layout.camera);
+  if (prop === 'returnDate') anchor = project(layout.libraryDetails ? { x: 186, y: 892 } : { x: 380, y: 488 }, layout.camera);
   if (layout.framing === 'portrait' && prop === 'visionIntercom') anchor = project({ x: 182, y: 912 }, layout.camera);
   if (prop === 'gardenStone') anchor.y = layout.height * (layout.height < 540 ? .19 : .42);
-  const width = prop === 'television' ? 130 : 142;
+  const width = prop === 'television' ? 130 : prop === 'returnDate' ? 156 : 142;
   return {
     x: clamp(anchor.x - width / 2, 16, layout.width - width - 16),
     y: clamp(anchor.y - 24, 64, layout.height - 160),
@@ -185,12 +200,13 @@ export function worldEncounterBounds(object: SceneObject, layout: WorldLayout): 
 export function cottageDeskBounds(layout: WorldLayout): Rect | null {
   if (!layout.cottageDetails) return null;
   const position = project({ x: 255, y: 213 }, layout.cottageDetails.desk);
-  return approachPlaque({ ...position, width: 0, height: 0 }, layout);
+  return plaqueBounds({ ...position, width: 0, height: 0 }, layout);
 }
 function roomObjectRect(object: SceneObject, layout: WorldLayout): Rect {
-  if (object.id === 'cottage.door') return layout.door;
+  if (object.id === 'cottage.door' || object.id === 'cottage.stitch') return layout.door;
   if (object.id === 'account.ledger' && layout.libraryDetails) return layout.libraryDetails.ledger;
   if (object.id === 'account.slot' && layout.libraryDetails) return layout.libraryDetails.slot;
+  if (object.id === 'account.renew' && layout.libraryDetails) return projectRect({ x: 450, y: 1075, width: 200, height: 55 }, layout.camera);
   const plane = object.id === 'cottage.rug' ? layout.cottageDetails?.rug : undefined;
   return projectedObject(object, plane ?? layout.plane);
 }
@@ -198,7 +214,9 @@ function roomObjectRect(object: SceneObject, layout: WorldLayout): Rect {
 export function worldObjectBounds(object: SceneObject, layout: WorldLayout): Rect | null {
   if (object.id.endsWith('.agatha') || ['kitchen.jen','studio.alice','tower.lilia','greenhouse.rio'].includes(object.id)) return layout.actor;
   if (layout.cottageDetails && object.command.type === 'INSPECT_PROP' && object.command.prop.startsWith('room') && object.command.prop !== 'roomRug') return null;
-  const rect = roomObjectRect(object, layout);
+  return visibleHitArea(roomObjectRect(object, layout), layout);
+}
+export function visibleHitArea(rect: Rect, layout: WorldLayout): Rect | null {
   if (rect.x < 0 || rect.y < 0 || rect.x + rect.width > layout.width || rect.y + rect.height > layout.height) return null;
   return hitArea(rect, layout.width, layout.height);
 }

@@ -1,4 +1,4 @@
-import { openRoad, reloadRoad, jugAction } from './support';
+import { approachRoom, enterRoad, openRoad, reloadRoad, jugAction } from './support';
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { COVEN } from '../../src/content/scenes';
 import { CARDS, INITIAL_DECK, JUG_LABELS, towerSolution } from '../../src/puzzles/rules';
@@ -10,12 +10,19 @@ async function activate(locator: Locator, keyboard = false) {
 async function button(page: Page, name: string | RegExp, keyboard = false) { await activate(page.getByRole('button', { name, exact: typeof name === 'string' }), keyboard); }
 
 async function opening(page: Page, keyboard = false) {
-  await openRoad(page, keyboard); await expect(page.getByRole('heading', { name: 'A name for the journey.' })).toBeVisible();
+  await page.goto('./'); await enterRoad(page, keyboard);
+  await expect(page.getByRole('dialog', { name: 'Your borrowing card' })).toBeHidden();
+  await button(page, 'Open borrowing card', keyboard);
   await page.getByLabel('Borrowing alias', { exact: true }).fill('Violet Finch'); await button(page, /Stamp my card/, keyboard);
+  const cottageDoor = page.getByRole('button', { name: 'Try the cottage door', exact: true });
+  await expect(cottageDoor).toBeFocused();
+  await activate(cottageDoor, keyboard);
   await page.getByLabel('Attempted spell — fictional only').fill('discard-this-spell'); await button(page, 'Try the door', keyboard);
   await expect(page.getByTestId('feedback')).toContainText('pockets'); await button(page, /Begin account recovery/, keyboard);
+  await button(page, 'Approach the coven circle', keyboard);
   for (const token of COVEN) { await button(page, `${token.name} · ${token.affinity} token`, keyboard); await button(page, `${token.affinity} seat`, keyboard); }
   await button(page, 'Open the trapdoor', keyboard); await button(page, /Enter Jen’s kitchen/, keyboard);
+  await button(page, 'Approach the kitchen counter', keyboard);
 }
 async function fullJourney(page: Page, keyboard = false) {
   // Physical token placement and source-vessel selection add real player actions to the full route.
@@ -23,22 +30,29 @@ async function fullJourney(page: Page, keyboard = false) {
   await opening(page, keyboard);
   for (const move of ['fill-large', 'pour-large', 'empty-small', 'pour-large', 'fill-large', 'pour-large'] as const) await jugAction(page, JUG_LABELS[move], keyboard);
   await expect(page.getByTestId('jug-5')).toHaveText('4 / 5 cups'); await button(page, /Continue to Alice/, keyboard);
+  await button(page, 'Approach the recording desk', keyboard);
   await page.getByLabel('Two-digit recording number').fill('22'); await button(page, 'Dial the number', keyboard);
   await expect(page.getByTestId('feedback')).toContainText('misses a rhythm');
   await page.getByLabel('Two-digit recording number').fill('23'); await button(page, 'Dial the number', keyboard); await button(page, /Continue to Agatha/, keyboard);
+  await button(page, 'Approach the spirit table', keyboard);
   for (const lamp of ['A', 'C', 'D']) await button(page, `Lamp ${lamp}: unlit`, keyboard);
   await button(page, 'Ask the spirits to check', keyboard); await button(page, /Continue to Lilia/, keyboard);
+  await button(page, 'Approach the card table', keyboard);
   for (const move of towerSolution([...INITIAL_DECK])) await button(page, move.toUpperCase(), keyboard);
   await button(page, 'Set the arrangement', keyboard); await saved(page); await reloadRoad(page, keyboard);
-  await expect(page.getByRole('heading', { name: 'Now, from the other seat.' })).toBeVisible();
+  await expect(page.locator('.object-note summary', { hasText: 'Read the opposite-chair note' })).toBeVisible();
   for (const card of [...CARDS].reverse()) await button(page, card, keyboard);
   await button(page, 'Confirm password', keyboard); await button(page, /Continue to Rio/, keyboard);
+  await button(page, 'Approach the vine bed', keyboard);
   for (const node of ['B', 'A', 'C', 'D', 'E', 'A', 'D']) await button(page, new RegExp(`Follow to ${node} ·`), keyboard);
   await expect(page.getByTestId('vine-route')).toHaveText('C Seed → B Breath → A Memory → C Seed → D Bloom → E Earth → A Memory → D Bloom');
   await button(page, /Return to the cottage/, keyboard);
+  await button(page, 'Approach the door stitch', keyboard);
   await button(page, 'Use the knocker · sign in', keyboard); await expect(page.getByTestId('feedback')).toContainText('Unbind');
-  await button(page, 'Unbind the door stitch', keyboard); await button(page, 'Use the knocker · sign in', keyboard);
-  await expect(page.getByRole('heading', { name: 'Your shelf, at last.' })).toBeVisible();
+  await button(page, 'Unbind the door stitch', keyboard); await button(page, 'Step back from the door', keyboard);
+  await button(page, 'Use the knocker · sign in', keyboard);
+  await button(page, 'Inspect your borrowing ledger', keyboard);
+  await expect(page.getByRole('dialog', { name: 'The borrowing desk' })).toBeVisible();
   await button(page, 'Renew this book', keyboard); await expect(page.getByRole('button', { name: 'Read the renewal receipt', exact: true })).toBeVisible();
   await saved(page); await reloadRoad(page, keyboard); await expect(page.getByText('Renewal accepted · 28 days')).toBeVisible();
 }
@@ -46,9 +60,10 @@ async function fullJourney(page: Page, keyboard = false) {
 test('complete story route, interrupted confirmation, renewal and optional remembered return', async ({ page }, testInfo) => {
   const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
   await fullJourney(page);
-  await button(page, 'Sign out to cottage'); await button(page, 'Visit the optional garden');
+  await button(page, 'Sign out to cottage'); await button(page, 'Visit the Remember me garden');
+  await button(page, 'Approach the mushroom ring');
   await button(page, 'Cap 3: unlit'); await button(page, 'Cap 7: unlit'); await button(page, 'Return to cottage');
-  await button(page, 'Continue to library'); await expect(page.getByRole('button', { name: 'Read the renewal receipt', exact: true })).toBeVisible();
+  await button(page, 'Continue to library'); await button(page, 'Inspect your borrowing ledger'); await expect(page.getByRole('button', { name: 'Read the renewal receipt', exact: true })).toBeVisible();
   await page.screenshot({ path: testInfo.outputPath('completed-account.png'), fullPage: true });
   expect(errors).toEqual([]);
 });
@@ -90,7 +105,7 @@ test('stale browser tab loads the winner and does not replay its alias action', 
   const other = await context.newPage(); await openRoad(other); await expect(other.getByLabel('Borrowing alias', { exact: true })).toBeVisible();
   await page.getByLabel('Borrowing alias', { exact: true }).fill('First tab'); await button(page, /Stamp my card/); await saved(page);
   await other.getByLabel('Borrowing alias', { exact: true }).fill('Stale tab'); await button(other, /Stamp my card/);
-  await expect(other.getByTestId('feedback')).toContainText('Another tab'); await expect(other.getByText('CARD STAMPED · First tab')).toBeVisible();
+  await expect(other.getByTestId('feedback')).toContainText('Another tab'); await approachRoom(other); await expect(other.getByText('CARD STAMPED · First tab')).toBeVisible();
   await reloadRoad(other); await expect(other.getByText('CARD STAMPED · First tab')).toBeVisible(); await other.close();
 });
 
@@ -98,6 +113,7 @@ test('quota failure stays playable and exports the current unsaved journey', asy
   await page.addInitScript(() => { IDBObjectStore.prototype.put = function () { throw new DOMException('Test quota failure', 'QuotaExceededError'); }; });
   await openRoad(page); await expect(page.getByTestId('save-status')).toContainText('Unsaved');
   await page.getByLabel('Borrowing alias', { exact: true }).fill('Unsaved Finch'); await button(page, /Stamp my card/);
+  await button(page, 'Try the cottage door');
   await expect(page.getByText('CARD STAMPED · Unsaved Finch')).toBeVisible();
   await page.getByLabel('Attempted spell — fictional only').fill('never-store-this'); await button(page, 'Try the door');
   await expect(page.getByRole('button', { name: /Begin account recovery/ })).toBeVisible();
@@ -110,6 +126,7 @@ test('quota failure stays playable and exports the current unsaved journey', asy
 
 test('corrupt newest snapshot restores checkpoint without discarding original', async ({ page }) => {
   await openRoad(page); await page.getByLabel('Borrowing alias', { exact: true }).fill('Checkpoint Finch'); await button(page, /Stamp my card/);
+  await button(page, 'Try the cottage door');
   await page.getByLabel('Attempted spell — fictional only').fill('transient-only'); await button(page, 'Try the door'); await saved(page);
   const rawBefore = await page.evaluate(async () => new Promise<string>((resolve, reject) => {
     const request = indexedDB.open('witches-road'); request.onerror = () => reject(request.error);
@@ -124,9 +141,11 @@ test('corrupt newest snapshot restores checkpoint without discarding original', 
 
 test('import rejects unsupported files and keeps slots and new modes separate', async ({ page }) => {
   await openRoad(page); await page.getByLabel('Borrowing alias', { exact: true }).fill('Original Finch'); await button(page, /Stamp my card/); await saved(page);
+  await button(page, 'Try the cottage door');
   await button(page, /Settings/); await page.getByLabel('Import a saved journey').setInputFiles({ name: 'future.json', mimeType: 'application/json', buffer: Buffer.from('{"schemaVersion":999}') });
   await expect(page.getByTestId('feedback')).toContainText('Unsupported or invalid'); await expect(page.getByText('CARD STAMPED · Original Finch')).toBeVisible();
-  await button(page, 'Journeys'); await button(page, 'New showcase journey'); await expect(page.getByRole('heading', { name: 'A name for the journey.' })).toBeVisible();
+  await button(page, 'Journeys'); await button(page, 'New showcase journey'); await expect(page.getByRole('button', { name: 'Open borrowing card' })).toBeVisible();
   await expect(page.getByTestId('journey-mode')).toContainText('SHOWCASE JOURNEY'); await button(page, 'Journeys'); await button(page, 'Resume Original Finch');
+  await approachRoom(page);
   await expect(page.getByText('CARD STAMPED · Original Finch')).toBeVisible();
 });

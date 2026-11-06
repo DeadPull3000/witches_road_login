@@ -2,7 +2,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { STUDIO_CLUES } from '../../src/puzzles/rules';
 import type { RunState } from '../../src/game/state';
 import { completedRun, throughTrial } from '../helpers';
-import { openRoad, reloadRoad, travelViaMap } from './support';
+import { approachRoom, openRoad, reloadRoad, travelViaMap } from './support';
 
 const button = (page: Page, name: string) => page.getByRole('button', { name, exact: true });
 const world = (page: Page) => page.getByTestId('scene-stage');
@@ -17,6 +17,7 @@ async function importRun(page: Page, run: RunState) {
     name: 'presentation-proof.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(run)),
   });
   await expect(page.getByTestId('feedback')).toContainText('Imported as a new slot');
+  await approachRoom(page);
 }
 
 test('the studio shares one sprite between the room and the desk, with a reachable phone through reframing', async ({ page, isMobile }, info) => {

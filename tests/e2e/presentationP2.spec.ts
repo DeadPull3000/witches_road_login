@@ -3,7 +3,7 @@ import type { RunState } from '../../src/game/state';
 import { CARDS, INITIAL_DECK, NODE_LABELS, towerSolution, vineSolution } from '../../src/puzzles/rules';
 import { INSTRUMENTS, SPIRIT_STATEMENTS } from '../../src/world/instruments';
 import { throughTrial } from '../helpers';
-import { openRoad, reloadRoad, travelViaMap } from './support';
+import { approachRoom, openRoad, reloadRoad, travelViaMap } from './support';
 
 const world = (page: Page) => page.getByTestId('scene-stage');
 const workbench = (page: Page) => page.getByTestId('instrument-stage');
@@ -16,6 +16,7 @@ async function importRun(page: Page, run: RunState) {
     name: 'painted-trials.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(run)),
   });
   await expect(page.getByTestId('feedback')).toContainText('Imported as a new slot');
+  await approachRoom(page);
 }
 
 test('the five painted work surfaces keep their tags, hosts and controls in reach across viewport sizes', async ({ page, isMobile }) => {
@@ -38,7 +39,7 @@ test('the five painted work surfaces keep their tags, hosts and controls in reac
       await expect(world(page)).toHaveAttribute('data-scene', scene);
       await expect(workbench(page)).toHaveAttribute('data-expanded', 'true');
       await expect(paintingProps(page)).toBeAttached();
-      await expect(workbench(page).locator('.instrument-intro')).toBeInViewport();
+      await expect(workbench(page).locator('.object-note summary')).toBeInViewport();
       const primary = button(page, action);
       await primary.scrollIntoViewIfNeeded();
       await expect(primary).toBeInViewport({ ratio: 1 });

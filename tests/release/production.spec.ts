@@ -153,7 +153,6 @@ test('the packaged game loads only versioned runtime art, keeps room leases boun
   expect(opening.filter(item => item.file.endsWith('.mp3') && item.encodedBytes > 0)).toHaveLength(1);
   expect(openingArt).toHaveLength(2);
   expect(openingArt.some(item => item.file.startsWith(isMobile ? 'cottage-dusk-portrait-' : 'cottage-dusk-'))).toBe(true);
-  await button(page, 'Close borrowing card').click();
   const openingDraws = await sampleDraws(page);
   expect(openingDraws.fps).toBeGreaterThan(0);
   await button(page, 'Mute sound').click();

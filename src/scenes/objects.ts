@@ -19,6 +19,7 @@ function roomObjects(run: RunState): SceneObject[] {
   if (run.currentScene === 'account') return [
     { id: 'account.ledger', label: 'Inspect your borrowing ledger', x: 263, y: 183, width: 76, height: 38, marker: '▱', command: { type: 'INSPECT_PROP', prop: 'loanLedger' } },
     { id: 'account.slot', label: 'Inspect the return slot', x: 447, y: 179, width: 60, height: 45, marker: '↧', command: { type: 'INSPECT_PROP', prop: 'returnSlot' } },
+    ...(run.milestones.bookRenewed ? [] : [{ id: 'account.renew', label: 'Renew this book', x: 356, y: 216, width: 60, height: 44, marker: '▣', command: { type: 'RENEW_BOOK' as const } }]),
   ];
   if (run.currentScene === 'greenhouse') return [
     ...NODES.map(node => { const [x, y] = vineStagePoint(VINE_POSITIONS[node]); return { id: `greenhouse.stone.${node}`, label: `Touch scene stone ${node} · ${NODE_LABELS[node]}`, x, y, width: 46, height: 38, marker: node, command: { type: 'TRACE_VINE' as const, node } }; }),
@@ -33,6 +34,7 @@ function roomObjects(run: RunState): SceneObject[] {
   if (run.currentScene === 'cabin') return [
     ...run.puzzles.cabin.lamps.map((lit, index) => ({ id: `cabin.lamp.${index}`, label: `Toggle scene lamp ${'ABCD'[index]}: ${lit ? 'lit' : 'unlit'}`, x: 115 + index * 69, y: 225, width: 43, height: 60, marker: 'ABCD'[index], command: { type: 'TOGGLE_LAMP' as const, index } })),
     { id: 'cabin.planchette', label: 'Inspect the planchette', x: 254, y: 260, width: 48, height: 30, marker: '◇', command: { type: 'INSPECT_PROP', prop: 'planchette' } },
+    ...(run.puzzles.cabin.solved ? [] : [{ id: 'cabin.check', label: 'Ask the spirits to check', x: 254, y: 260, width: 48, height: 30, marker: '◇', command: { type: 'CHECK_LAMPS' as const } }]),
     { id: 'cabin.agatha', label: 'Speak with Agatha', x: 520, y: 245, width: 80, height: 160, marker: '✧', command: { type: 'INSPECT_PROP', prop: 'agathaCabin' } },
   ];
   if (run.currentScene === 'tower') return [

@@ -1,37 +1,3 @@
-.world-object.finale-approach {
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  padding: 5px 9px;
-  border: 2px solid #ba8b53;
-  border-radius: 2px;
-  background: repeating-linear-gradient(1deg, #58372b 0 5px, #664333 5px 8px) !important;
-  box-shadow: 0 4px 0 #2c2026, 0 8px 22px #1c132c8c;
-  color: #f5dfb7;
-}
-.world-object.finale-approach > span {
-  position: static;
-  transform: none;
-  padding: 0;
-  border: 0;
-  background: none;
-  box-shadow: none;
-  opacity: 1;
-  white-space: normal;
-  font: 14px/1.15 Georgia, serif;
-}
-.finale-approach > b { font-size: 20px; color: #d9b678; }
-.world-object.finale-approach[data-prop-id='cottage.rug'] {
-  background: repeating-linear-gradient(135deg, #56304a 0 3px, #673c54 3px 6px) !important;
-  border-style: dashed;
-}
-.world-object.finale-approach[data-prop-id='account.ledger'] {
-  background: linear-gradient(90deg, #283a30, #455039 28%, #354431) !important;
-}
-.world-object.finale-approach[data-ready] { border-color: #e6c284; }
-.world-hotspots[inert] .finale-approach { visibility: hidden; }
 .cottage-thread-decal {
   position: absolute;
   transform: translate(-50%, -50%);
@@ -231,7 +197,7 @@
   letter-spacing: 1.5px;
 }
 
-.world-viewport:is([data-finale], [data-cottage-view='inside']) > .world-response {
+.world-viewport:is([data-finale], [data-cottage-view]) > .world-response {
   top: 104px;
   bottom: auto;
   left: 28px;
@@ -244,19 +210,10 @@
 .world-viewport[data-paused='true'] .finale-stage,
 .world-viewport[data-paused='true'] .desk-paper-roll::after { animation-play-state: paused; }
 html[data-text='large'] .finale-stage :is(.desk-ledger dd, .door-thread .drawing-notice, .desk-book p, .road-receipt) { font-size: 16px !important; }
-html[data-text='large'] .world-viewport:is([data-finale], [data-cottage-view='inside']) > .world-response { bottom: auto; }
+html[data-text='large'] .world-viewport:is([data-finale], [data-cottage-view]) > .world-response { bottom: auto; }
 .world-viewport:has(> .finale-stage) > .world-skip { top: 20px; bottom: auto; }
 .world-viewport:has(> .finale-stage) > .world-skip button { padding: 6px 14px; }
 .world-viewport[data-finale='desk'] > .world-renderer-recovery { top: auto; bottom: 110px; }
-.world-viewport[data-finale='desk'][data-framing='portrait'] > .world-door {
-  top: 80px;
-  max-width: 146px;
-  grid-template-columns: 16px 1fr;
-  column-gap: 6px;
-  padding: 8px 10px;
-}
-.world-viewport[data-finale='desk'][data-framing='portrait'] > .world-door b { font-size: 16px; }
-.world-viewport[data-finale='desk'][data-framing='portrait'] > .world-door > span { font-size: 21px; }
 
 @media (min-width: 1000px) {
   .cottage-door-planks { display: grid; grid-template-columns: 1fr 1fr; column-gap: 22px; }
@@ -266,7 +223,6 @@ html[data-text='large'] .world-viewport:is([data-finale], [data-cottage-view='in
 }
 
 @media (max-width: 720px) {
-  .world-object.finale-approach > span { font-size: 13px; }
   .finale-stage .instrument-heading > .finale-heading-tools { gap: 6px; }
   .instrument-stage .desk-exit { padding: 5px; gap: 3px; }
   .desk-exit svg { width: 17px; height: 17px; }
@@ -284,12 +240,12 @@ html[data-text='large'] .world-viewport:is([data-finale], [data-cottage-view='in
   .desk-book .book-cover { min-height: 125px; padding: 9px 5px; }
   .desk-book .book-cover b { font-size: 11px; }
   .instrument-stage .desk-stamp { width: 100%; justify-content: center; }
-  .world-viewport:is([data-finale], [data-cottage-view='inside']) > .world-response { top: 115px; left: 18px; width: calc(100% - 36px); }
+  .world-viewport:is([data-finale], [data-cottage-view]) > .world-response { top: 115px; left: 18px; width: calc(100% - 36px); }
   .world-viewport[data-finale='desk'] > .world-response { top: 77px; width: calc(50% - 24px); }
 }
 @media (max-height: 540px) {
   .door-thread .rune-stitch { max-width: 390px; }
-  .world-viewport:is([data-finale], [data-cottage-view='inside']) > .world-response { top: 67px; }
+  .world-viewport:is([data-finale], [data-cottage-view]) > .world-response { top: 67px; }
   .world-viewport:is([data-finale='door'], [data-cottage-view='inside']) > .world-renderer-recovery {
     top: 78px;
     width: min(300px, calc(100% - 36px));

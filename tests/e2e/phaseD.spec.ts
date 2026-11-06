@@ -2,12 +2,13 @@ import { expect, test, type Page } from '@playwright/test';
 import { throughTrial } from '../helpers';
 import { MEMORIES } from '../../src/content/memories';
 import { CARDS, INITIAL_DECK, towerSolution } from '../../src/puzzles/rules';
-import { openRoad, reloadRoad, objectAction, travelViaMap, returnToRoom } from './support';
+import { approachRoom, openRoad, reloadRoad, objectAction, travelViaMap, returnToRoom } from './support';
 
 async function importRoom(page: Page, scene: 'cabin' | 'tower') {
   await page.getByRole('button', { name: 'Settings', exact: true }).click();
   await page.getByLabel('Import a saved journey').setInputFiles({ name: 'journey.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(throughTrial(scene))) });
   await expect(page.getByTestId('feedback')).toContainText('Imported as a new slot');
+  await approachRoom(page);
   await expect(page.getByTestId('scene-stage')).toHaveAttribute('data-renderer', 'ready');
 }
 const saved = (page: Page) => expect(page.getByTestId('save-status')).toContainText('saved in this browser');

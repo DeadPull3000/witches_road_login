@@ -2,7 +2,7 @@ import { expect, test, type Locator, type Page } from '@playwright/test';
 import { SCENE_INFO, TRIALS } from '../../src/content/scenes';
 import type { RunState } from '../../src/game/state';
 import { throughTrial } from '../helpers';
-import { enterRoad, openRoad, reloadRoad } from './support';
+import { approachRoom, enterRoad, openRoad, reloadRoad } from './support';
 
 const button = (page: Page, name: string) => page.getByRole('button', { name, exact: true });
 const room = (page: Page) => page.getByTestId('scene-stage');
@@ -21,6 +21,7 @@ async function importTrial(page: Page, run: RunState) {
   });
   await expect(room(page)).toHaveAttribute('data-scene', run.currentScene);
   await expect(page.getByTestId('feedback')).toContainText('Imported as a new slot');
+  await approachRoom(page);
 }
 
 async function passDeadline(page: Page, deadline: number) {
@@ -52,6 +53,7 @@ test('a deadline survives reload and sends the player to the cottage from an ope
   await expect(settings).not.toBeVisible();
   await expect(room(page)).toHaveAttribute('data-scene', 'cottage');
   await expect(page.getByTestId('feedback')).toContainText('Alice’s trial ran out of time');
+  await approachRoom(page);
   await expect(page.getByLabel('Attempted spell — fictional only')).toBeVisible();
   await expect(page.getByTestId('save-status')).toContainText('Journey saved');
 

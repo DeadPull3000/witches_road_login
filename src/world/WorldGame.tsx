@@ -12,8 +12,10 @@ import { CottageDetails } from '../scenes/CottageDetails';
 import { vineChoices } from '../puzzles/rules';
 import { FLOURISH_LABEL } from '../scenes/cues';
 import { useOvenChime } from '../effects/useOvenChime';
-import { cottageDeskBounds, rectStyle, worldApproachBounds, worldEncounterBounds, worldLayout, worldObjectBounds, type Point } from './layout';
-import { cottageKnockerLabel, locationName, roomDoor } from './navigation';
+import { cottageDeskBounds, placePlaque, plaqueBounds, projectRect, rectStyle, visibleHitArea, worldApproachBounds, worldEncounterBounds, worldLayout, worldObjectBounds, type Point, type Rect } from './layout';
+import { locationName } from './navigation';
+import { roomExit, roomObjective } from './objectives';
+import { ObjectPlaque } from './ObjectPlaque';
 import { useWorldCues } from './useWorldCues';
 import type { WorldRenderer, WorldVisual } from './renderer';
 import { InstrumentStage } from './InstrumentStage';
@@ -21,7 +23,7 @@ import { RecordingStage } from './RecordingStage';
 import { studioPlacement } from './studioLayout';
 import { TrialRoomProps } from './TrialRoomProps';
 import { TrialClock } from './TrialClock';
-import { isPaintedTrial, trialTag } from './trialSurfaces';
+import { CABIN_PLANCHETTE, cabinLampBounds, isPaintedTrial } from './trialSurfaces';
 import { INSTRUMENTS, instrumentFrame, isInstrumentScene } from './instruments';
 import { FINALE_SURFACES, FinaleStage, type FinaleKind } from './FinaleStage';
 import { RoomRules } from './RoomRules';
@@ -35,6 +37,7 @@ import './finale.css';
 import './encounters.css';
 import './trialSurfaces.css';
 import './parchment.css';
+import './objectPlaques.css';
 
 type Surface = 'work' | 'rug' | 'objects' | 'encounter' | null;
 
@@ -58,15 +61,14 @@ function useViewport() {
 export function WorldGame({ run, preferences, collection, busy, lastCommand, act, sound, message, status, panelOpen, openMap, openNotebook, openSettings, openJourneys, retrySave, exportJourney }: Props) {
   const viewport = useViewport();
   const layout = useMemo(() => worldLayout(run, viewport.width, viewport.height), [run.currentScene, run.cottageView, viewport.width, viewport.height]);
-  const deskBounds = cottageDeskBounds(layout);
   const [systemReduced, setSystemReduced] = useState(() => matchMedia('(prefers-reduced-motion: reduce)').matches);
   const reduced = shouldReduceMotion(preferences.motion, systemReduced);
   const root = useRef<HTMLElement>(null), host = useRef<HTMLDivElement>(null), mounted = useRef<WorldRenderer | null>(null);
-  const cardButton = useRef<HTMLButtonElement>(null), paper = useRef<HTMLDivElement>(null), workPaper = useRef<HTMLDivElement>(null);
+  const paper = useRef<HTMLDivElement>(null), workPaper = useRef<HTMLDivElement>(null);
   const origin = useRef<HTMLElement | null>(null), pendingArrival = useRef(true), restoreOrigin = useRef(false);
-  const objectReturn = useRef<'work' | 'rug' | 'encounter'>('work');
+  const objectReturn = useRef<Exclude<Surface, 'objects'>>(null);
   const closingAnchor = useRef<string | null>(null);
-  const [surface, setSurface] = useState<Surface>(preferences.actionList ? 'objects' : run.currentScene === 'vision' ? null : 'work');
+  const [surface, setSurface] = useState<Surface>(preferences.actionList ? 'objects' : null);
   const [encounter, setEncounter] = useState<EncounterId | null>(null);
   const [renderer, setRenderer] = useState<'loading' | 'ready' | 'fallback'>('loading'), [attempt, setAttempt] = useState(0);
   const [missing, setMissing] = useState<Set<string>>(() => new Set());
@@ -80,11 +82,11 @@ export function WorldGame({ run, preferences, collection, busy, lastCommand, act
   const paperOpen = surface === 'objects' || surface === 'work' && arrival;
   const geometryKey = `${viewport.width}:${viewport.height}:${viewport.left}:${viewport.top}:${preferences.textSize}`;
   const spellOrigin = useRef<Point | null>(null), sceneKey = `${run.runId}:${run.currentScene}:${run.currentScene === 'cottage' ? `${run.cottageView}:${run.phase}` : ''}`;
-  const { theft, flourish, skipTheft, skipFlourish } = useWorldCues(run, lastCommand, reduced, () => setSurface(null), () => setSurface('work'));
+  const { theft, flourish, skipTheft, skipFlourish } = useWorldCues(run, lastCommand, reduced);
   const visual = useRef<WorldVisual>({ layout, run, reduced, theft, flourish, spellOrigin: null, occluded: true });
   visual.current = { layout, run, reduced, theft, flourish, spellOrigin: spellOrigin.current, occluded: panelOpen || surface !== null || !sound.ready };
   function open(next: Exclude<Surface, null>, trigger?: HTMLElement) {
-    if (next === 'objects') objectReturn.current = surface === 'rug' || surface === 'encounter' ? surface : 'work';
+    if (next === 'objects' && surface !== 'objects') objectReturn.current = surface;
     if (surface !== 'objects') origin.current = trigger ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null);
     setSurface(next);
   }
@@ -113,26 +115,60 @@ export function WorldGame({ run, preferences, collection, busy, lastCommand, act
       approachEncounter(object.command.prop, trigger);
       return;
     }
+    if (object.command.type === 'RENEW_BOOK') open('work', trigger);
     if (object.command.type === 'INSPECT_PROP') {
       const { prop } = object.command;
       if (prop === 'roomRug') open('rug', trigger);
-      else if (!prop.startsWith('room')) open('work', trigger);
+      else if (prop === 'door' && (returning || arrival && !run.arrival.aliasStamped)) open('work', trigger);
     }
     void dispatch(object.command);
   }
   useOvenChime(run, dispatch, sound.ready && !panelOpen);
-  const objects = sceneObjects(run, collection), door = roomDoor(run);
+  const objects = sceneObjects(run, collection), objective = roomObjective(run, layout, objects, preferences.textSize), exit = roomExit(run, layout);
+  const otherObjects = objects.flatMap(object => {
+    if (object.id !== objective.id) return [object];
+    return objective.command?.type === 'SIGN_IN' ? [{ ...object, id: 'cottage.stitch', label: 'Inspect the unbound door stitch' }] : [];
+  });
+  function useObjective(trigger: HTMLElement) {
+    if (objective.command) void dispatch(objective.command);
+    else open('work', trigger);
+  }
   const clock = run.trialClock && !panelOpen ? <TrialClock clock={run.trialClock} /> : null;
   const disabled = (object: SceneObject) => busy || (object.id.startsWith('garden.cap.') && run.puzzles.garden.solved) || (object.id.startsWith('cabin.lamp.') && run.puzzles.cabin.solved) || (object.command.type === 'TRACE_VINE' && (run.puzzles.greenhouse.solved || !vineChoices(run.puzzles.greenhouse.route).includes(object.command.node)));
-  const isApproach = (object: SceneObject) => object.id === 'cottage.rug' || object.id === 'account.ledger' || returning && object.id === 'cottage.door';
+  const isPlaque = (object: SceneObject) => object.command.type === 'INSPECT_ENCOUNTER' ||
+    ['cottage.rug', 'cottage.garden', 'cottage.stitch', 'account.slot', 'account.renew', 'cabin.check'].includes(object.id);
   function bounds(object: SceneObject) {
     if (object.command.type === 'INSPECT_ENCOUNTER') return worldEncounterBounds(object, layout);
-    if (isApproach(object)) return worldApproachBounds(object, layout);
+    if (object.command.type === 'TOGGLE_LAMP') return visibleHitArea(projectRect(cabinLampBounds(object.command.index), layout.camera), layout);
+    if (object.id === 'cabin.check') return plaqueBounds(projectRect(CABIN_PLANCHETTE, layout.camera), layout);
+    if (object.id === 'cottage.garden') return plaqueBounds(layout.garden, layout);
+    if (isPlaque(object)) return worldApproachBounds(object, layout);
     if (instrument && !['kitchen.jen', 'studio.alice', 'cabin.agatha', 'tower.lilia', 'greenhouse.rio'].includes(object.id)) return null;
     if (!layout.outside) return worldObjectBounds(object, layout);
     if (object.id === 'cottage.door') return layout.door;
-    return object.id === 'cottage.garden' ? layout.garden : layout.actor;
+    return layout.actor;
   }
+  const targets = otherObjects.flatMap(object => {
+    const frame = bounds(object);
+    return frame ? [{ object, frame }] : [];
+  });
+  const occupied = [objective.frame, ...targets.filter(({ object }) => object.command.type === 'TOGGLE_LAMP').map(({ frame }) => frame)];
+  function reserve(frame: Rect | null) {
+    const placed = frame && placePlaque(frame, occupied, layout);
+    if (placed) occupied.push(placed);
+    return placed;
+  }
+  const exitFrame = exit && reserve(exit.frame);
+  const cottageView = run.currentScene === 'cottage' ? {
+    label: layout.outside ? 'Look inside the cottage' : 'Step outside cottage',
+    command: { type: 'SET_COTTAGE_VIEW', view: layout.outside ? 'inside' : 'outside' } as const,
+    frame: reserve(plaqueBounds({ x: layout.door.x + layout.door.width + 60, y: layout.door.y + layout.door.height * .25, width: 0, height: 0 }, layout)),
+  } : null;
+  const deskFrame = reserve(cottageDeskBounds(layout));
+  const positioned = targets.flatMap(({ object, frame }) => {
+    const rect = isPlaque(object) ? reserve(frame) : frame;
+    return rect ? [{ object, rect }] : [];
+  });
   useEffect(() => {
     const media = matchMedia('(prefers-reduced-motion: reduce)'), change = () => setSystemReduced(media.matches);
     media.addEventListener('change', change); return () => media.removeEventListener('change', change);
@@ -141,14 +177,20 @@ export function WorldGame({ run, preferences, collection, busy, lastCommand, act
   useEffect(() => { const visibility = () => setPaused(document.hidden); document.addEventListener('visibilitychange', visibility); return () => document.removeEventListener('visibilitychange', visibility); }, []);
   useLayoutEffect(() => {
     const backToTv = lastCommand?.type === 'LEAVE_VISION';
-    const idle = run.currentScene === 'vision' || lastCommand?.type === 'SET_COTTAGE_VIEW' || lastCommand?.type === 'EXPIRE_SESSION';
     setEncounter(backToTv ? 'television' : null);
-    setSurface(preferences.actionList ? 'objects' : backToTv ? 'encounter' : idle ? null : 'work');
+    setSurface(preferences.actionList ? 'objects' : backToTv ? 'encounter' : null);
     spellOrigin.current = null;
     origin.current = null;
-    objectReturn.current = 'work';
+    objectReturn.current = null;
     pendingArrival.current = true;
   }, [sceneKey]);
+  useLayoutEffect(() => {
+    if (!arrival || surface !== 'work' || lastCommand?.type !== 'STAMP_ALIAS' && lastCommand?.type !== 'SUBMIT_ATTEMPTED_SPELL') return;
+    origin.current = null;
+    closingAnchor.current = null;
+    restoreOrigin.current = true;
+    setSurface(null);
+  }, [lastCommand]);
   useLayoutEffect(() => {
     if (surface !== null || !restoreOrigin.current) return;
     restoreOrigin.current = false;
@@ -158,8 +200,8 @@ export function WorldGame({ run, preferences, collection, busy, lastCommand, act
       return;
     }
     const anchor = closingAnchor.current;
-    const approach = root.current?.querySelector<HTMLButtonElement>(anchor ? `.world-hotspots [data-prop-id="${anchor}"]` : '.instrument-approach:not([hidden])');
-    (approach ?? cardButton.current ?? root.current?.querySelector<HTMLElement>('#world-map-button'))?.focus({ preventScroll: true });
+    const approach = anchor ? root.current?.querySelector<HTMLButtonElement>(`.world-hotspots [data-prop-id="${anchor}"]:not(:disabled)`) : null;
+    (approach ?? root.current?.querySelector<HTMLElement>('.world-hotspots [data-objective]:not(:disabled), #world-map-button'))?.focus({ preventScroll: true });
   }, [surface]);
   useEffect(() => {
     if (!sound.ready || panelOpen) return;
@@ -198,7 +240,8 @@ export function WorldGame({ run, preferences, collection, busy, lastCommand, act
   const feedback = <div className={paperOpen ? 'world-response' : 'world-response parchment'} role="status" aria-live="polite" data-testid="feedback"><span className="scene-art-caption">{sceneCaption(run)}</span>{message}</div>;
   const recovery = status === 'unsaved' && <aside className="world-storage-alert" aria-label="Journey saving"><p>Browser saving is unavailable. Export your unsaved moves before closing.</p><button onClick={retrySave}>Retry save</button><button onClick={exportJourney}>Export journey</button></aside>;
   const rendererRecovery = rendererStatus === 'fallback' && <div className="world-renderer-recovery"><span>Still illustration · every control remains available</span><button onClick={() => { setMissing(new Set()); setAttempt(value => value + 1); }}>Retry illustrated scene</button></div>;
-  const returnName = objectReturn.current === 'encounter' && encounter ? `Return to ${ENCOUNTERS[encounter].title.toLowerCase()}` : instrument ? INSTRUMENTS[instrument].return : objectReturn.current === 'rug' ? FINALE_SURFACES.rug.return : primaryFinale ? FINALE_SURFACES[primaryFinale].return : 'Return to room notes';
+  const returnSurface = objectReturn.current;
+  const returnName = returnSurface === null ? 'Return to the room' : returnSurface === 'encounter' && encounter ? `Return to ${ENCOUNTERS[encounter].title.toLowerCase()}` : returnSurface === 'rug' ? FINALE_SURFACES.rug.return : instrument ? INSTRUMENTS[instrument].return : primaryFinale ? FINALE_SURFACES[primaryFinale].return : 'Return to room notes';
   const skipLabel = flourish && flourish !== 'standBy' ? `Skip ${FLOURISH_LABEL[flourish]} animation` : null;
   const encounterFrame = instrumentFrame(viewport.width, viewport.height, true);
   return <main ref={root} id="main" className="world-viewport" aria-label={locationName(run)} aria-hidden={panelOpen || undefined} inert={panelOpen} style={{ width: viewport.width, height: viewport.height, left: viewport.left, top: viewport.top }} data-testid="scene-stage" data-renderer={rendererStatus} data-scene={run.currentScene} data-profile={layout.profile} data-framing={layout.framing} data-short={viewport.height < 540 || undefined} data-motion={reduced ? 'reduced' : 'full'} data-flourish={flourish ?? 'none'} data-paused={paused} data-finale={primaryFinale ?? undefined} data-cottage-view={run.currentScene === 'cottage' ? run.cottageView : undefined}>
@@ -224,36 +267,32 @@ export function WorldGame({ run, preferences, collection, busy, lastCommand, act
       <div className="world-location" aria-hidden="true"><span>{SCENE_INFO[run.currentScene].subtitle}</span><i>{locationName(run)}</i></div>
       {surface === null && clock && <div className="world-trial-clock">{clock}</div>}
       <div className="world-hotspots" aria-label="Illustrated room objects" aria-hidden={surface !== null || undefined} inert={surface !== null}>
-        {deskBounds && <button className="world-object finale-approach" style={rectStyle(deskBounds)} onClick={event => open('objects', event.currentTarget)}><b aria-hidden="true">▱</b><span>Inspect the writing desk</span></button>}
-        {objects.map(object => {
-          const rect = bounds(object);
-          if (!rect) return null;
+        <ObjectPlaque className="world-object" data-objective data-prop-id={objective.id} style={rectStyle(objective.frame)} label={objective.label} marker={objective.marker}
+          aria-haspopup={objective.command ? undefined : 'dialog'} disabled={busy && Boolean(objective.command)} onClick={event => useObjective(event.currentTarget)} />
+        {exit && exitFrame && <ObjectPlaque className="world-object" data-room-exit marker="↗" label={exit.label} style={rectStyle(exitFrame)}
+          aria-label={`Take the door: ${exit.label}`} disabled={busy} onClick={() => void dispatch(exit.command)} />}
+        {cottageView?.frame && <ObjectPlaque className="world-object" data-cottage-entry marker="⌂" label={cottageView.label} style={rectStyle(cottageView.frame)}
+          disabled={busy} onClick={() => void dispatch(cottageView.command)} />}
+        {deskFrame && <ObjectPlaque className="world-object" style={rectStyle(deskFrame)} label="Inspect the writing desk" marker="▱" onClick={event => open('objects', event.currentTarget)} />}
+        {positioned.map(({ object, rect }) => {
           const extra = object.command.type === 'INSPECT_ENCOUNTER' ? object.command.prop : undefined;
-          const approach = isApproach(object) || extra !== undefined;
-          const doorProp = returning && object.id === 'cottage.door';
-          const enterLibrary = doorProp && door?.command.type === 'SIGN_IN';
-          const label = doorProp ? enterLibrary ? cottageKnockerLabel(run) : 'Approach the door stitch' : object.label;
-          const className = extra ? 'finale-approach encounter-anchor' : approach ? 'finale-approach' : object.id === 'cottage.garden' ? 'world-object-sign' : '';
+          if (isPlaque(object)) return <ObjectPlaque key={object.id} className="world-object" data-prop-id={object.id} data-encounter-anchor={extra} data-work-object={object.id === 'cottage.stitch' || undefined}
+            label={object.label} marker={object.marker} style={rectStyle(rect)} disabled={disabled(object)} onClick={event => inspect(object, event.currentTarget)} />;
           return <button
             key={object.id}
             data-prop-id={object.id}
-            data-encounter-anchor={extra}
-            data-ready={enterLibrary || undefined}
-            aria-label={label}
-            title={label}
+            aria-label={object.label}
+            title={object.label}
             disabled={disabled(object)}
-            className={`world-object ${className}`}
+            className="world-object"
+            aria-pressed={object.command.type === 'TOGGLE_LAMP' ? Boolean(run.puzzles.cabin.lamps[object.command.index]) : undefined}
             style={rectStyle(rect)}
-            onClick={event => enterLibrary ? void dispatch(door.command) : inspect(object, event.currentTarget)}
+            onClick={event => inspect(object, event.currentTarget)}
           >
-            {approach && <b aria-hidden="true">{object.marker}</b>}
-            <span>{object.id === 'cottage.garden' ? 'Remember me ↖' : label}</span>
+            <span>{object.label}</span>
           </button>;
         })}
       </div>
-      {arrival && <button ref={cardButton} className="world-card-prop" style={rectStyle(layout.card)} aria-label="Open borrowing card" aria-hidden={surface !== null || undefined} inert={surface !== null} aria-expanded={surface === 'work'} onClick={event => open('work', event.currentTarget)}><span>WESTVIEW</span><b>Borrowing card</b><small>{run.alias ?? 'A name, please.'}</small></button>}
-      {run.currentScene === 'cottage' && !finale && surface !== 'objects' && surface !== 'encounter' && <button className="world-enter-cottage" disabled={busy} onClick={() => void dispatch({ type: 'SET_COTTAGE_VIEW', view: run.cottageView === 'inside' ? 'outside' : 'inside' })}>{run.cottageView === 'inside' ? 'Step outside cottage' : 'Look inside the cottage'} <span aria-hidden>↗</span></button>}
-      {surface === null && door && door.command.type !== 'SIGN_IN' && <button className="world-door" disabled={busy} aria-label={`Take the door: ${door.label}`} onClick={() => void dispatch(door.command)}><span aria-hidden="true">⌁</span><b>{door.label}</b><small>TAKE THE DOOR ↗</small></button>}
       {surface === null && <>{feedback}{recovery}</>}
       <nav className="traveller-kit" aria-label="Traveller’s kit">
         <button id="world-map-button" onClick={openMap}><KitIcon kind="map" /><span>Road map</span></button>
@@ -275,13 +314,13 @@ export function WorldGame({ run, preferences, collection, busy, lastCommand, act
         placement={studioPlacement(layout, preferences.textSize)} layout={layout}
         character={layout.character && !missing.has(layout.character) ? artUrl(layout.character) : null}
         onCharacterError={() => { if (layout.character) markMissing(layout.character); }}
-        surfaceRef={workPaper} open={() => open('work')} close={close} lastCommand={lastCommand} clock={surface === 'work' ? clock : null}>
+        surfaceRef={workPaper} close={close} lastCommand={lastCommand} clock={surface === 'work' ? clock : null}>
         {feedback}{recovery}{rendererRecovery}
       </RecordingStage> : instrument && <InstrumentStage key={`${run.runId}:${instrument}`} run={run} scene={instrument} busy={busy} act={dispatch}
         expanded={surface === 'work'} obscured={surface === 'objects' || surface === 'encounter'}
         active={surface === 'work' && !panelOpen && !paused && sound.ready} geometryKey={geometryKey}
-        frame={paintedTrial && surface !== 'work' ? trialTag(paintedTrial, layout) : instrumentFrame(viewport.width, viewport.height, surface === 'work', instrument)}
-        surfaceRef={workPaper} open={() => open('work')} close={close} openIntercom={trigger => approachEncounter('visionIntercom', trigger)}
+        frame={paintedTrial && surface !== 'work' ? objective.frame : instrumentFrame(viewport.width, viewport.height, surface === 'work', instrument)}
+        surfaceRef={workPaper} close={close} openIntercom={trigger => approachEncounter('visionIntercom', trigger)}
         clock={surface === 'work' ? clock : null} reduced={reduced} blooming={flourish === 'flower'} lastCommand={lastCommand} feedback={feedback}
         recovery={recovery} rendererRecovery={rendererRecovery} />}
       {finale && <FinaleStage key={`${run.runId}:${finale}`} kind={finale} run={run} busy={busy} act={dispatch} active={!panelOpen && !paused} geometryKey={geometryKey} frame={instrumentFrame(viewport.width, viewport.height, true)} surfaceRef={workPaper} flourish={flourish} clock={clock} close={close} openDateStamp={trigger => approachEncounter('returnDate', trigger)}>
@@ -298,11 +337,15 @@ export function WorldGame({ run, preferences, collection, busy, lastCommand, act
           {surface === 'objects' && instrument && <RoomRules scene={instrument} opposite={run.puzzles.tower.stage === 'confirming'} />}
           {surface === 'objects' && <fieldset className="world-object-list" aria-label="Scene action list">
             <legend>Objects on this page</legend>
-            {objects.length ? objects.map(object => {
+            <ObjectPlaque data-list-objective label={objective.label} marker={objective.marker} aria-haspopup={objective.command ? undefined : 'dialog'}
+              disabled={busy && Boolean(objective.command)} onClick={event => useObjective(event.currentTarget)} />
+            {exit && <ObjectPlaque label={`Take the door: ${exit.label}`} marker="↗" disabled={busy} onClick={() => void dispatch(exit.command)} />}
+            {cottageView && <ObjectPlaque label={cottageView.label} marker="⌂" disabled={busy} onClick={() => void dispatch(cottageView.command)} />}
+            {otherObjects.map(object => {
               const unavailable = disabled(object);
               return <button key={object.id} data-prop-id={object.id} aria-disabled={unavailable || undefined} onClick={event => { if (!unavailable) inspect(object, event.currentTarget); }}>{object.label}</button>;
-            }) : <p>The five keepsakes and their labelled seats are on the coven circle.</p>}
-            <button onClick={() => open(objectReturn.current)}>{returnName}</button>
+            })}
+            <button onClick={() => returnSurface ? open(returnSurface) : close()}>{returnName}</button>
           </fieldset>}
           {paperOpen && <>{feedback}{recovery}{rendererRecovery}</>}
           <span className="world-paper-seal" aria-hidden="true">W</span>

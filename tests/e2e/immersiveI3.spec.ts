@@ -3,12 +3,13 @@ import { COVEN } from '../../src/content/scenes';
 import { createRun, type RunState } from '../../src/game/state';
 import { INSTRUMENTS, isInstrumentScene, VESSELS, VESSEL_VIEW } from '../../src/world/instruments';
 import { move, throughTrial } from '../helpers';
-import { jugAction, openRoad, reloadRoad, returnToRoom, travelViaMap } from './support';
+import { approachRoom, jugAction, openRoad, reloadRoad, returnToRoom, travelViaMap } from './support';
 
 async function importInstrument(page: Page, run: RunState) {
   await page.getByRole('button', { name: 'Settings', exact: true }).click();
   await page.getByLabel('Import a saved journey').setInputFiles({ name: 'instrument.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(run)) });
   await expect(page.getByTestId('feedback')).toContainText('Imported as a new slot');
+  await approachRoom(page);
   if(isInstrumentScene(run.currentScene))await expect(page.getByTestId('instrument-stage')).toHaveAttribute('data-expanded', 'true');
 }
 const saved = (page: Page) => expect(page.getByTestId('save-status')).toContainText('saved in this browser');

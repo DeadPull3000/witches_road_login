@@ -38,6 +38,8 @@ Open `http://127.0.0.1:5187/` and select **Enter the Road with sound** to start 
 
 Each of the five required trials starts a five-minute countdown on entry. The deadline continues through menus, side trips, and reloads. A timeout returns you to the opening cottage and resets the current journey. Your stamped alias, discovery collection, settings, and other saved journeys carry over.
 
+Click the brass-edged plaque by an object to use it or open its close-up. Trial instructions live on labelled notes. The **Room objects** page also lists the objective and its available actions.
+
 ## Checks and production build
 
 ```powershell

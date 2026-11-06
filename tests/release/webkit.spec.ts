@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { writeFile } from 'node:fs/promises';
-import { enterRoad } from '../e2e/support';
+import { approachRoom, enterRoad } from '../e2e/support';
 
 test('the WebKit build enforces sound entry and offers recovery when the browser has no audio context', async ({ browser, page }, info) => {
   const errors: string[] = [];
@@ -12,6 +12,7 @@ test('the WebKit build enforces sound entry and offers recovery when the browser
   let outcome: string;
   if (audioContext === 'function') {
     await enterRoad(page);
+    await approachRoom(page);
     const alias = page.getByLabel('Borrowing alias', { exact: true });
     await alias.fill('WebKit Finch');
     await alias.press('Enter');

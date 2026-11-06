@@ -1,12 +1,3 @@
-.world-object.finale-approach.encounter-anchor {
-  z-index: 2;
-  padding: 5px 8px;
-  gap: 7px;
-  background: linear-gradient(120deg, #422e35, #544037) !important;
-}
-.world-object.encounter-anchor > span { font-size: 12px; }
-.world-object.encounter-anchor[data-encounter-anchor='television'] { border-color: #c49662; background: repeating-linear-gradient(0deg, #49332c 0 4px, #614432 4px 7px) !important; }
-.world-object.encounter-anchor[data-encounter-anchor='visionIntercom'] { border-color: #9eaaa9; background: #303a3e !important; }
 .encounter-stage { --instrument-ink: #f6e7ce; }
 .encounter-stage figure { margin: 0; }
 .encounter-stage figcaption { margin-top: 12px; font: italic 14px/1.5 Georgia, serif; }
@@ -34,7 +25,7 @@
   padding: 6px 11px;
   font: 12px/1.25 Georgia, serif;
 }
-.instrument-vision :is(button, .instrument-approach) {
+.instrument-vision button {
   background: #324247;
   color: #eef9f9;
   border-color: #90a8ad;
@@ -42,16 +33,6 @@
 }
 .instrument-vision button:hover:enabled { background: #455960; border-color: #c7dee4; }
 .instrument-vision button[aria-disabled=true] { opacity: .66; cursor: default; }
-.world-viewport[data-scene='vision'] > .world-door {
-  top: max(24px, env(safe-area-inset-top)); max-width: 168px; min-height: 44px;
-  grid-template-columns: 16px 1fr; align-items: center; gap: 6px;
-  padding: 6px 9px; border: 2px solid #899e9f; color: #e8f1f0;
-  background: linear-gradient(#475257, #323c40); box-shadow: 0 3px 0 #1d2629;
-  transform: none;
-}
-.world-viewport[data-scene='vision'] > .world-door b { font-size: 14px; }
-.world-viewport[data-scene='vision'] > .world-door > span { grid-row: auto; color: #bdcfd1; font-size: 20px; }
-.world-viewport[data-scene='vision'] > .world-door small { display: none; }
 .reader-claims {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -211,7 +192,6 @@ html[data-text=large] .cottage-tv .tv-caption { font-size: 19px; }
 .discovery-blanks span { display: grid; place-items: center; height: 25px; border: 1px dashed #ab916b; color: #907650; background: #c7ac7c46; }
 
 @media (max-width: 720px) {
-  .world-viewport[data-scene='vision'] > .world-door { top: 66px; }
   .vision-records, .tv-cabinet { grid-template-columns: minmax(0, 1fr); }
   .tv-glass { min-height: 167px; }
   .tv-hardware fieldset, .tv-dials { grid-template-columns: repeat(2, minmax(0, 1fr)); }

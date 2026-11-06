@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { RunState } from '../game/state';
 import type { Command } from '../game/commands';
+import { ObjectPlaque } from '../world/ObjectPlaque';
 
 type Props = { run: RunState; act: (command: Command) => Promise<void> };
 
@@ -16,19 +17,14 @@ export function ArrivalCard({ run, act }: Props) {
       <span className="eyebrow">YOUR BORROWING CARD</span><h2>A name for the journey.</h2>
       <p>Use a fictional alias. This library is a little unusual.</p>
       <label htmlFor="alias">Borrowing alias</label>
-      <div className="input-row"><input id="alias" value={alias} maxLength={24} autoComplete="off" placeholder="e.g. Violet Finch" onChange={event => setAlias(event.target.value)} required /><button className="primary" type="submit">Stamp my card <span aria-hidden>↗</span></button></div>
+      <div className="input-row"><input id="alias" value={alias} maxLength={24} autoComplete="off" placeholder="e.g. Violet Finch" onChange={event => setAlias(event.target.value)} required /><ObjectPlaque type="submit" label="Stamp my card" marker="▣" /></div>
     </form>}
     {run.arrival.aliasStamped && !run.arrival.theftRecorded && <form onSubmit={event => { event.preventDefault(); setSpell(''); action({ type: 'SUBMIT_ATTEMPTED_SPELL' }); }}>
       <span className="eyebrow">CARD STAMPED · {run.alias}</span><h2>Try the door.</h2>
       <p>Invent a disposable spell. Its dots are about to become somebody else’s problem.</p>
       <label htmlFor="spell">Attempted spell — fictional only</label>
-      <div className="input-row"><input id="spell" type={showSpell ? 'text' : 'password'} value={spell} maxLength={32} autoComplete="off" onChange={event => setSpell(event.target.value)} required /><button className="quiet" type="button" aria-pressed={showSpell} onClick={() => { if (!showSpell) action({ type: 'INSPECT_PROP', prop: 'visibilityEye' }); setShowSpell(!showSpell); }}>Show spell</button><button className="primary" type="submit">Try the door</button></div>
+      <div className="input-row"><input id="spell" type={showSpell ? 'text' : 'password'} value={spell} maxLength={32} autoComplete="off" onChange={event => setSpell(event.target.value)} required /><button className="quiet" type="button" aria-pressed={showSpell} onClick={() => { if (!showSpell) action({ type: 'INSPECT_PROP', prop: 'visibilityEye' }); setShowSpell(!showSpell); }}>Show spell</button><ObjectPlaque type="submit" label="Try the door" marker="⌂" /></div>
       {showSpell && <p className="aside">The little eye looks back. “Yes, I can see you, too.”</p>}
     </form>}
-    {run.arrival.theftRecorded && <>
-      <span className="eyebrow">YOUR PASSWORD HAS WANDERED OFF</span><h2>Account recovery, naturally.</h2>
-      <p>Agatha has pocketed every dot. Five seals along the Road will set things right.</p>
-      <div className="button-row"><button className="primary" onClick={() => action({ type: 'START_RECOVERY' })}>Begin account recovery <span aria-hidden>↗</span></button><button onClick={() => action({ type: 'ENTER_SCENE', scene: 'garden' })}>Remember me garden · optional</button></div>
-    </>}
   </section>;
 }

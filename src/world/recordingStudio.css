@@ -22,32 +22,6 @@
 .studio-room-meter { opacity: .20; }
 .studio-room-meter[data-enabled=true] { opacity: .79; }
 .studio-room-meter ellipse { opacity: .44; }
-.instrument-stage.studio-stage .studio-approach {
-  z-index: 3;
-  bottom: auto;
-  min-width: 0;
-  transform: rotate(-3deg);
-  pointer-events: auto;
-  padding: 5px 10px;
-  border: 1px solid var(--world-brass);
-  border-radius: 3px 2px 3px 2px;
-  background: linear-gradient(100deg, #573333, #32212b 70%, #482b2c);
-  box-shadow: 0 2px 0 #20141e, inset 0 0 0 2px #dbae7320;
-  color: #fae2b2;
-  font: 13px/1.2 var(--serif);
-}
-.studio-approach::before, .studio-approach::after {
-  content: '';
-  position: absolute;
-  top: 48%;
-  width: 3px;
-  height: 3px;
-  background: #dba66d;
-  border-radius: 50%;
-  box-shadow: 0 1px #21181e;
-}
-.studio-approach::before { left: 5px; }
-.studio-approach::after { right: 5px; }
 .studio-host-layer { z-index: 3; bottom: -58px; }
 .studio-stage[data-expanded=true] .studio-host-layer { overflow: clip; }
 .studio-actor {

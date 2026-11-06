@@ -23,11 +23,11 @@ export function nextWorldCue(previous: RunState, run: RunState, command: Command
   return null;
 }
 
-export function useWorldCues(run: RunState, command: Command | null, reduced: boolean, onTheftStart: () => void, onTheftEnd: () => void) {
-  const previous = useRef(run), callbacks = useRef({ onTheftStart, onTheftEnd }); callbacks.current = { onTheftStart, onTheftEnd };
+export function useWorldCues(run: RunState, command: Command | null, reduced: boolean) {
+  const previous = useRef(run);
   const [theft, setTheft] = useState(false), [flourish, setFlourish] = useState<Flourish | null>(null);
   const theftTimer = useRef<ReturnType<typeof setTimeout> | null>(null), cueTimer = useRef<ReturnType<typeof setTimeout> | null>(null), playingTheft = useRef(false);
-  const skipTheft = () => { if (theftTimer.current !== null) clearTimeout(theftTimer.current); theftTimer.current = null; playingTheft.current = false; setTheft(false); callbacks.current.onTheftEnd(); };
+  const skipTheft = () => { if (theftTimer.current !== null) clearTimeout(theftTimer.current); theftTimer.current = null; playingTheft.current = false; setTheft(false); };
   const skipFlourish = () => { if (cueTimer.current !== null) clearTimeout(cueTimer.current); cueTimer.current = null; setFlourish(null); };
   useEffect(() => {
     const prior = previous.current; previous.current = run;
@@ -37,7 +37,7 @@ export function useWorldCues(run: RunState, command: Command | null, reduced: bo
     }
     if (reduced) { if (playingTheft.current) skipTheft(); skipFlourish(); return; }
     if (!travelled && command?.type === 'SUBMIT_ATTEMPTED_SPELL' && !prior.arrival.theftRecorded && run.arrival.theftRecorded) {
-      playingTheft.current = true; setTheft(true); callbacks.current.onTheftStart(); theftTimer.current = setTimeout(skipTheft, 1450);
+      playingTheft.current = true; setTheft(true); theftTimer.current = setTimeout(skipTheft, 1450);
     }
     const next = nextWorldCue(prior, run, command);
     if (next) { if (cueTimer.current !== null) clearTimeout(cueTimer.current); setFlourish(next); cueTimer.current = setTimeout(() => setFlourish(null), 1400); }

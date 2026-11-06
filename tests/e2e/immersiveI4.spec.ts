@@ -4,12 +4,14 @@ import { VINE_POSITIONS, type Point } from '../../src/content/vines';
 import type { RunState } from '../../src/game/state';
 import { INSTRUMENTS } from '../../src/world/instruments';
 import { move, throughTrial } from '../helpers';
-import { openRoad, reloadRoad, returnToRoom, travelViaMap } from './support';
+import { approachRoom, openRoad, reloadRoad, returnToRoom, travelViaMap } from './support';
 
 async function importTrial(page:Page,run:RunState){
   await page.getByRole('button',{name:'Settings',exact:true}).click();
   await page.getByLabel('Import a saved journey').setInputFiles({name:'trial.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(run))});
-  await expect(page.getByTestId('feedback')).toContainText('Imported as a new slot');await expect(page.getByTestId('instrument-stage')).toHaveAttribute('data-expanded','true');
+  await expect(page.getByTestId('feedback')).toContainText('Imported as a new slot');
+  await approachRoom(page);
+  await expect(page.getByTestId('instrument-stage')).toHaveAttribute('data-expanded','true');
 }
 const saved=(page:Page)=>expect(page.getByTestId('save-status')).toContainText('saved in this browser');
 async function frameWorking(page:Page,selector:string){await page.locator(selector).evaluate(el=>{const stage=el.closest('.instrument-stage')!;stage.scrollTop+=el.getBoundingClientRect().top-stage.getBoundingClientRect().top-90;});}

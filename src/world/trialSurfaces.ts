@@ -9,6 +9,8 @@ const tagMounts = {
 } satisfies Record<string, Point>;
 
 export type PaintedTrial = keyof typeof tagMounts;
+export const cabinLampBounds = (index: number): Rect => ({ x: 224 + index * 168, y: 515 + (index % 2) * 7, width: 100, height: 137 });
+export const CABIN_PLANCHETTE = { x: 559, y: 631, width: 105, height: 47 };
 
 export function isPaintedTrial(scene: string): scene is PaintedTrial {
   return Object.hasOwn(tagMounts, scene);

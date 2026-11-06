@@ -2,7 +2,7 @@ import { expect, test, type Page } from '@playwright/test';
 import type { RunState } from '../../src/game/state';
 import { STITCH_POINTS } from '../../src/ui/RuneStitch';
 import { completedRun, move, solveCurrent, throughTrial } from '../helpers';
-import { openRoad, reloadRoad, returnToRoom } from './support';
+import { approachRoom, openRoad, reloadRoad, returnToRoom } from './support';
 
 function cottageReturn(): RunState {
   return move(solveCurrent(throughTrial('greenhouse')), { type: 'ENTER_SCENE', scene: 'cottage' });
@@ -14,6 +14,7 @@ async function importJourney(page: Page, run: RunState) {
     name: 'finale.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(run)),
   });
   await expect(page.getByTestId('feedback')).toContainText('Imported as a new slot');
+  await approachRoom(page);
 }
 
 test('the rug keeps its place and embroidery across both visits and returns focus to the room', async ({ page }, testInfo) => {
@@ -185,6 +186,7 @@ test('accepted saves unlock the knocker and receipt, and the receipt can be read
   await page.getByRole('button', { name: 'Use the knocker · sign in', exact: true }).press('Enter');
   await expect(world).toHaveAttribute('data-scene', 'account');
   await expect(world).toHaveAttribute('data-renderer', 'ready');
+  await approachRoom(page);
   const desk = page.getByRole('dialog', { name: 'The borrowing desk', exact: true });
   const stamp = desk.getByRole('button', { name: 'Renew this book', exact: true });
   await stamp.scrollIntoViewIfNeeded();
@@ -216,6 +218,7 @@ test('accepted saves unlock the knocker and receipt, and the receipt can be read
   await page.getByRole('button', { name: 'Take the door: Sign out to the cottage', exact: true }).press('Enter');
   await expect(world).toHaveAttribute('data-scene', 'cottage');
   await page.getByRole('button', { name: 'Use the knocker · sign in', exact: true }).press('Enter');
+  await approachRoom(page);
   await expect(desk.getByRole('button', { name: 'Read the renewal receipt', exact: true })).toBeVisible();
 });
 
@@ -253,6 +256,7 @@ test('cropped prop markers and the large-text desk work with missing textures', 
     await page.getByRole('button', { name: 'Step back from the rug', exact: true }).click();
     await expect(rug).toBeFocused();
     await knocker.click({ timeout: 8000 });
+    await page.getByRole('button', { name: 'Inspect your borrowing ledger', exact: true }).click();
     await expect(page.getByTestId('finale-stage')).toHaveAttribute('data-kind', 'desk');
     if (await page.getByRole('button', { name: 'Renew this book', exact: true }).count()) {
       await page.getByRole('button', { name: 'Renew this book', exact: true }).click();
@@ -266,10 +270,9 @@ test('cropped prop markers and the large-text desk work with missing textures', 
     await page.getByRole('button', { name: 'Take the door: Sign out to the cottage', exact: true }).click({ timeout: 8000 });
     // Sign-out returns to the clearing. Reopen the inside view for the next profile.
     if (width === sizes[0][0]) {
-      await page.getByRole('button', { name: 'Step back from the door', exact: true }).click();
       await page.getByRole('button', { name: 'Look inside the cottage', exact: true }).click();
       await page.getByRole('button', { name: 'Room objects', exact: true }).click();
-      await page.getByRole('button', { name: 'Inspect the cottage door', exact: true }).click();
+      await page.getByRole('button', { name: 'Inspect the unbound door stitch', exact: true }).click();
     }
   }
   await expect(page.getByTestId('audio-controls')).toHaveAttribute('data-audio-state', 'playing');

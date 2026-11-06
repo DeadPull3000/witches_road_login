@@ -1,0 +1,53 @@
+.object-plaque,
+.world-object.object-plaque,
+:is(.instrument-stage, .world-paper) .object-plaque {
+  --plaque-wood: #51392f;
+  --plaque-edge: #b48b57;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 5px 9px;
+  border: 2px solid var(--plaque-edge);
+  border-radius: 2px;
+  background: linear-gradient(120deg, var(--plaque-wood), #2c2329);
+  box-shadow: inset 0 0 0 2px #d2a76a19, 0 3px 0 #261a21, 0 6px 14px #170e2075;
+  color: #f7e1b7;
+  font: 14px/1.13 Georgia, serif;
+  text-align: center;
+}
+.world-object.object-plaque { z-index: 4; padding-block: 1px; line-height: 1.05; }
+.object-plaque > .plaque-mark {
+  flex: 0 0 auto;
+  min-width: 16px;
+  color: #e3ba7f;
+  font: 19px/1 Georgia, serif;
+}
+.object-plaque > .plaque-label { min-width: 0; overflow-wrap: anywhere; }
+.object-plaque:hover:enabled, .object-plaque:focus-visible { border-color: #f1cd8a; }
+.object-plaque:focus-visible { outline: 3px solid #f3d297; outline-offset: 3px; }
+.object-plaque:disabled { opacity: .72; cursor: default; }
+.object-plaque[hidden] { display: none; }
+.world-hotspots[inert] .object-plaque { visibility: hidden; }
+.object-note { margin: 0 0 11px; }
+.object-note > summary {
+  width: fit-content;
+  max-width: 100%;
+  list-style: none;
+  cursor: pointer;
+}
+.object-note > summary::-webkit-details-marker { display: none; }
+.plaque-caret { color: #dbb57d; }
+.object-note[open] .plaque-caret { transform: rotate(180deg); }
+.object-note[open] > summary { margin-bottom: 8px; border-color: #edc98c; }
+html[data-text='large'] .object-note > summary { font-size: 16px; }
+
+.world-viewport[data-scene='kitchen'] :is([data-objective], [data-list-objective]) { --plaque-wood: #414c4c; }
+.world-viewport[data-scene='tower'] :is([data-objective], [data-list-objective]) { --plaque-wood: #58415e; }
+.world-viewport:is([data-scene='greenhouse'], [data-scene='garden'], [data-scene='account']) :is([data-objective], [data-list-objective]) { --plaque-wood: #3e4b38; }
+.world-viewport[data-scene='vision'] :is([data-objective], [data-list-objective], [data-room-exit], [data-encounter-anchor], .vision-return) { --plaque-wood: #384e54; --plaque-edge: #9aafaf; }
+.object-plaque[data-encounter-anchor] { --plaque-wood: #503c39; }
+.world-object.object-plaque[data-prop-id='cottage.rug'] { --plaque-wood: #5d3b56; border-style: dashed; }
+.world-object.object-plaque[data-prop-id='account.renew'] { --plaque-wood: #48603e; }
+.entrance-card .object-plaque > span { margin: 0; }

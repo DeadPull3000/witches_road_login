@@ -9,6 +9,7 @@ import { RuneStitch } from '../ui/RuneStitch';
 import { rectStyle, type Rect } from './layout';
 import { cottageKnockerLabel } from './navigation';
 import { MechanicalFlower } from './VisionConsole';
+import { ObjectNote, ObjectPlaque } from './ObjectPlaque';
 
 export const FINALE_SURFACES = {
   rug: { title: 'The embroidered rug', inscription: 'FIVE MOTIFS · ONE THREAD', close: 'Step back from the rug', return: 'Return to the rug' },
@@ -77,10 +78,10 @@ function CottageDoor({ run, busy, act, active, geometryKey }: WorkProps & { acti
   const stitched = run.milestones.unbindingCompleted;
   const recognized = run.rememberEnabled && run.milestones.hasSignedInOnce;
   return <>
-    <div className="instrument-intro parchment">
+    <ObjectNote label="Read the carved motifs">
       <h2>The way was here all along.</h2>
       <p>The cup, the record, the lamps, the cards and the flower. Familiar things, seen differently.</p>
-    </div>
+    </ObjectNote>
     <div className="cottage-door-planks" data-ready={canSignIn(run)} aria-busy={busy}>
       <div className="door-nameplate" data-testid="borrower-nameplate" data-recognized={recognized}>
         <span>WESTVIEW BORROWING CARD</span>
@@ -93,7 +94,7 @@ function CottageDoor({ run, busy, act, active, geometryKey }: WorkProps & { acti
       <div className="door-hardware">
         <div className="door-thread">
           <RuneStitch completed={stitched} busy={busy} active={active} revision={run.revision} geometryKey={geometryKey} act={act} />
-          {!stitched && <button className="door-unbind" onClick={() => void act({ type: 'UNBIND' })}>Unbind the door stitch</button>}
+          {!stitched && <ObjectPlaque className="door-unbind" marker="⌁" label="Unbind the door stitch" onClick={() => void act({ type: 'UNBIND' })} />}
         </div>
         <button className="door-knocker" onClick={() => void act({ type: 'SIGN_IN' })}>
           <svg viewBox="0 0 80 100" aria-hidden="true">
@@ -106,7 +107,7 @@ function CottageDoor({ run, busy, act, active, geometryKey }: WorkProps & { acti
         </button>
       </div>
     </div>
-    <button className="door-garden" onClick={() => void act({ type: 'ENTER_SCENE', scene: 'garden' })}>Visit the optional garden</button>
+    <ObjectPlaque className="door-garden" marker="❧" label="Visit the optional garden" onClick={() => void act({ type: 'ENTER_SCENE', scene: 'garden' })} />
   </>;
 }
 
@@ -120,10 +121,10 @@ function BorrowingDesk({ run, busy, act, flourish, openDateStamp }: WorkProps & 
   }
 
   return <>
-    <div className="instrument-intro parchment">
+    <ObjectNote label="Read the borrowing policy">
       <h2>Your shelf, at last.</h2>
       <p>One book. Five trials. A perfectly reasonable library policy.</p>
-    </div>
+    </ObjectNote>
     <div className="borrowing-counter" data-renewed={renewed}>
       <div className="desk-tray">
         <dl className="desk-ledger" aria-label="Borrowing ledger">
@@ -154,9 +155,9 @@ function BorrowingDesk({ run, busy, act, flourish, openDateStamp }: WorkProps & 
         </button>
       </div>
       <div className="desk-outlet">
-        <button className="desk-return-slot" disabled={busy} onClick={() => void act({ type: 'INSPECT_PROP', prop: 'returnSlot' })}>Inspect the return slot</button>
+        <ObjectPlaque className="desk-return-slot" label="Inspect the return slot" marker="↧" disabled={busy} onClick={() => void act({ type: 'INSPECT_PROP', prop: 'returnSlot' })} />
         <div className="desk-optional-tools">
-          <button disabled={busy} onClick={event => openDateStamp(event.currentTarget)}>Inspect the return-date stamp</button>
+          <ObjectPlaque label="Inspect the return-date stamp" marker="◫" disabled={busy} onClick={event => openDateStamp(event.currentTarget)} />
           <button disabled={busy} onClick={() => void act({ type: 'EXPIRE_SESSION' })}>Expire session</button>
         </div>
         {!renewed && <div className="desk-empty-tray" aria-hidden="true">RECEIPT TRAY</div>}

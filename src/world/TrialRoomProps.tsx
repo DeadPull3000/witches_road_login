@@ -6,6 +6,7 @@ import { rectStyle, type WorldLayout } from './layout';
 import { Flower } from './RoadTrials';
 import { CovenMat, JugDrawing, LanternArt, PlanchetteArt } from './TrialPropArt';
 import { visibleTableCards } from './trialLayout';
+import { CABIN_PLANCHETTE, cabinLampBounds } from './trialSurfaces';
 
 /** The painted room uses the same live pieces as its close-up, on the painting's camera plane. */
 export function TrialRoomProps({ run, layout }: { run: RunState; layout: WorldLayout }) {
@@ -22,11 +23,10 @@ export function TrialRoomProps({ run, layout }: { run: RunState; layout: WorldLa
       </svg>)}
     </g>}
     {scene === 'cabin' && <g>
-      {puzzles.cabin.lamps.map((lit, index) => <svg key={index} x={224 + index * 168} y={515 + (index % 2) * 7}
-        width="100" height="137" viewBox="0 0 100 140" data-lantern={'ABCD'[index]} data-lit={!!lit}>
+      {puzzles.cabin.lamps.map((lit, index) => <svg key={index} {...cabinLampBounds(index)} viewBox="0 0 100 140" data-lantern={'ABCD'[index]} data-lit={!!lit}>
         <LanternArt lit={!!lit} letter={'ABCD'[index]} />
       </svg>)}
-      <svg x="559" y="631" width="105" height="47" viewBox="0 0 100 72" preserveAspectRatio="none"><PlanchetteArt /></svg>
+      <svg {...CABIN_PLANCHETTE} viewBox="0 0 100 72" preserveAspectRatio="none"><PlanchetteArt /></svg>
     </g>}
     {scene === 'tower' && <g className="painted-tarot-spread road-trial-still">
       {visibleTableCards(puzzles.tower).map((card, index) => <g key={index}

@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { openRoad, reloadRoad, objectAction } from './support';
+import { approachRoom, openRoad, reloadRoad, objectAction } from './support';
 import { completedRun, move, solveCurrent, throughTrial } from '../helpers';
 import { VINE_POSITIONS, type Point } from '../../src/content/vines';
 import { STITCH_POINTS } from '../../src/ui/RuneStitch';
@@ -11,6 +11,7 @@ async function importJourney(page: Page, run: RunState) {
   await page.getByRole('button', { name: 'Settings', exact: true }).click();
   await page.getByLabel('Import a saved journey').setInputFiles({ name: 'journey.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(run)) });
   await expect(page.getByTestId('feedback')).toContainText('Imported as a new slot');
+  await approachRoom(page);
   await expect(page.getByTestId('scene-stage')).toHaveAttribute('data-renderer', 'ready');
 }
 async function clientPoint(page: Page, testId: string, point: Point) {
@@ -81,7 +82,6 @@ test('the unchanged cottage room reveals the Road and the stitch gesture still g
   await importJourney(page, solveCurrent(throughTrial('greenhouse'))); await pauseCue(page);
   await page.getByRole('button', { name: /Return to the cottage/ }).click(); await expect(page.getByTestId('scene-stage')).toHaveAttribute('data-flourish', 'smoke');
   await page.getByRole('button', { name: 'Skip chimney animation', exact: true }).click(); await page.clock.resume();
-  await page.getByRole('button', { name: 'Step back from the door', exact: true }).click();
   await page.getByRole('button', { name: 'Look inside the cottage', exact: true }).click(); await expect(page.getByTestId('scene-stage')).toHaveAttribute('data-renderer', 'ready');
   await expect(page.getByTestId('world-background')).toHaveAttribute('src', originalArt!);
   await objectAction(page, 'Inspect the embroidered rug'); await expect(page.getByTestId('feedback')).toContainText('rug has not changed');
@@ -104,28 +104,41 @@ test('the unchanged cottage room reveals the Road and the stitch gesture still g
   await saved(page); await reloadRoad(page); await expect(page.getByTestId('rune-stitch')).toHaveAttribute('aria-label', /have replaced/);
   await expect(page.getByTestId('scene-stage')).toHaveAttribute('data-flourish', 'none'); await expect(page.getByRole('button', { name: 'Unbind the door stitch' })).toHaveCount(0);
   await page.getByRole('button', { name: /Notebook/ }).click(); await expect(page.getByText('The embroidered Road', { exact: true })).toBeVisible(); await expect(page.getByText('They were always here', { exact: true })).toBeVisible(); await page.getByRole('button', { name: 'Close panel', exact: true }).click();
-  await page.getByRole('button', { name: 'Use the knocker · sign in', exact: true }).click(); await expect(page.getByRole('heading', { name: 'Your shelf, at last.' })).toBeVisible(); expect(errors).toEqual([]);
+  await page.getByRole('button', { name: 'Use the knocker · sign in', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Inspect your borrowing ledger', exact: true })).toBeVisible(); expect(errors).toEqual([]);
 });
 
 test('recognition begins after first sign-in and Forget/Remember preserve the completed journey', async ({ page }, testInfo) => {
   test.setTimeout(60_000); await openRoad(page); await importJourney(page, move(home(), { type: 'UNBIND' }));
+  const stitch = page.getByRole('button', { name: 'Inspect the unbound door stitch', exact: true });
+  const ring = page.getByRole('button', { name: 'Approach the mushroom ring', exact: true });
   await page.getByRole('button', { name: 'Visit the optional garden', exact: true }).click();
+  await ring.click();
   await page.getByRole('button', { name: 'Cap 3: unlit', exact: true }).click(); await page.getByRole('button', { name: 'Cap 7: unlit', exact: true }).click();
   await page.getByRole('button', { name: 'Return to cottage', exact: true }).click(); await expect(page.getByRole('button', { name: 'Continue to library', exact: true })).toHaveCount(0);
+  await stitch.click();
   await expect(page.getByTestId('borrower-nameplate')).toHaveAttribute('data-recognized', 'false');
-  await page.getByRole('button', { name: 'Use the knocker · sign in', exact: true }).click(); await page.getByRole('button', { name: 'Sign out to cottage', exact: true }).click();
+  await page.getByRole('button', { name: 'Use the knocker · sign in', exact: true }).click();
+  await page.getByRole('button', { name: 'Inspect your borrowing ledger', exact: true }).click();
+  await page.getByRole('button', { name: 'Sign out to cottage', exact: true }).click();
+  await stitch.click();
   await expect(page.getByTestId('borrower-nameplate')).toHaveAttribute('data-recognized', 'true');
   await expect(page.locator('.scene-art-caption')).toContainText('Welcome back, Violet Finch'); await page.getByRole('button', { name: 'Visit the optional garden', exact: true }).click();
+  await ring.click();
   await expect(page.getByTestId('scene-stage')).toHaveAttribute('data-renderer', 'ready'); await screenshot(page, testInfo.outputPath('garden-recognition.png'));
   await page.getByRole('button', { name: 'Forget me', exact: true }).click(); await page.getByRole('button', { name: 'Return to cottage', exact: true }).click();
+  await stitch.click();
   await expect(page.getByTestId('borrower-nameplate')).toHaveAttribute('data-recognized', 'false');
   await expect(page.getByRole('button', { name: 'Use the knocker · sign in', exact: true })).toBeVisible(); await expect(page.getByRole('button', { name: 'Continue to library', exact: true })).toHaveCount(0);
-  await page.getByRole('button', { name: 'Visit the optional garden', exact: true }).click(); await page.getByRole('button', { name: 'Remember this journey again', exact: true }).click();
+  await page.getByRole('button', { name: 'Visit the optional garden', exact: true }).click();
+  await ring.click();
+  await page.getByRole('button', { name: 'Remember this journey again', exact: true }).click();
   await page.getByRole('button', { name: 'Return to cottage', exact: true }).click();
+  await stitch.click();
   await expect(page.getByTestId('borrower-nameplate')).toHaveAttribute('data-recognized', 'true');
   await page.getByRole('button', { name: 'Step back from the door', exact: true }).click();
   await page.getByRole('button', { name: 'Continue to library', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Your shelf, at last.' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Inspect your borrowing ledger', exact: true })).toBeVisible();
 });
 
 test('renewal saves before the receipt flourish and reload keeps the complete illustrated receipt', async ({ page }, testInfo) => {

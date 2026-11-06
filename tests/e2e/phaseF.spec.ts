@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import type { RunState } from '../../src/game/state';
 import { annexRun, completedRun, cottageInterior } from '../helpers';
-import { openRoad, reloadRoad, travelViaMap } from './support';
+import { approachRoom, enterRoad, openRoad, reloadRoad, travelViaMap } from './support';
 
 const button = (page: Page, name: string) => page.getByRole('button', { name, exact: true });
 const world = (page: Page) => page.getByTestId('scene-stage');
@@ -79,7 +79,8 @@ test('Vision opens through diagnostics, preserves a wrong selection, and awards 
   await button(page, 'File the borrowing receipt').click();
   await expect(page.getByTestId('feedback')).toContainText('cannot recognize that reader');
   await expect(readers(page).getByRole('region', { name: 'Verified original reader' })).toHaveCount(0);
-  await reloadRoad(page);
+  await page.reload();
+  await enterRoad(page);
   await expect(world(page)).toHaveAttribute('data-scene', 'vision');
   await button(page, 'Approach the four readers').click();
   await expect(button(page, 'South reader')).toHaveAttribute('aria-pressed', 'true');
@@ -106,6 +107,7 @@ test('Vision opens through diagnostics, preserves a wrong selection, and awards 
   await button(page, 'Close the cottage television').click();
   await button(page, 'Use the knocker · sign in').click();
   await expect(world(page)).toHaveAttribute('data-scene', 'account');
+  await approachRoom(page);
   const flower = page.getByRole('figure', { name: 'Vision’s mechanical flower' });
   await expect(flower).toBeVisible();
   await flower.scrollIntoViewIfNeeded();
@@ -185,6 +187,7 @@ test('the TV caption dial respects large text, and expiry and the final stamp pr
   await expect(page.getByRole('img', { name: 'Rio’s red session flower' })).toBeVisible();
   await button(page, 'Resume library session').click();
   await expect(world(page)).toHaveAttribute('data-scene', 'account');
+  await approachRoom(page);
   await expect(button(page, 'Read the renewal receipt')).toBeVisible();
   await button(page, 'Sign out to cottage').click();
   await stepIntoCottage(page);

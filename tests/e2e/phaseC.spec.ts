@@ -1,4 +1,4 @@
-import { openRoad, reloadRoad, objectAction, travelViaMap, returnToRoom, jugAction } from './support';
+import { approachRoom, openRoad, reloadRoad, objectAction, travelViaMap, returnToRoom, jugAction } from './support';
 import { expect, test, type Page } from '@playwright/test';
 import { throughTrial } from '../helpers';
 import type { RunState } from '../../src/game/state';
@@ -7,6 +7,7 @@ async function importJourney(page: Page, run: RunState) {
   await openRoad(page); await page.getByRole('button', { name: 'Settings', exact: true }).click();
   await page.getByLabel('Import a saved journey').setInputFiles({ name: 'journey.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(run)) });
   await expect(page.getByTestId('feedback')).toContainText('Imported as a new slot');
+  await approachRoom(page);
 }
 const noHints = async (page: Page) => {
   await expect(page.getByRole('button', { name: /hint|suggested move/i })).toHaveCount(0);
@@ -81,6 +82,7 @@ test('audio must start before play; a failed device can be retried without losin
   await expect(page.getByRole('button', { name: /skip|without sound|silent/i })).toHaveCount(0);
   await page.evaluate(() => { (window as unknown as { denyAudio: boolean }).denyAudio = false; });
   await page.getByRole('button', { name: 'Retry audio and enter' }).click();
+  await approachRoom(page);
   await page.getByLabel('Borrowing alias', { exact: true }).fill('Sound Finch'); await page.getByRole('button', { name: /Stamp my card/ }).click();
   await expect(page.getByTestId('save-status')).toContainText('saved in this browser'); await page.reload();
   await page.getByRole('button', { name: 'Enter the Road with sound' }).click();
@@ -90,6 +92,7 @@ test('audio must start before play; a failed device can be retried without losin
   expect(JSON.parse(exported).alias).toBe('Sound Finch');
   await page.evaluate(() => { (window as unknown as { denyAudio: boolean }).denyAudio = false; });
   await page.getByRole('button', { name: 'Retry audio and enter' }).click();
+  await approachRoom(page);
   await expect(page.getByText('CARD STAMPED · Sound Finch')).toBeVisible();
 });
 

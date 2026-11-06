@@ -1,6 +1,6 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { throughTrial } from '../helpers';
-import { enterRoad, openRoad, travelViaMap } from './support';
+import { approachRoom, enterRoad, openRoad, travelViaMap } from './support';
 
 const button = (page: Page, name: string) => page.getByRole('button', { name, exact: true });
 
@@ -19,6 +19,7 @@ test('welcome, borrowing and settings scrolls keep their controls reachable', as
   await expect(button(page, 'Enter the Road with sound')).toBeInViewport({ ratio: 1 });
   await page.screenshot({ path: info.outputPath('welcome-scroll.png'), scale: 'css' });
   await enterRoad(page, true);
+  await approachRoom(page, true);
 
   const borrower = page.getByRole('dialog', { name: 'Your borrowing card' });
   const alias = borrower.getByLabel('Borrowing alias');
@@ -60,6 +61,9 @@ test('trial directions, clue slips, feedback and character dialogue use readable
     name: 'parchment-journey.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(throughTrial('cabin'))),
   });
   const bench = page.getByRole('dialog', { name: 'Agatha’s spirit table' });
+  await expect(page.getByTestId('feedback')).toContainText('Imported as a new slot');
+  await approachRoom(page);
+  await bench.locator('summary', { hasText: 'Read the spirit-table inscription' }).click();
   await expectScroll(bench.locator('.instrument-intro'));
   const slips = bench.getByRole('list', { name: 'Four spirit statements' }).getByRole('listitem');
   await expect(slips).toHaveCount(4);
@@ -82,6 +86,7 @@ test('trial directions, clue slips, feedback and character dialogue use readable
   await button(page, 'Close room objects').press('Enter');
 
   await travelViaMap(page, /Alice’s studio/);
+  await page.locator('summary', { hasText: 'Read the recording sleeve' }).click();
   await expectScroll(page.getByTestId('alice-comment'));
   await expectScroll(page.getByTestId('instrument-stage').locator('.instrument-intro'));
   await page.screenshot({ path: info.outputPath('studio-scrolls.png'), scale: 'css' });

@@ -2,7 +2,7 @@ import { expect, test, type Locator, type Page } from '@playwright/test';
 import type { RunState } from '../../src/game/state';
 import { SPIRIT_STATEMENTS } from '../../src/world/instruments';
 import { completedRun, move, throughTrial } from '../helpers';
-import { openRoad, returnToRoom } from './support';
+import { approachRoom, openRoad, returnToRoom } from './support';
 
 async function importRun(page: Page, run: RunState) {
   await page.getByRole('button', { name: 'Settings', exact: true }).click();
@@ -10,6 +10,7 @@ async function importRun(page: Page, run: RunState) {
     name: 'i6-journey.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(run)),
   });
   await expect(page.getByTestId('feedback')).toContainText('Imported as a new slot');
+  await approachRoom(page);
   await expect(page.getByTestId('scene-stage')).toHaveAttribute('data-renderer', 'ready');
 }
 
@@ -44,6 +45,7 @@ test('field notes put printed rules before live actions and return focus to the 
   await expect(kit).toBeFocused();
   await kit.press('Enter');
   await returnToRoom(page);
+  await page.getByRole('button', { name: 'Approach the spirit table', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Lamp A: lit', exact: true })).toHaveAttribute('aria-pressed', 'true');
 });
 
@@ -80,6 +82,7 @@ test('tall cottage and library anchor their close-ups to reachable painted objec
   await expectDirectTarget(knocker); await knocker.click();
   await expect(stage).toHaveAttribute('data-scene', 'account');
   await expect(renderer).toHaveAttribute('data-active-asset', '/assets/library/library-afterhours-portrait.webp');
+  await approachRoom(page);
   await expect(page.locator('.desk-ledger')).toContainText(alias);
   expect(await page.locator('.desk-ledger').evaluate(el => el.scrollWidth)).toBeLessThanOrEqual(await page.locator('.desk-ledger').evaluate(el => el.clientWidth));
   await page.getByRole('button', { name: 'Step back from the borrowing desk', exact: true }).click();
@@ -89,7 +92,7 @@ test('tall cottage and library anchor their close-ups to reachable painted objec
   await page.mouse.move(2, 3);
   await page.screenshot({ path: info.outputPath('library-portrait.png'), scale: 'css' });
   await slot.click();
-  await expect(page.getByRole('dialog', { name: 'The borrowing desk', exact: true })).toBeVisible();
+  await expect(page.getByTestId('feedback')).toContainText('A brass slot for returns');
   await page.getByRole('button', { name: 'Renew this book', exact: true }).click();
   await expect(page.getByTestId('feedback')).toContainText('Renewed for another 28 fictional days');
 });
@@ -143,5 +146,6 @@ test('a visual-only viewport change keeps the input and canvas, and hidden tabs 
   await expect(sound).toHaveAttribute('data-audio-state', 'playing');
   await expect.poll(async () => Number(await host.getAttribute('data-frames'))).toBeGreaterThan(Number(frames));
   await expect(page.locator('canvas')).toHaveAttribute('data-i6-canvas', 'original');
+  await approachRoom(page, true);
   await expect(page.getByLabel('Attempted spell — fictional only')).toBeVisible();
 });

@@ -7,15 +7,25 @@ export async function enterRoad(page: Page, keyboard = false) {
   if (keyboard) { await button.focus(); await button.press('Enter'); } else await button.click();
   await expect(page.getByTestId('audio-controls')).toHaveAttribute('data-audio-state', 'playing');
 }
-export async function openRoad(page: Page, keyboard = false) { await page.goto('./'); await enterRoad(page, keyboard); }
-export async function reloadRoad(page: Page, keyboard = false) { await page.reload(); await enterRoad(page, keyboard); }
+/** Open the current working object when a test needs its close-up controls. */
+export async function approachRoom(page: Page, keyboard = false) {
+  await expect(page.getByTestId('audio-controls')).toBeVisible();
+  const target = page.locator('.world-hotspots:not([inert]) :is([data-objective][aria-haspopup="dialog"], [data-work-object])');
+  if (await target.count()) {
+    if (keyboard) await target.press('Enter');
+    else await target.click();
+  }
+}
+export async function openRoad(page: Page, keyboard = false) { await page.goto('./'); await enterRoad(page, keyboard); await approachRoom(page, keyboard); }
+export async function reloadRoad(page: Page, keyboard = false) { await page.reload(); await enterRoad(page, keyboard); await approachRoom(page, keyboard); }
 
 /** Follow the same folded-map workflow used by the player. */
-export async function travelViaMap(page: Page, name: string | RegExp) {
+export async function travelViaMap(page: Page, name: string | RegExp, approach = true) {
   await page.getByRole('button', { name: 'Road map', exact: true }).click();
   const map = page.getByRole('dialog', { name: 'Your folded Road map', exact: true });
   await map.getByRole('button', { name, exact: typeof name === 'string' }).click();
   await expect(map).not.toBeVisible();
+  if (approach) await approachRoom(page);
 }
 export async function objectAction(page: Page, name: string | RegExp) {
   await page.getByRole('button', { name: 'Room objects', exact: true }).click();

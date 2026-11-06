@@ -1,4 +1,4 @@
-import { openRoad, reloadRoad } from './support';
+import { approachRoom, openRoad, reloadRoad } from './support';
 import { expect, test } from '@playwright/test';
 
 test('illustrated cottage renders, shares accessible object controls and preserves final theft state', async ({ page }, testInfo) => {
@@ -13,6 +13,7 @@ test('illustrated cottage renders, shares accessible object controls and preserv
   await expect(page.getByRole('group', { name: 'Scene action list' })).toBeVisible();
   await page.getByRole('button', { name: 'Inspect the cottage door', exact: true }).last().click();
   await page.getByLabel('Borrowing alias', { exact: true }).fill('Sprite Finch'); await page.getByRole('button', { name: /Stamp my card/ }).click();
+  await page.getByRole('button', { name: 'Try the cottage door', exact: true }).click();
   await page.getByLabel('Attempted spell — fictional only').fill('vanishing-pearls'); await page.getByRole('button', { name: 'Show spell', exact: true }).click();
   await expect(page.getByTestId('feedback')).toContainText('little eye');
   await page.clock.pauseAt(new Date(await page.evaluate(() => Date.now()) + 5000));
@@ -22,19 +23,20 @@ test('illustrated cottage renders, shares accessible object controls and preserv
   await expect(skip).not.toBeVisible(); await expect(page.getByTestId('save-status')).toContainText('saved in this browser');
   await reloadRoad(page); await expect(page.getByRole('button', { name: /Begin account recovery/ })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Skip dot-theft animation' })).not.toBeVisible();
-  await page.getByRole('button', { name: 'Close borrowing card', exact: true }).click();
   await page.getByRole('button', { name: 'Inspect Agatha’s ribbon', exact: true }).click(); await expect(page.getByTestId('feedback')).toContainText('Agatha’s pocket');
   await expect(stage).toHaveAttribute('data-renderer', 'ready'); await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({ path: testInfo.outputPath('cottage-scene.png'), fullPage: true });
-  await expect(page.getByRole('dialog', { name: 'Your borrowing card', exact: true })).toBeVisible();
+  await expect(page.getByRole('dialog', { name: 'Your borrowing card', exact: true })).toBeHidden();
   await expect(page.getByRole('button', { name: 'Open borrowing card', exact: true })).toHaveCount(0);
   await page.getByRole('button', { name: /Begin account recovery/ }).click();
+  await page.getByRole('button', { name: 'Approach the coven circle', exact: true }).click();
   await page.getByRole('button', { name: 'Inspect leaf stamp' }).click(); await expect(page.getByTestId('feedback')).toContainText('leaf stamp is valid');
   expect(errors).toEqual([]);
 });
 
 test('garden caps share one coordinate definition and allow undo and optional completion', async ({ page }, testInfo) => {
   await openRoad(page); await page.getByRole('button', { name: 'Close borrowing card', exact: true }).click(); await page.getByRole('button', { name: 'Visit the Remember me garden' }).click();
+  await approachRoom(page);
   await expect(page.getByTestId('scene-stage')).toHaveAttribute('data-renderer', 'ready');
   const cap = page.getByRole('button', { name: 'Cap 3: unlit', exact: true });
   await cap.focus(); await expect(page.locator('.cap-preview')).toContainText('Cap 3 changes caps 2, 3 and 4');
@@ -47,13 +49,14 @@ test('garden caps share one coordinate definition and allow undo and optional co
   await expect(page.getByTestId('scene-stage')).toHaveAttribute('data-renderer', 'ready');
   await page.evaluate(() => window.scrollTo(0, 0)); await page.screenshot({ path: testInfo.outputPath('garden-scene.png'), fullPage: true });
   await page.getByRole('button', { name: 'Return to cottage', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'A name for the journey.' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Open borrowing card', exact: true })).toBeVisible();
 });
 
 test('reduced motion reaches canvas presentation and removes theft playback', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' }); await openRoad(page);
   await expect(page.getByTestId('scene-stage')).toHaveAttribute('data-motion', 'reduced');
   await page.getByLabel('Borrowing alias', { exact: true }).fill('Still Finch'); await page.getByRole('button', { name: /Stamp my card/ }).click();
+  await page.getByRole('button', { name: 'Try the cottage door', exact: true }).click();
   await page.getByLabel('Attempted spell — fictional only').fill('still-spell'); await page.getByRole('button', { name: 'Try the door', exact: true }).click();
   await expect(page.getByRole('button', { name: /Begin account recovery/ })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Skip dot-theft animation' })).toHaveCount(0);
@@ -67,6 +70,7 @@ test('WebGL context loss switches to a usable still view', async ({ page }) => {
   await expect(page.getByRole('dialog', { name: 'Your borrowing card', exact: true }).getByRole('button', { name: 'Retry illustrated scene', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Close borrowing card', exact: true }).click();
   await page.getByRole('button', { name: 'Visit the Remember me garden' }).click();
+  await approachRoom(page);
   await page.getByRole('button', { name: 'Cap 3: unlit', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Cap 3: lit', exact: true })).toBeVisible();
   await expect(page.getByTestId('scene-stage')).toHaveAttribute('data-renderer', 'fallback');
@@ -92,6 +96,7 @@ test('an unexpected GPU draw failure preserves the React controls and saved run'
   await page.evaluate(() => { (window as unknown as { failDraw: boolean }).failDraw = true; });
   await expect(page.getByTestId('scene-stage')).toHaveAttribute('data-renderer', 'fallback');
   await page.getByLabel('Borrowing alias', { exact: true }).fill('Resilient Finch'); await page.getByRole('button', { name: /Stamp my card/ }).click();
+  await page.getByRole('button', { name: 'Try the cottage door', exact: true }).click();
   await expect(page.getByText('CARD STAMPED · Resilient Finch')).toBeVisible(); await expect(page.getByTestId('save-status')).toContainText('saved in this browser');
   await page.evaluate(() => { (window as unknown as { failDraw: boolean }).failDraw = false; });
   await page.getByRole('button', { name: 'Retry illustrated scene', exact: true }).click();

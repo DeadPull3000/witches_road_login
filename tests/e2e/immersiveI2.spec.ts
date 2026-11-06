@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { openRoad, travelViaMap, returnToRoom } from './support';
+import { approachRoom, openRoad, travelViaMap } from './support';
 import { completedRun, throughTrial } from '../helpers';
 import { createRun, type RunState } from '../../src/game/state';
 
@@ -28,6 +28,7 @@ async function sameWorld(page: Page) {
 test('the folded map gates rooms, traps focus and preserves the card through map and notebook visits', async ({ page }, testInfo) => {
   await trackContext(page); await openRoad(page); await markCanvas(page);
   await page.getByLabel('Borrowing alias', { exact: true }).fill('Map Finch'); await page.getByRole('button', { name: /Stamp my card/ }).click();
+  await page.getByRole('button', { name: 'Try the cottage door', exact: true }).click();
   await page.getByLabel('Attempted spell — fictional only').fill('kept-on-the-paper');
   const mapButton = page.getByRole('button', { name: 'Road map', exact: true }); await mapButton.focus(); await mapButton.press('Enter');
   const map = page.getByRole('dialog', { name: 'Your folded Road map', exact: true });
@@ -48,6 +49,7 @@ test('the folded map gates rooms, traps focus and preserves the card through map
 
 test('the saved-card folio preserves progress and preferences through new and resumed journeys', async ({ page }, testInfo) => {
   test.setTimeout(60_000); await trackContext(page); await openRoad(page); await markCanvas(page); await importRun(page, throughTrial('studio'));
+  await approachRoom(page);
   await page.getByRole('button', { name: /CHANNEL 1/ }).click(); await page.getByLabel('Two-digit recording number').fill('22'); await page.getByRole('button', { name: 'Dial the number', exact: true }).click();
   await expect(page.getByTestId('feedback')).toContainText('misses a rhythm');
   await page.getByRole('button', { name: 'Settings', exact: true }).click(); await page.getByRole('combobox', { name: 'Motion', exact: true }).selectOption('reduced');
@@ -55,10 +57,12 @@ test('the saved-card folio preserves progress and preferences through new and re
   await page.screenshot({ path: testInfo.outputPath('settings-surface.png'), fullPage: true });
   await page.getByRole('button', { name: 'Close panel', exact: true }).click();
   await page.getByRole('button', { name: 'Journeys', exact: true }).click(); await page.getByRole('button', { name: 'New showcase journey', exact: true }).click();
-  await expect(page.getByRole('dialog', { name: 'Room objects', exact: true })).toBeVisible(); await page.getByRole('button', { name: 'Return to room notes', exact: true }).click();
+  const objects = page.getByRole('dialog', { name: 'Room objects', exact: true });
+  await objects.getByRole('button', { name: 'Open borrowing card', exact: true }).click();
   await expect(page.getByLabel('Borrowing alias', { exact: true })).toHaveValue(''); await expect(page.getByTestId('journey-mode')).toContainText('SHOWCASE');
   await page.getByRole('button', { name: 'Journeys', exact: true }).click(); await expect(page.getByRole('button', { name: 'Resume Violet Finch', exact: true })).toBeVisible(); await page.screenshot({ path: testInfo.outputPath('saved-card-folio.png'), fullPage: true }); await page.getByRole('button', { name: 'Resume Violet Finch', exact: true }).click();
-  await expect(page.getByTestId('scene-stage')).toHaveAttribute('data-scene', 'studio'); await returnToRoom(page);
+  await expect(page.getByTestId('scene-stage')).toHaveAttribute('data-scene', 'studio');
+  await objects.getByRole('button', { name: 'Approach the recording desk', exact: true }).click();
   await expect(page.getByLabel('Two-digit recording number')).toHaveValue('22'); await expect(page.getByRole('button', { name: /CHANNEL 1/ })).toHaveAttribute('aria-pressed', 'true');
   await expect(page.locator('html')).toHaveAttribute('data-motion', 'reduced'); await expect(page.locator('html')).toHaveAttribute('data-text', 'large');
   await expect(page.getByRole('button', { name: /hint|suggested move/i })).toHaveCount(0); await sameWorld(page);
@@ -82,7 +86,7 @@ test('every location uses one world canvas, with the library reached through its
   await page.getByRole('button', { name: 'Step back from the door', exact: true }).click(); await page.getByRole('button', { name: 'Look inside the cottage', exact: true }).click();
   await expect(page.getByTestId('world-renderer')).toHaveAttribute('data-active-asset', isMobile ? '/assets/cottage/cottage-room-portrait.webp' : '/assets/cottage/cottage-room.webp'); await sameWorld(page);
   await page.getByRole('button', { name: 'Use the knocker · sign in', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Your shelf, at last.', exact: true })).toBeVisible(); await sameWorld(page); expect(errors).toEqual([]);
+  await expect(page.getByRole('button', { name: 'Inspect your borrowing ledger', exact: true })).toBeVisible(); await sameWorld(page); expect(errors).toEqual([]);
 });
 
 test('a slow obsolete room finishes without replacing the newer destination or its renderer', async ({ page }) => {
@@ -136,6 +140,8 @@ test('saved-card and file-read failures can be retried without losing the active
   const file = { name: 'retry.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(createRun())) };
   await input.setInputFiles(file); await expect(page.getByRole('alert')).toContainText('could not be read');
   await page.evaluate(() => { (window as unknown as { denyFile: boolean }).denyFile = false; }); await input.setInputFiles(file);
+  await expect(page.getByTestId('feedback')).toContainText('Imported as a new slot');
+  await approachRoom(page);
   await expect(page.getByLabel('Borrowing alias', { exact: true })).toHaveValue('');
   await page.getByRole('button', { name: 'Journeys', exact: true }).click(); await expect(page.getByRole('button', { name: 'Resume Archive Finch', exact: true })).toBeVisible();
 });
