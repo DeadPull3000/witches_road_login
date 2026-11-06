@@ -10,16 +10,17 @@ import { rectStyle, WORLD_ASSETS, type Rect } from './layout';
 type ActionProps = { run: RunState; busy: boolean; act: (command: Command) => Promise<void>; flourish: Flourish | null };
 type Props = ActionProps & {
   kind: EncounterId; frame: Rect; surfaceRef: RefObject<HTMLDivElement | null>; close: () => void;
-  skip: () => void; children: ReactNode;
+  skip: () => void; clock: ReactNode; children: ReactNode;
 };
 
-export function EncounterStage({ kind, frame, surfaceRef, close, skip, children, ...actions }: Props) {
+export function EncounterStage({ kind, frame, surfaceRef, close, skip, clock, children, ...actions }: Props) {
   const meta = ENCOUNTERS[kind];
   return <div ref={surfaceRef} className={`instrument-stage encounter-stage encounter-${kind}`} style={{ ...rectStyle(frame), height: 'auto', maxHeight: frame.height }}
     role="dialog" aria-modal="false" aria-label={meta.title} tabIndex={-1} data-world-surface data-encounter={kind}
     onKeyDown={event => { if (event.key === 'Escape') { event.stopPropagation(); close(); } }}>
     <header className="instrument-heading">
       <div><span>WESTVIEW · ROOM OBJECTS</span><b>{meta.title}</b></div>
+      {clock}
       <button onClick={close} aria-label={`Close ${meta.title.toLowerCase()}`}>×</button>
     </header>
     {kind === 'television' ? <Television {...actions} skip={skip} /> : <EncounterDetail kind={kind} {...actions} />}

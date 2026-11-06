@@ -1,6 +1,6 @@
-import { COVEN, SCENES, TRIALS, type SceneId, type Trial } from '../content/scenes';
+import { COVEN, SCENES, SCENE_INFO, TRIALS, type SceneId, type Trial } from '../content/scenes';
 import { cabinMatches, CARDS, confirmationMatches, cut, greenhouseMatches, JUG_MOVES, jugMove, quarrel, studioMatches, toggleMushroom, towerMatches, vineChoices, type Card, type JugMove, type Node } from '../puzzles/rules';
-import { canEnter, canSignIn, runSchema, type RunState } from './state';
+import { canEnter, canSignIn, createRun, currentUnsolvedTrial, runSchema, TRIAL_DURATION_MS, type RunState } from './state';
 import { MEMORIES, type MemoryId } from '../content/memories';
 import { ROOM_PROPS, type RoomPropId } from '../content/cottage';
 import type { DiscoveryId } from '../content/discoveries';
@@ -21,6 +21,8 @@ export type Command =
   | { type: 'SUBMIT_ATTEMPTED_SPELL' | 'START_RECOVERY' | 'MATCH_COVEN' | 'CHECK_LAMPS' | 'SUBMIT_DECK' | 'CONFIRM_DECK' | 'CLEAR_CONFIRM' | 'UNDO' | 'RESET_PUZZLE' | 'UNBIND' | 'SIGN_IN' | 'SIGN_OUT' | 'EXPIRE_SESSION' | 'RENEW_BOOK' | 'FORGET_ME' | 'KITCHEN_TIMER' | 'TOGGLE_SPEAKERS' | 'REVERSE_RECORD' | 'TURN_TV_DIAL' | 'OPEN_VISION' | 'LEAVE_VISION' | 'SUBMIT_IDENTITY' }
   | { type: 'PLACE_TOKEN'; seat: number; token: string | null }
   | { type: 'ENTER_SCENE'; scene: SceneId }
+  | { type: 'START_TRIAL_CLOCK'; runId: string; trial: Trial }
+  | { type: 'TRIAL_TIMEOUT' }
   | { type: 'JUG'; move: JugMove }
   | { type: 'DIAL_CODE'; code: string }
   | { type: 'TOGGLE_LAMP'; index: number }
@@ -46,7 +48,25 @@ const encounterPayoff: Partial<Record<EncounterId, { id: DiscoveryId; line: stri
   returnDate: { id: 'road.borrowingDate', line: 'The old stamp reads 1693. The librarian has underlined “overdue” twice.' },
 };
 
-export function applyCommand(source: RunState, command: Command, collection: readonly string[] = []): { state: RunState; message: string } {
+type CommandResult = { state: RunState; message: string; timedOut?: true };
+
+export function applyCommand(source: RunState, command: Command, collection: readonly string[] = [], at = Date.now()): CommandResult {
+  if (source.trialClock && at >= source.trialClock.endsAt) {
+    const fresh = createRun(source.mode);
+    const message = `${SCENE_INFO[source.trialClock.trial].character}’s trial ran out of time. The Road sent you back to the cottage and cleared your seals.`;
+    return {
+      state: {
+        ...fresh, runId: source.runId, seed: source.seed, revision: source.revision + 1, alias: source.alias,
+        arrival: { ...fresh.arrival, aliasStamped: source.arrival.aliasStamped },
+      },
+      message,
+      timedOut: true,
+    };
+  }
+  if (command.type === 'TRIAL_TIMEOUT') return { state: source, message: '' };
+  if (command.type === 'START_TRIAL_CLOCK' && (source.trialClock || command.runId !== source.runId || command.trial !== currentUnsolvedTrial(source))) {
+    return { state: source, message: '' };
+  }
   const state = structuredClone(source);
   let message = '';
   const inScene = (scene: SceneId) => requireRule(state.currentScene === scene, `That action belongs in ${scene}.`);
@@ -182,6 +202,7 @@ export function applyCommand(source: RunState, command: Command, collection: rea
       else if (command.scene === 'cottage' && state.puzzles.greenhouse.solved) { state.phase = 'return'; state.cottageView = 'outside'; discover(state, 'road.returnSmoke'); }
       if (['cottage', 'garden'].includes(command.scene) && state.rememberEnabled && state.milestones.hasSignedInOnce) discover(state, 'rio.gardenRecognition');
       message = 'Your place on the Road is saved.'; break;
+    case 'START_TRIAL_CLOCK': break;
     case 'JUG': {
       inScene('kitchen'); unsolved('kitchen'); requireRule(JUG_MOVES.includes(command.move), 'Unknown jug operation.');
       const p = state.puzzles.kitchen, next = jugMove(p.volumes, command.move);
@@ -207,8 +228,10 @@ export function applyCommand(source: RunState, command: Command, collection: rea
       if (state.puzzles.studio.reversed) discover(state, 'alice.backwardRecord');
       message = state.puzzles.studio.reversed ? 'The groove runs backwards. An orange spark leans against the music.' : 'The record turns forward again.'; break;
     case 'KITCHEN_TIMER':
-      inScene('kitchen'); state.puzzles.kitchen.timerDismissed = true; discover(state, 'jen.timerMitt');
-      message = 'The oven timer rings. An oven mitt switches it off. Jen: “We are not doing deadlines today.” Your quantities are unchanged.'; break;
+      inScene('kitchen');
+      if (state.puzzles.kitchen.solved || state.puzzles.kitchen.timerDismissed) return { state: source, message: '' };
+      state.puzzles.kitchen.timerDismissed = true; discover(state, 'jen.timerMitt');
+      message = 'The oven chimes. An oven mitt switches it off. Your quantities are unchanged.'; break;
     case 'TOGGLE_LAMP': {
       inScene('cabin'); unsolved('cabin'); requireRule(Number.isInteger(command.index) && command.index >= 0 && command.index < 4, 'Choose lamp A, B, C or D.');
       const p = state.puzzles.cabin; p.history = history(p.history, p.lamps); p.lamps[command.index] ^= 1; message = `Lamp ${'ABCD'[command.index]} is ${p.lamps[command.index] ? 'lit' : 'unlit'}.`; break;
@@ -301,8 +324,14 @@ export function applyCommand(source: RunState, command: Command, collection: rea
     case 'FORGET_ME': state.rememberEnabled = false; message = 'Recognition disabled. Your garden and completed trials remain saved.'; break;
     default: throw new RuleError('Unknown command.');
   }
+  if (state.trialClock && state.puzzles[state.trialClock.trial].solved) state.trialClock = null;
+  if (!state.trialClock && (command.type === 'ENTER_SCENE' || command.type === 'START_TRIAL_CLOCK')) {
+    const trial = currentUnsolvedTrial(state);
+    if (trial) state.trialClock = { trial, endsAt: at + TRIAL_DURATION_MS };
+  }
   if (JSON.stringify(state) === JSON.stringify(source)) return { state: source, message };
-  state.revision++; state.statistics.moves++;
+  state.revision++;
+  if (command.type !== 'START_TRIAL_CLOCK') state.statistics.moves++;
   return { state: runSchema.parse(state), message };
 }
 

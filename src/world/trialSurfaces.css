@@ -259,7 +259,7 @@
 .counter-oven { display: flex; align-items: center; gap: 6px; max-width: max-content; margin-top: 8px; padding: 3px 7px; border: 1px solid #a58568; background: #302b35; }
 .counter-oven svg { width: 28px; height: 26px; flex: none; fill: none; stroke: #ead7b8; stroke-width: 2; }
 .counter-oven .oven-mitt { fill: #dbb58b; stroke: #614636; }
-.counter-oven .kitchen-clock { margin: 0; color: #f9e4c1; font: 11px/1.3 monospace; }
+.counter-oven .oven-caption { margin: 0; color: #f9e4c1; font: 11px/1.3 monospace; }
 .workbench-stage[data-expanded=false] .counter-oven { position: absolute; left: 0; bottom: calc(100% + 6px); max-width: 155px; }
 .workbench-stage[data-expanded=false] .counter-oven svg { display: none; }
 .pumpkin-witness { position: absolute; right: 0; bottom: 13%; width: 12%; pointer-events: none; }

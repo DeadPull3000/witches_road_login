@@ -36,6 +36,8 @@ npm run dev
 
 Open `http://127.0.0.1:5187/` and select **Enter the Road with sound** to start the room audio. Use a fictional alias and attempted spell. Progress is saved in this browser; export it from Settings before clearing browser data. Story and showcase journeys use separate slots.
 
+Each of the five required trials starts a five-minute countdown on entry. The deadline continues through menus, side trips, and reloads. A timeout returns you to the opening cottage and resets the current journey. Your stamped alias, discovery collection, settings, and other saved journeys carry over.
+
 ## Checks and production build
 
 ```powershell

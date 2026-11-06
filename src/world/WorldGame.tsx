@@ -11,7 +11,7 @@ import { sceneCaption, sceneObjects, shouldReduceMotion, type SceneObject } from
 import { CottageDetails } from '../scenes/CottageDetails';
 import { vineChoices } from '../puzzles/rules';
 import { FLOURISH_LABEL } from '../scenes/cues';
-import { useKitchenTimer } from '../effects/useKitchenTimer';
+import { useOvenChime } from '../effects/useOvenChime';
 import { cottageDeskBounds, rectStyle, worldApproachBounds, worldEncounterBounds, worldLayout, worldObjectBounds, type Point } from './layout';
 import { cottageKnockerLabel, locationName, roomDoor } from './navigation';
 import { useWorldCues } from './useWorldCues';
@@ -20,6 +20,7 @@ import { InstrumentStage } from './InstrumentStage';
 import { RecordingStage } from './RecordingStage';
 import { studioPlacement } from './studioLayout';
 import { TrialRoomProps } from './TrialRoomProps';
+import { TrialClock } from './TrialClock';
 import { isPaintedTrial, trialTag } from './trialSurfaces';
 import { INSTRUMENTS, instrumentFrame, isInstrumentScene } from './instruments';
 import { FINALE_SURFACES, FinaleStage, type FinaleKind } from './FinaleStage';
@@ -77,7 +78,7 @@ export function WorldGame({ run, preferences, collection, busy, lastCommand, act
   const finale: FinaleKind | null = surface === 'rug' && run.currentScene === 'cottage' && run.cottageView === 'inside' ? 'rug' : surface === 'work' ? primaryFinale : null;
   const paperOpen = surface === 'objects' || surface === 'work' && arrival;
   const geometryKey = `${viewport.width}:${viewport.height}:${viewport.left}:${viewport.top}:${preferences.textSize}`;
-  const spellOrigin = useRef<Point | null>(null), sceneKey = `${run.runId}:${run.currentScene}:${run.currentScene === 'cottage' ? run.cottageView : ''}`;
+  const spellOrigin = useRef<Point | null>(null), sceneKey = `${run.runId}:${run.currentScene}:${run.currentScene === 'cottage' ? `${run.cottageView}:${run.phase}` : ''}`;
   const { theft, flourish, skipTheft, skipFlourish } = useWorldCues(run, lastCommand, reduced, () => setSurface(null), () => setSurface('work'));
   const visual = useRef<WorldVisual>({ layout, run, reduced, theft, flourish, spellOrigin: null, occluded: true });
   visual.current = { layout, run, reduced, theft, flourish, spellOrigin: spellOrigin.current, occluded: panelOpen || surface !== null || !sound.ready };
@@ -118,7 +119,9 @@ export function WorldGame({ run, preferences, collection, busy, lastCommand, act
     }
     void dispatch(object.command);
   }
-  const objects = sceneObjects(run, collection), timer = useKitchenTimer(run, dispatch, sound.ready && !panelOpen), door = roomDoor(run);
+  useOvenChime(run, dispatch, sound.ready && !panelOpen);
+  const objects = sceneObjects(run, collection), door = roomDoor(run);
+  const clock = run.trialClock && !panelOpen ? <TrialClock clock={run.trialClock} /> : null;
   const disabled = (object: SceneObject) => busy || (object.id.startsWith('garden.cap.') && run.puzzles.garden.solved) || (object.id.startsWith('cabin.lamp.') && run.puzzles.cabin.solved) || (object.command.type === 'TRACE_VINE' && (run.puzzles.greenhouse.solved || !vineChoices(run.puzzles.greenhouse.route).includes(object.command.node)));
   const isApproach = (object: SceneObject) => object.id === 'cottage.rug' || object.id === 'account.ledger' || returning && object.id === 'cottage.door';
   function bounds(object: SceneObject) {
@@ -216,6 +219,7 @@ export function WorldGame({ run, preferences, collection, busy, lastCommand, act
     <span className="sr-only" data-testid="journey-mode">{run.mode.toUpperCase()} JOURNEY</span>
     {!sound.ready ? <AudioEntrance embedded status={sound.status} starting={sound.starting} enter={sound.enter} exportJourney={exportJourney} /> : <>
       <div className="world-location" aria-hidden="true"><span>{SCENE_INFO[run.currentScene].subtitle}</span><i>{locationName(run)}</i></div>
+      {surface === null && clock && <div className="world-trial-clock">{clock}</div>}
       <div className="world-hotspots" aria-label="Illustrated room objects" aria-hidden={surface !== null || undefined} inert={surface !== null}>
         {deskBounds && <button className="world-object finale-approach" style={rectStyle(deskBounds)} onClick={event => open('objects', event.currentTarget)}><b aria-hidden="true">▱</b><span>Inspect the writing desk</span></button>}
         {objects.map(object => {
@@ -268,24 +272,24 @@ export function WorldGame({ run, preferences, collection, busy, lastCommand, act
         placement={studioPlacement(layout, preferences.textSize)} layout={layout}
         character={layout.character && !missing.has(layout.character) ? artUrl(layout.character) : null}
         onCharacterError={() => { if (layout.character) markMissing(layout.character); }}
-        surfaceRef={workPaper} open={() => open('work')} close={close} lastCommand={lastCommand}>
+        surfaceRef={workPaper} open={() => open('work')} close={close} lastCommand={lastCommand} clock={surface === 'work' ? clock : null}>
         {feedback}{recovery}{rendererRecovery}
       </RecordingStage> : instrument && <InstrumentStage key={`${run.runId}:${instrument}`} run={run} scene={instrument} busy={busy} act={dispatch}
         expanded={surface === 'work'} obscured={surface === 'objects' || surface === 'encounter'}
         active={surface === 'work' && !panelOpen && !paused && sound.ready} geometryKey={geometryKey}
         frame={paintedTrial && surface !== 'work' ? trialTag(paintedTrial, layout) : instrumentFrame(viewport.width, viewport.height, surface === 'work', instrument)}
         surfaceRef={workPaper} open={() => open('work')} close={close} openIntercom={trigger => approachEncounter('visionIntercom', trigger)}
-        timer={timer} reduced={reduced} blooming={flourish === 'flower'} lastCommand={lastCommand} feedback={feedback}
+        clock={surface === 'work' ? clock : null} reduced={reduced} blooming={flourish === 'flower'} lastCommand={lastCommand} feedback={feedback}
         recovery={recovery} rendererRecovery={rendererRecovery} />}
-      {finale && <FinaleStage key={`${run.runId}:${finale}`} kind={finale} run={run} busy={busy} act={dispatch} active={!panelOpen && !paused} geometryKey={geometryKey} frame={instrumentFrame(viewport.width, viewport.height, true)} surfaceRef={workPaper} flourish={flourish} close={close} openDateStamp={trigger => approachEncounter('returnDate', trigger)}>
+      {finale && <FinaleStage key={`${run.runId}:${finale}`} kind={finale} run={run} busy={busy} act={dispatch} active={!panelOpen && !paused} geometryKey={geometryKey} frame={instrumentFrame(viewport.width, viewport.height, true)} surfaceRef={workPaper} flourish={flourish} clock={clock} close={close} openDateStamp={trigger => approachEncounter('returnDate', trigger)}>
         {feedback}{recovery}{rendererRecovery}
       </FinaleStage>}
       {surface === 'encounter' && encounter && <EncounterStage key={`${run.runId}:${encounter}`} kind={encounter} run={run} busy={busy} act={dispatch}
-        frame={{ ...encounterFrame, width: Math.min(680, encounterFrame.width) }} surfaceRef={workPaper} close={close} skip={skipFlourish} flourish={flourish}>
+        frame={{ ...encounterFrame, width: Math.min(680, encounterFrame.width) }} surfaceRef={workPaper} close={close} skip={skipFlourish} flourish={flourish} clock={clock}>
         {feedback}{recovery}{rendererRecovery}
       </EncounterStage>}
       <div ref={paper} data-world-surface={paperOpen || undefined} className={`world-paper world-borrowing-card ${run.currentScene !== 'cottage' ? 'world-room-surface' : ''} ${surface === 'objects' ? 'world-object-page' : ''}`} role="dialog" aria-modal="false" aria-label={surface === 'objects' ? 'Room objects' : 'Your borrowing card'} tabIndex={-1} hidden={!paperOpen} onKeyDown={event => { if (event.key === 'Escape') { event.stopPropagation(); close(); } }}>
-        <div className="world-paper-heading"><span>{surface === 'objects' ? 'FIELD NOTES · ROOM OBJECTS' : 'WESTVIEW PUBLIC LIBRARY · BORROWER RECORD'}</span><button aria-label={surface === 'objects' ? 'Close room objects' : 'Close borrowing card'} onClick={close}>×</button></div>
+        <div className="world-paper-heading"><span>{surface === 'objects' ? 'FIELD NOTES · ROOM OBJECTS' : 'WESTVIEW PUBLIC LIBRARY · BORROWER RECORD'}</span>{paperOpen && clock}<button aria-label={surface === 'objects' ? 'Close room objects' : 'Close borrowing card'} onClick={close}>×</button></div>
         {arrival && <fieldset className="world-card-controls" hidden={surface !== 'work'} aria-busy={busy}><legend className="sr-only">Agatha’s room controls</legend><ArrivalCard key={run.runId} run={run} act={dispatch} /></fieldset>}
         {surface === 'objects' && instrument && <RoomRules scene={instrument} opposite={run.puzzles.tower.stage === 'confirming'} />}
         {surface === 'objects' && <fieldset className="world-object-list" aria-label="Scene action list">

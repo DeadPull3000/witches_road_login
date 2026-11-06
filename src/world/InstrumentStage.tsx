@@ -14,7 +14,7 @@ import { isPaintedTrial } from './trialSurfaces';
 
 type ActionProps = { run: RunState; busy: boolean; act: (command: Command) => Promise<void> };
 type SharedScene = Exclude<InstrumentScene, 'studio'>;
-type Props = ActionProps & { scene: SharedScene; expanded: boolean; obscured: boolean; active: boolean; geometryKey: string; frame: Rect; surfaceRef: RefObject<HTMLDivElement | null>; open: () => void; close: () => void; openIntercom: (trigger: HTMLButtonElement) => void; timer: number; reduced: boolean; blooming: boolean; lastCommand: Command | null; feedback: ReactNode; recovery: ReactNode; rendererRecovery: ReactNode };
+type Props = ActionProps & { scene: SharedScene; expanded: boolean; obscured: boolean; active: boolean; geometryKey: string; frame: Rect; surfaceRef: RefObject<HTMLDivElement | null>; open: () => void; close: () => void; openIntercom: (trigger: HTMLButtonElement) => void; clock: ReactNode; reduced: boolean; blooming: boolean; lastCommand: Command | null; feedback: ReactNode; recovery: ReactNode; rendererRecovery: ReactNode };
 
 function usePour(run: RunState, command: Command | null, reduced: boolean) {
   const previous = useRef(run), [cue, setCue] = useState<PourCue | null>(null);
@@ -28,7 +28,7 @@ function usePour(run: RunState, command: Command | null, reduced: boolean) {
   return cue;
 }
 
-export function InstrumentStage({ run, busy, act, scene, expanded, obscured, active, geometryKey, frame, surfaceRef, open, close, openIntercom, timer, reduced, blooming, lastCommand, feedback, recovery, rendererRecovery }: Props) {
+export function InstrumentStage({ run, busy, act, scene, expanded, obscured, active, geometryKey, frame, surfaceRef, open, close, openIntercom, clock, reduced, blooming, lastCommand, feedback, recovery, rendererRecovery }: Props) {
   const meta = INSTRUMENTS[scene], cue = usePour(run, lastCommand, reduced || !active);
   const workbench = isPaintedTrial(scene);
   const solved = scene === 'threshold' ? run.threshold.opened : run.puzzles[scene].solved;
@@ -36,6 +36,7 @@ export function InstrumentStage({ run, busy, act, scene, expanded, obscured, act
   return <div ref={surfaceRef} className={`instrument-stage instrument-${scene}${workbench ? ' workbench-stage' : ''}`} style={rectStyle(frame)} data-testid="instrument-stage" data-instrument={scene} data-expanded={expanded} data-world-surface={expanded || undefined} role={expanded ? 'dialog' : undefined} aria-modal={expanded ? 'false' : undefined} aria-label={expanded ? meta.title : undefined} tabIndex={-1} hidden={obscured} onKeyDown={event => { if (expanded && event.key === 'Escape') { event.stopPropagation(); close(); } }}>
     <header className="instrument-heading" hidden={!expanded}>
       <div><span>{meta.inscription}</span><b>{meta.title}</b></div>
+      {clock}
       {scene === 'vision' && <button className="vision-return" disabled={busy} onClick={() => void act({ type: 'LEAVE_VISION' })}>Return to the cottage television</button>}
       <button onClick={close} aria-label={meta.close}>×</button>
     </header>
@@ -50,7 +51,7 @@ export function InstrumentStage({ run, busy, act, scene, expanded, obscured, act
       {scene === 'garden' && <RememberingRing run={run} act={act} busy={busy}/>}
       {scene === 'vision' && <VisionConsole run={run} act={act} busy={busy} onIntercom={openIntercom} />}
     </div>
-    {scene === 'kitchen' && <aside className="counter-oven" data-dismissed={run.puzzles.kitchen.timerDismissed}><svg viewBox="0 0 60 56" aria-hidden="true"><path d="M5 6h50v44H5zM5 17h50M13 24h34v19H13z"/><circle cx="16" cy="11" r="2"/><circle cx="27" cy="11" r="2"/>{run.puzzles.kitchen.timerDismissed && <path className="oven-mitt" d="M34 13v-6q0-5 5-5h7q5 0 5 5v18H34l-7-9q-2-5 3-5z" />}</svg><p className="kitchen-clock" role="timer" aria-label="Oven timer">{run.puzzles.kitchen.timerDismissed ? 'The oven mitt has silenced the timer.' : run.puzzles.kitchen.solved ? 'The oven timer is put away.' : `Oven timer · 00:${String(timer).padStart(2, '0')}`}</p></aside>}
+    {scene === 'kitchen' && <aside className="counter-oven" data-dismissed={run.puzzles.kitchen.timerDismissed} data-testid="oven-chime"><svg viewBox="0 0 60 56" aria-hidden="true"><path d="M5 6h50v44H5zM5 17h50M13 24h34v19H13z"/><circle cx="16" cy="11" r="2"/><circle cx="27" cy="11" r="2"/>{run.puzzles.kitchen.timerDismissed && <path className="oven-mitt" d="M34 13v-6q0-5 5-5h7q5 0 5 5v18H34l-7-9q-2-5 3-5z" />}</svg><p className="oven-caption">{run.puzzles.kitchen.solved ? 'Jen has put the mitt away.' : run.puzzles.kitchen.timerDismissed ? 'The oven mitt has hushed the chime.' : 'A little chime waits inside the oven.'}</p></aside>}
     <div className="instrument-end" hidden={!expanded}>
       {solved && scene !== 'garden' && scene !== 'vision' && <div className="instrument-exit"><RoadEmblem kind={scene === 'kitchen' ? 'cup' : scene === 'cabin' ? 'lamp' : scene === 'greenhouse' ? 'flower' : 'cards'} /><span>{scene === 'threshold' ? 'The coven is assembled. Sharon counts.' : 'Seal earned. Your work is safe.'}</span><button className="instrument-door" disabled={busy} onClick={() => void act({ type: 'ENTER_SCENE', scene: next })}>{scene === 'threshold' ? 'Enter Jen’s kitchen' : next === 'cottage' ? 'Return to the cottage' : `Continue to ${SCENE_INFO[next].character}’s ${next}`} <span aria-hidden>↗</span></button></div>}
       {!solved && ['kitchen','cabin','greenhouse','garden'].includes(scene) && <div className="instrument-tools"><button disabled={busy} onClick={() => void act({ type: 'UNDO' })}>↶ Undo last move</button><button disabled={busy} onClick={() => void act({ type: 'RESET_PUZZLE' })}>Reset this puzzle</button></div>}

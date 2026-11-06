@@ -23,7 +23,7 @@ test('kitchen art, accepted pours, active timer and character reactions preserve
   await expect(page.getByTestId('jug-3')).toHaveText('3 / 3 cups'); await expect(page.getByTestId('jug-5')).toHaveText('2 / 5 cups');
   await page.evaluate(() => window.scrollTo(0, 0)); await page.screenshot({ path: testInfo.outputPath('kitchen-scene.png'), fullPage: true });
   await expect(page.getByTestId('save-status')).toContainText('saved in this browser'); await reloadRoad(page);
-  await expect(page.getByRole('timer', { name: 'Oven timer' })).toContainText('oven mitt has silenced');
+  await expect(page.getByTestId('oven-chime')).toContainText('oven mitt has hushed');
   for (const name of ['Empty 3-cup jug', 'Pour 5-cup into 3-cup', 'Fill 5-cup jug', 'Pour 5-cup into 3-cup']) await jugAction(page, name);
   await expect(page.getByTestId('jug-5')).toHaveText('4 / 5 cups'); await expect(page.locator('.scene-art-caption')).toContainText('Precisely');
   expect(errors).toEqual([]);

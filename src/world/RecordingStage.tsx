@@ -27,6 +27,7 @@ type Props = {
   open: () => void;
   close: () => void;
   lastCommand: Command | null;
+  clock: ReactNode;
   children: ReactNode;
 };
 type StudioState = RunState['puzzles']['studio'];
@@ -36,7 +37,7 @@ const relativeTo = (rect: Rect, frame: Rect): Rect => ({ ...rect, x: rect.x - fr
 
 export function RecordingStage({
   run, act, busy, expanded, obscured, active, reduced, geometryKey, placement, layout, character,
-  onCharacterError, surfaceRef, open, close, lastCommand, children,
+  onCharacterError, surfaceRef, open, close, lastCommand, clock, children,
 }: Props) {
   const studio = run.puzzles.studio;
   const [code, setCode] = useState(studio.attempt);
@@ -87,6 +88,7 @@ export function RecordingStage({
       <header className="instrument-heading studio-heading">
         <div className="studio-title-bar">
           <div><span>{meta.inscription}</span><b>{meta.title}</b></div>
+          {clock}
           <button onClick={close} aria-label={meta.close}>×</button>
         </div>
         {dock === 'sheet' && speakerPanel}

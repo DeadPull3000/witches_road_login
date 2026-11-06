@@ -51,7 +51,7 @@ test('the counter uses its vessel geometry, accepted quantities, source tools an
   for(const name of ['Empty 3-cup jug','Pour 5-cup into 3-cup','Fill 5-cup jug','Pour 5-cup into 3-cup'])await jugAction(page,name);
   await expect(page.getByTestId('jug-5')).toHaveText('4 / 5 cups');await expect(page.getByRole('button',{name:'Pour 5-cup into 3-cup',exact:true})).toBeDisabled();
   await page.getByRole('button',{name:'Select the 3-cup jug',exact:true}).click();for(const name of ['Fill 3-cup jug','Empty 3-cup jug','Pour 3-cup into 5-cup'])await expect(page.getByRole('button',{name,exact:true})).toBeDisabled();
-  await expect(page.getByRole('timer',{name:'Oven timer'})).toContainText('put away');await page.screenshot({path:testInfo.outputPath('kitchen-seal.png'),fullPage:true});
+  await expect(page.getByTestId('oven-chime')).toContainText('put the mitt away');await page.screenshot({path:testInfo.outputPath('kitchen-seal.png'),fullPage:true});
 });
 
 test('the recording desk retains its telephone draft through approach, menus and reframing while hardware follows the saved mix',async({page},testInfo)=>{

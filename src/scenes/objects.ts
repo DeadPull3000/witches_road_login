@@ -92,7 +92,7 @@ export function sceneCaption(run: RunState): string {
   if (run.currentScene === 'garden') return 'Eight small lights. A place to be remembered.';
   if (run.currentScene === 'kitchen') return run.puzzles.kitchen.solved ? '“Measured. Precisely. I approve.” — Jen' : run.puzzles.kitchen.pours >= 3 ? 'The pumpkin follows the stream with an increasingly suspicious look.' : '“Those are measuring vessels, not suggestions.” — Jen';
   if (run.currentScene === 'studio') return run.puzzles.studio.solved ? '“That one sounded like coming home.” — Alice' : run.puzzles.studio.reversed ? 'An orange spark leans against the groove.' : 'The needle rests on Track Four. Alice listens.';
-  if (run.currentScene === 'cabin') return run.puzzles.cabin.solved ? '“Apparently human. How disappointing.” — Agatha' : run.puzzles.cabin.shadowSeen ? 'A second shadow waits behind Agatha. The lamps remain where you left them.' : 'Four lamps. No clock. Agatha is exceptionally patient about this.';
+  if (run.currentScene === 'cabin') return run.puzzles.cabin.solved ? '“Apparently human. How disappointing.” — Agatha' : run.puzzles.cabin.shadowSeen ? 'A second shadow waits behind Agatha. The lamps remain where you left them.' : 'Four lamps wait in the dark. Agatha watches the spirit candle.';
   if (run.currentScene === 'tower') return run.puzzles.tower.solved ? 'The tower seems to turn; the table holds its place. Lilia is smiling.' : run.puzzles.tower.stage === 'confirming' ? 'The opposite chair slides out. One table, two perspectives.' : '“My life comes to me out of order.” — Lilia';
   return run.arrival.theftRecorded ? '“Your password? Never seen it.” — Agatha' : 'Something about this place feels familiar.';
 }

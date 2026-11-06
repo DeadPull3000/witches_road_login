@@ -12,7 +12,7 @@ const collectionIds = (value: unknown): string[] => Array.isArray(value) ? value
 export interface SaveRepository {
   loadActive(): Promise<LoadResult>;
   load(id: string): Promise<LoadResult>;
-  save(run: RunState, expectedRevision: number | null): Promise<string[]>;
+  save(run: RunState, expectedRevision: number | null, activate?: boolean): Promise<string[]>;
   getCollection(): Promise<string[]>;
   list(): Promise<RunState[]>;
   setActive(id: string): Promise<void>;
@@ -41,7 +41,7 @@ export class IndexedRepository implements SaveRepository {
     const previous = runSchema.safeParse(stored.previous);
     return previous.success ? { kind: 'recovered', run: previous.data, raw: stored.current } : { kind: 'corrupt', raw: stored };
   }
-  async save(run: RunState, expectedRevision: number | null): Promise<string[]> {
+  async save(run: RunState, expectedRevision: number | null, activate = true): Promise<string[]> {
     const valid = runSchema.parse(run); const db = await this.db();
     const tx = db.transaction(['runs', 'meta', 'collection'], 'readwrite');
     // Attach immediately: aborts must not become unhandled rejected promises.
@@ -52,7 +52,7 @@ export class IndexedRepository implements SaveRepository {
       if (expectedRevision === null ? stored !== undefined : !stored || (stored.current as { revision?: unknown })?.revision !== expectedRevision) throw new ConflictError();
       if (expectedRevision !== null && valid.revision <= expectedRevision) throw new Error('Save revision must advance.');
       await store.put({ current: valid, previous: stored?.current ?? null }, valid.runId);
-      await tx.objectStore('meta').put(valid.runId, 'active');
+      if (activate) await tx.objectStore('meta').put(valid.runId, 'active');
       const collection = tx.objectStore('collection'); const found = collectionIds(await collection.get('discoveries'));
       const merged = [...new Set([...found, ...valid.discoveries])];
       await collection.put(merged, 'discoveries');

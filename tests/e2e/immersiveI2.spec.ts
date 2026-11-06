@@ -98,18 +98,23 @@ test('a slow obsolete room finishes without replacing the newer destination or i
   } finally { release(); }
 });
 
-test('the active-play timer waits for required sound and pauses inside the shared menus', async ({ page }) => {
+test('the oven chime waits for sound and pauses in shared menus while the trial deadline runs', async ({ page }) => {
   await page.clock.install(); await openRoad(page); await importRun(page, throughTrial('kitchen')); await page.reload();
   await expect(page.getByTestId('audio-entrance')).toBeVisible(); await page.clock.fastForward(50_000);
-  await page.getByRole('button', { name: 'Enter the Road with sound', exact: true }).click(); await expect(page.getByRole('timer', { name: 'Oven timer' })).toContainText('00:40');
-  await page.clock.fastForward(20_000); await expect(page.getByRole('timer', { name: 'Oven timer' })).toContainText('00:20');
+  await page.getByRole('button', { name: 'Enter the Road with sound', exact: true }).click();
+  const oven = page.getByTestId('oven-chime');
+  await expect(oven).toHaveAttribute('data-dismissed', 'false');
+  await page.clock.fastForward(20_000);
   await page.getByRole('button', { name: 'Settings', exact: true }).click();
   const settings = page.getByRole('dialog', { name: 'Make yourself comfortable', exact: true }); await expect(settings).toBeVisible();
-  // Clicking the kit is active play. Freeze the value at the actual menu entry, then test its pause.
-  const paused = await page.locator('.kitchen-clock').textContent(); expect(paused).toMatch(/Oven timer · 00:\d{2}/);
-  await page.clock.fastForward(80_000); await expect(page.locator('.kitchen-clock')).toHaveText(paused!);
-  await page.getByRole('button', { name: 'Close panel', exact: true }).click(); await expect(settings).not.toBeVisible(); await expect(page.getByRole('timer', { name: 'Oven timer' })).toBeVisible(); await page.clock.fastForward(21_000);
-  await expect(page.getByTestId('feedback')).toContainText('oven mitt switches it off'); await expect(page.getByRole('timer', { name: 'Oven timer' })).toContainText('silenced');
+  const clock = settings.getByRole('timer', { name: 'Jen’s trial time remaining' });
+  await expect(clock).toHaveText(/^3:\d{2}$/);
+  await page.clock.fastForward(80_000); await expect(clock).toHaveText(/^2:\d{2}$/);
+  await page.getByRole('button', { name: 'Close panel', exact: true }).click(); await expect(settings).not.toBeVisible();
+  await expect(oven).toHaveAttribute('data-dismissed', 'false');
+  await page.clock.fastForward(21_000);
+  await expect(page.getByTestId('feedback')).toContainText('oven mitt switches it off');
+  await expect(oven).toContainText('oven mitt has hushed');
 });
 
 test('saved-card and file-read failures can be retried without losing the active journey', async ({ page }) => {

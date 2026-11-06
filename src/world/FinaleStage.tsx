@@ -29,12 +29,13 @@ type Props = WorkProps & {
   active: boolean;
   geometryKey: string;
   flourish: Flourish | null;
+  clock: ReactNode;
   close: () => void;
   openDateStamp: (trigger: HTMLButtonElement) => void;
   children: ReactNode;
 };
 
-export function FinaleStage({ kind, frame, surfaceRef, run, busy, act, active, geometryKey, flourish, close, openDateStamp, children }: Props) {
+export function FinaleStage({ kind, frame, surfaceRef, run, busy, act, active, geometryKey, flourish, clock, close, openDateStamp, children }: Props) {
   const meta = FINALE_SURFACES[kind];
   return <div
     ref={surfaceRef}
@@ -56,6 +57,7 @@ export function FinaleStage({ kind, frame, surfaceRef, run, busy, act, active, g
   >
     <header className="instrument-heading">
       <div><span>{meta.inscription}</span><b>{meta.title}</b></div>
+      {clock}
       <div className="finale-heading-tools">
         {kind === 'desk' && <button className="desk-exit" aria-label="Sign out to cottage" disabled={busy} onClick={() => void act({ type: 'SIGN_OUT' })}>
           <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 29V5h15v24M9 29V8l8-3v24M19 16h11m-4-4 4 4-4 4" /></svg>

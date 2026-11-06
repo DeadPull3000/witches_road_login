@@ -5,6 +5,7 @@ import { TV_CHANNELS } from '../content/encounters';
 import { VISION_STATIONS, visionIdentityMatches } from '../content/vision';
 
 export const CONTENT_VERSION = 'westview-1';
+export const TRIAL_DURATION_MS = 5 * 60 * 1000;
 const volume = z.tuple([z.number().int().min(0).max(3), z.number().int().min(0).max(5)]);
 const lamps = z.tuple([z.number().int().min(0).max(1), z.number().int().min(0).max(1), z.number().int().min(0).max(1), z.number().int().min(0).max(1)]);
 const deck = z.array(z.enum(CARDS)).length(5).refine(cards => new Set(cards).size === 5, 'Cards must be distinct');
@@ -30,6 +31,7 @@ const baseRunSchema = z.object({
   cottageView: z.enum(['outside', 'inside']).default('outside'),
   arrival: z.object({ aliasStamped: z.boolean(), theftRecorded: z.boolean() }).strict(),
   threshold: z.object({ placements: z.array(tokens.nullable()).length(5), opened: z.boolean() }).strict(),
+  trialClock: z.object({ trial: z.enum(TRIALS), endsAt: z.number().int().positive() }).strict().nullable().default(null),
   milestones: z.object({ unbindingCompleted: z.boolean(), hasSignedInOnce: z.boolean(), bookRenewed: z.boolean() }).strict(),
   rememberEnabled: z.boolean(),
   puzzles: z.object({
@@ -58,6 +60,8 @@ export const runSchema = baseRunSchema.superRefine((run, ctx) => {
   if (run.threshold.opened && (!run.arrival.theftRecorded || !COVEN.every((token, i) => run.threshold.placements[i] === token.id))) invalid('Invalid threshold completion');
   let previous = run.threshold.opened;
   for (const trial of TRIALS) { if (run.puzzles[trial].solved && !previous) invalid(`Missing prerequisite for ${trial}`); previous = run.puzzles[trial].solved; }
+  const clock = run.trialClock;
+  if (clock && (!canEnter(run, clock.trial) || run.puzzles[clock.trial].solved)) invalid('Trial clock requires an open, unsolved trial');
   if (run.puzzles.kitchen.solved !== (run.puzzles.kitchen.volumes[1] === 4)) invalid('Invalid kitchen completion');
   if (run.puzzles.studio.solved && run.puzzles.studio.attempt !== '23') invalid('Invalid studio completion');
   if (run.puzzles.cabin.solved && !cabinMatches(run.puzzles.cabin.lamps)) invalid('Invalid cabin completion');
@@ -95,6 +99,9 @@ export const runSchema = baseRunSchema.superRefine((run, ctx) => {
 export function canSignIn(run: Pick<RunState, 'alias' | 'arrival' | 'puzzles' | 'milestones'>): boolean {
   return Boolean(run.alias && run.arrival.aliasStamped && TRIALS.every(id => run.puzzles[id].solved) && run.milestones.unbindingCompleted);
 }
+export function currentUnsolvedTrial(run: RunState) {
+  return TRIALS.find(trial => run.currentScene === trial && !run.puzzles[trial].solved);
+}
 export function canEnter(run: Pick<RunState, 'arrival' | 'threshold' | 'puzzles' | 'milestones' | 'phase' | 'discoveries'>, scene: SceneId): boolean {
   if (scene === 'cottage' || scene === 'garden') return true;
   if (scene === 'threshold') return run.arrival.theftRecorded;
@@ -108,6 +115,7 @@ export function createRun(mode: RunState['mode'] = 'story'): RunState {
     schemaVersion: 1, contentVersion: CONTENT_VERSION, runId: crypto.randomUUID(), revision: 0, seed: 'curated-first-road',
     mode, currentScene: 'cottage', phase: 'arrival', alias: null, cottageView: 'outside',
     arrival: { aliasStamped: false, theftRecorded: false }, threshold: { placements: Array(5).fill(null), opened: false },
+    trialClock: null,
     milestones: { unbindingCompleted: false, hasSignedInOnce: false, bookRenewed: false }, rememberEnabled: false,
     puzzles: {
       kitchen: { volumes: [0, 0], history: [], solved: false, pours: 0, timerDismissed: false }, studio: { attempt: '', solved: false, channels: [false, false, false], speakersOpen: true, reversed: false },

@@ -2,6 +2,7 @@ import 'fake-indexeddb/auto';
 import { openDB } from 'idb';
 import { afterEach, describe, expect, it } from 'vitest';
 import { ConflictError, IndexedRepository, type LoadResult, type SaveRepository } from '../../src/persistence/repository';
+import { applyCommand } from '../../src/game/commands';
 import { GameSession } from '../../src/game/session';
 import { DEFAULT_PREFERENCES, createRun, type Preferences, type RunState } from '../../src/game/state';
 import { cottageInterior, move, thresholdRun, throughTrial } from '../helpers';
@@ -11,6 +12,49 @@ const repository = () => { const repo = new IndexedRepository(`test-road-${crypt
 afterEach(async () => { await Promise.all(connections.splice(0).map(repo => repo.close())); });
 
 describe('IndexedDB snapshots and atomic revisions', () => {
+  it('saves the timeout in the active slot and retains the collection, preferences and other slots', async () => {
+    const repo = repository(), other = thresholdRun(), trial = throughTrial('studio');
+    trial.trialClock!.endsAt = Date.now() - 1;
+    await repo.save(other, null);
+    await repo.save(trial, null);
+    await repo.savePreferences({ ...DEFAULT_PREFERENCES, motion: 'reduced' });
+    const session = new GameSession(repo);
+    await session.boot();
+    await session.dispatch({ type: 'DIAL_CODE', code: '23' });
+    const view = session.getSnapshot();
+    expect(view.lastCommand?.type).toBe('TRIAL_TIMEOUT');
+    expect(view.run).toMatchObject({ runId: trial.runId, currentScene: 'cottage', trialClock: null });
+    expect(view.collection).toContain('agatha.passwordPearls');
+    expect(view.preferences.motion).toBe('reduced');
+    expect(await repo.loadActive()).toEqual({ kind: 'loaded', run: view.run });
+    expect(await repo.load(other.runId)).toEqual({ kind: 'loaded', run: other });
+  });
+
+  it('keeps a seal earned before the deadline if a stale tab tries to expire that trial', async () => {
+    const repo = repository(), trial = throughTrial('studio'), expiredAt = Date.now() - 1;
+    trial.trialClock!.endsAt = expiredAt;
+    await repo.save(trial, null);
+    const stale = new GameSession(repo);
+    await stale.boot();
+    const winner = applyCommand(trial, { type: 'DIAL_CODE', code: '23' }, [], expiredAt - 1).state;
+    await repo.save(winner, trial.revision);
+    await stale.dispatch({ type: 'TRIAL_TIMEOUT' });
+    expect(stale.getSnapshot()).toMatchObject({ status: 'conflict', run: winner, lastCommand: null });
+    expect(await repo.loadActive()).toEqual({ kind: 'loaded', run: winner });
+  });
+
+  it('leaves the selected slot active when a different tab automatically saves a timeout', async () => {
+    const repo = repository(), trial = throughTrial('cabin'), selected = createRun('showcase');
+    trial.trialClock!.endsAt = Date.now() - 1;
+    await repo.save(trial, null);
+    const background = new GameSession(repo);
+    await background.boot();
+    await repo.save(selected, null);
+    await background.dispatch({ type: 'TRIAL_TIMEOUT' });
+    expect(await repo.loadActive()).toEqual({ kind: 'loaded', run: selected });
+    expect(await repo.load(trial.runId)).toMatchObject({ kind: 'loaded', run: { currentScene: 'cottage', trialClock: null } });
+  });
+
   it('publishes the durable discovery collection with its saved run and uses it in a new slot', async () => {
     const repo = repository(), session = new GameSession(repo);
     await session.boot();

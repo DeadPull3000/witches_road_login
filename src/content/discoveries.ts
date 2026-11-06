@@ -9,7 +9,7 @@ export const DISCOVERIES = {
   'agnes.caseDrawer': { title: 'The case of the borrowed name', description: 'Detective Agnes filed the alias on your own borrowing card.' },
   'teen.sigil': { title: 'A name beneath the sigil', description: 'The covered borrowing card briefly showed the name you chose.' },
   'sharon.greenThumb': { title: 'Sharon’s green thumb', description: 'A solemn leaf stamp recognized a perfectly ordinary gardener.' },
-  'jen.timerMitt': { title: 'An oven mitt intervenes', description: 'A practical bit of kitchen magic put the pressure timer to bed.' },
+  'jen.timerMitt': { title: 'An oven mitt intervenes', description: 'A practical bit of kitchen magic hushed a stray oven chime.' },
   'jen.pumpkinWitness': { title: 'The pumpkin witness', description: 'Three pours earned you a very suspicious look from the pumpkin.' },
   'alice.backwardRecord': { title: 'Track Four in reverse', description: 'Alice let the record run backward and a spark followed its groove.' },
   'alice.protectionRefrain': { title: 'The protection refrain', description: 'The three rhythms settled into Alice’s protective tune.' },

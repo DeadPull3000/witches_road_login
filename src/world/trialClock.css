@@ -1,0 +1,91 @@
+.trial-clock {
+  --clock-metal: #bb9168;
+  --clock-light: #ffd28b;
+  --clock-case: #352627;
+  box-sizing: border-box;
+  display: inline-grid;
+  grid-template-columns: 35px auto;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 3px 9px 3px 5px;
+  border: 1px solid var(--clock-metal);
+  border-radius: 4px;
+  background: linear-gradient(155deg, var(--clock-case), #19151e 82%);
+  box-shadow: inset 0 0 0 2px #15101685, 0 2px 4px #170e1c80;
+  color: var(--clock-light);
+  line-height: 1;
+}
+.trial-clock[data-clock-face='kitchen'] {
+  --clock-metal: #c18d63;
+  --clock-light: #ffda9c;
+  --clock-case: #684733;
+}
+.trial-clock[data-clock-face='studio'] {
+  --clock-metal: #98736b;
+  --clock-light: #ffc38c;
+  --clock-case: #4c3037;
+  border-radius: 2px;
+}
+.trial-clock[data-clock-face='cabin'] {
+  --clock-metal: #a58aaf;
+  --clock-light: #f0cefd;
+  --clock-case: #483249;
+  border-radius: 13px 5px 5px 13px;
+}
+.trial-clock[data-clock-face='tower'] {
+  --clock-metal: #be9d6f;
+  --clock-light: #ffdea3;
+  --clock-case: #423751;
+  border-radius: 11px 11px 3px 3px;
+}
+.trial-clock[data-clock-face='greenhouse'] {
+  --clock-metal: #82ac8f;
+  --clock-light: #bef1cc;
+  --clock-case: #314d3e;
+  border-radius: 13px 4px;
+}
+.trial-clock svg { width: 100%; fill: none; stroke: currentColor; }
+.trial-clock-track { opacity: .26; stroke-width: 2; }
+.trial-clock-remaining { stroke-width: 2; }
+.trial-clock-engraving { stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.trial-clock .trial-clock-name {
+  display: block;
+  color: #f0dfc7;
+  font: 9px/1.1 var(--serif);
+  letter-spacing: .2px;
+  white-space: nowrap;
+}
+.trial-clock time {
+  display: block;
+  margin-top: 2px;
+  font: 700 18px/1 ui-monospace, Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+.trial-clock[data-urgent] {
+  color: #ffd0ae;
+  border-color: #ef9b78;
+  box-shadow: inset 0 0 0 2px #692e31, 0 2px 4px #170e1c80;
+}
+.world-trial-clock {
+  position: absolute;
+  z-index: 2;
+  top: max(18px, env(safe-area-inset-top));
+  right: max(18px, env(safe-area-inset-right));
+}
+.world-viewport:has(.world-trial-clock) .world-location { max-width: calc(100% - 155px); }
+:is(.instrument-heading, .studio-title-bar, .world-paper-heading, .world-modal > header) > .trial-clock { margin-left: auto; }
+
+@media (max-width: 600px) {
+  .trial-clock { grid-template-columns: 24px auto; gap: 4px; padding-inline: 4px 6px; min-height: 34px; }
+  .trial-clock .trial-clock-name { display: none; }
+  .trial-clock time { margin-top: 0; font-size: 16px; }
+  .world-viewport:has(.world-trial-clock) .world-location { max-width: calc(100% - 115px); }
+  .world-modal > header:has(.trial-clock) h2 { font-size: clamp(16px, 4.7vw, 24px); }
+  .world-modal > header:has(.trial-clock) .dialog-bookmark { display: none; }
+}
+@media (max-width: 400px) {
+  :is(.instrument-heading, .studio-title-bar):has(.trial-clock) b { font-size: 17px; }
+}

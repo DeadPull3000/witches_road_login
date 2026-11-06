@@ -34,32 +34,40 @@ export class GameSession {
       this.publish({ preferences: await this.repository.getPreferences() });
     } catch { this.publish({ status: 'unsaved', message: 'Browser saving is unavailable. You can still play; export your journey before closing.' }); }
   }
-  private async persist(run: RunState): Promise<Pick<SessionView, 'status' | 'collection'>> {
+  private async persist(run: RunState, activate = true): Promise<Pick<SessionView, 'status' | 'collection'>> {
     try {
-      const collection = await this.repository.save(run, this.baseRevision);
+      const collection = await this.repository.save(run, this.baseRevision, activate);
       this.baseRevision = run.revision;
       return { status: 'saved', collection };
     } catch (error) { if (error instanceof ConflictError) throw error; return { status: 'unsaved', collection: this.view.collection }; }
   }
-  dispatch = (command: Command) => this.enqueue(async () => {
-    this.publish({ busy: true });
-    try {
-      const result = applyCommand(this.view.run, command, this.view.collection);
-      if (result.state === this.view.run) { this.publish({ message: result.message }); return; }
-      this.publish({ status: 'saving' });
-      const save = await this.persist(result.state);
-      this.publish({ run: result.state, ...save, message: result.message, lastCommand: command });
-    } catch (error) {
-      if (error instanceof ConflictError) {
-        const branch = this.view.run;
-        try {
-          const latest = await this.repository.load(branch.runId);
-          if (latest.kind === 'loaded') { this.baseRevision = latest.run.revision; this.publish({ run: latest.run, status: 'conflict', collection: await this.readCollection(), message: error.message, recoveryExport: branch, lastCommand: null }); }
-          else this.publish({ status: 'unsaved', message: 'Another tab changed this slot and its latest save is unreadable. Export this branch before resuming elsewhere.' });
-        } catch { this.publish({ status: 'unsaved', message: 'Unable to load the latest tab state. Export your branch; no overwrite was attempted.' }); }
-      } else this.publish({ message: error instanceof Error ? error.message : 'That action could not be completed.' });
-    } finally { this.publish({ busy: false }); }
-  });
+  dispatch = (command: Command) => {
+    const at = Date.now();
+    return this.enqueue(async () => {
+      this.publish({ busy: true });
+      try {
+        const result = applyCommand(this.view.run, command, this.view.collection, at);
+        if (result.state === this.view.run) {
+          if (result.message) this.publish({ message: result.message });
+          return;
+        }
+        this.publish({ status: 'saving' });
+        const accepted: Command = result.timedOut ? { type: 'TRIAL_TIMEOUT' } : command;
+        const automatic = accepted.type === 'TRIAL_TIMEOUT' || accepted.type === 'START_TRIAL_CLOCK';
+        const save = await this.persist(result.state, !automatic);
+        this.publish({ run: result.state, ...save, message: result.message || this.view.message, lastCommand: accepted });
+      } catch (error) {
+        if (error instanceof ConflictError) {
+          const branch = this.view.run;
+          try {
+            const latest = await this.repository.load(branch.runId);
+            if (latest.kind === 'loaded') { this.baseRevision = latest.run.revision; this.publish({ run: latest.run, status: 'conflict', collection: await this.readCollection(), message: error.message, recoveryExport: branch, lastCommand: null }); }
+            else this.publish({ status: 'unsaved', message: 'Another tab changed this slot and its latest save is unreadable. Export this branch before resuming elsewhere.' });
+          } catch { this.publish({ status: 'unsaved', message: 'Unable to load the latest tab state. Export your branch; no overwrite was attempted.' }); }
+        } else this.publish({ message: error instanceof Error ? error.message : 'That action could not be completed.' });
+      } finally { this.publish({ busy: false }); }
+    });
+  };
   retrySave = () => this.enqueue(async () => {
     this.publish({ busy: true });
     try { const save = await this.persist(this.view.run); this.publish({ ...save, message: save.status === 'saved' ? 'Your journey is saved again.' : 'Saving is still unavailable. Export is available.' }); }
