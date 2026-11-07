@@ -1,6 +1,5 @@
 .cottage-thread-decal {
   position: absolute;
-  transform: translate(-50%, -50%);
   color: #d7a9e7;
   filter: drop-shadow(0 0 6px #a05bc8);
   pointer-events: none;
@@ -78,40 +77,13 @@
   box-shadow: inset 0 0 0 3px #a97c5635;
 }
 .door-thread .drawing-notice { color: #eed9bd; font: 13px/1.45 Georgia, serif; margin-bottom: 0; }
-.instrument-stage .door-unbind, .instrument-stage .door-garden { padding: 9px 14px; margin-top: 12px; }
-.instrument-stage .door-unbind { color: #44332f; background: #d5bb87; border-color: #9f7951; }
-.instrument-stage .door-unbind:hover { color: #392b25; background: #eed39b; }
-.instrument-stage .door-knocker {
-  display: grid;
-  justify-items: center;
-  gap: 4px;
-  padding: 10px 8px 14px;
-  border: 2px solid #c2a271;
-  border-radius: 28px 28px 5px 5px;
-  color: #eed8b1;
-  background: radial-gradient(ellipse at 48% 44%, #6a4a35, #463136 72%);
-  font: 16px/1.25 Georgia, serif;
-}
-.door-knocker svg { display: block; width: 64px; height: 80px; }
-.knocker-plate { fill: #a17a4b; stroke: #e1bc7f; stroke-width: 2; }
-.knocker-pin { fill: #4a3731; stroke: #dfb577; stroke-width: 2; }
-.knocker-ring { fill: none; stroke: #e0b06a; stroke-width: 7; filter: drop-shadow(2px 4px 0 #372921); }
-.cottage-door-planks[data-ready='true'] .door-knocker { border-color: #f1cd88; box-shadow: inset 0 0 14px #dfb06735, 0 3px 0 #342629; }
+.door-unbind, .door-garden { margin-top: 12px; }
+.door-knocker { --prop-width: 86px; --prop-height: 66px; }
+.cottage-door-planks[data-ready='true'] .door-knocker svg { filter: drop-shadow(0 0 7px #dfb06775); }
 
 .finale-desk { border-color: #a88958; background: linear-gradient(140deg, #67432f, #3d2d29 56%, #51372b); }
 .finale-desk .instrument-heading { background: #302b29f5; }
-.instrument-stage .desk-exit {
-  width: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 5px 9px;
-  border-color: #ba945f;
-  background: #63442f;
-}
-.desk-exit svg { width: 23px; height: 23px; fill: none; stroke: #efcf97; stroke-width: 1.8; }
-.instrument-heading .desk-exit span { color: #f5dfb7; font: 11px/1.2 Georgia, serif; letter-spacing: 0; }
+.instrument-heading .desk-exit .prop-caption { font-size: 11px; }
 .borrowing-counter {
   display: grid;
   grid-template-columns: minmax(0, 1.5fr) minmax(190px, 1fr);
@@ -141,26 +113,8 @@
 .desk-book .book-cover b { font-size: 13px; }
 .desk-book h3 { margin: 0 0 5px; color: #fff0d2; font: 23px/1.18 var(--serif); overflow-wrap: anywhere; }
 .desk-book p { margin: 0; color: #e8cfad; font: 13px/1.45 Georgia, serif; }
-.instrument-stage .desk-stamp {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 17px;
-  padding: 6px 14px 6px 10px;
-  border: 2px solid #ab9162;
-  color: #fff0ca;
-  background: linear-gradient(120deg, #495b3f, #303c31);
-  font: 16px/1.24 Georgia, serif;
-}
-.desk-stamp svg { flex: 0 0 43px; width: 43px; height: 39px; fill: #aa824d; stroke: #edd196; stroke-width: 2; }
-.instrument-stage .desk-return-slot {
-  width: 100%;
-  padding: 7px 8px;
-  border: 2px solid #bb975e;
-  border-radius: 8px 8px 2px 2px;
-  background: linear-gradient(0deg, #332921, #47362a);
-  font: 13px/1.25 Georgia, serif;
-}
+.desk-stamp { margin-top: 17px; }
+.desk-return-slot { width: 100%; --prop-width: 89px; --prop-height: 61px; }
 .desk-receipt { position: relative; margin-top: 13px; outline-offset: 4px; }
 .desk-receipt:focus-visible { outline: 2px solid #ead194; }
 .desk-paper-roll {
@@ -224,16 +178,13 @@ html[data-text='large'] .world-viewport:is([data-finale], [data-cottage-view]) >
 
 @media (max-width: 720px) {
   .finale-stage .instrument-heading > .finale-heading-tools { gap: 6px; }
-  .instrument-stage .desk-exit { padding: 5px; gap: 3px; }
-  .desk-exit svg { width: 17px; height: 17px; }
   .finale-desk .instrument-heading b { font-size: 20px; }
   .cottage-door-planks { padding: 15px 10px 12px; border-radius: 43px 43px 4px 4px; }
   .door-nameplate { min-width: min(208px, 100%); margin-bottom: 12px; }
   .door-seals { gap: 11px; margin-bottom: 10px; }
   .door-seals svg { width: 24px; height: 27px; }
   .door-hardware { grid-template-columns: 1fr; gap: 10px; }
-  .instrument-stage .door-knocker { grid-template-columns: 41px minmax(0, 1fr); align-items: center; gap: 7px; padding: 6px 9px; border-radius: 8px; }
-  .door-knocker svg { width: 38px; height: 46px; }
+  .door-knocker { --prop-width: 60px; --prop-height: 46px; }
   .borrowing-counter { grid-template-columns: 1fr; padding: 11px; gap: 13px; }
   .desk-book { grid-template-columns: 81px minmax(0, 1fr); gap: 10px; }
   .desk-book h3 { font-size: 20px; }

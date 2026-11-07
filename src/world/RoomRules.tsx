@@ -4,7 +4,7 @@ import { SPIRIT_STATEMENTS, type InstrumentScene } from './instruments';
 import { TAROT_MEMORIES } from './trialLayout';
 import { VISION_INSTRUCTIONS } from '../content/vision';
 import { VisionRecords } from './VisionConsole';
-import { ObjectNote } from './ObjectPlaque';
+import { PropNote } from './PropControl';
 
 const rules = {
   threshold: {
@@ -62,7 +62,9 @@ function ruleCopy(scene: InstrumentScene, opposite: boolean) {
 }
 export function InstrumentInstructions({ scene, opposite = false }: Props) {
   const { note, title, text } = ruleCopy(scene, opposite);
-  return <ObjectNote label={note}><h2>{title}</h2><p>{text}</p></ObjectNote>;
+  return <PropNote label={note} art={scene === 'studio' || scene === 'tower' ? 'card' : undefined}>
+    <h2>{title}</h2><p>{text}</p>
+  </PropNote>;
 }
 
 /** The field notes transcribe the physical instructions in their reading order. */

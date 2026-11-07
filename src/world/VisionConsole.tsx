@@ -1,7 +1,7 @@
 import type { Command } from '../game/commands';
 import type { RunState } from '../game/state';
 import { VISION_INSTRUCTIONS, VISION_INVENTORY, VISION_POLICY, VISION_RECEIPT, VISION_STATIONS, VISION_TRANSFERS, replayVisionTransfers, type VisionInventory } from '../content/vision';
-import { ObjectNote, ObjectPlaque } from './ObjectPlaque';
+import { PropButton, PropNote } from './PropControl';
 
 function ReaderInventory({ inventory, caption }: { inventory: VisionInventory; caption: string }) {
   return <table className="reader-inventory">
@@ -39,10 +39,10 @@ export function VisionConsole({ run, busy, act, onIntercom }: {
   const selectDisabled = busy || solved;
   const submitDisabled = selectDisabled || selection === null;
   return <>
-    <ObjectNote label="Read the repair instructions">
+    <PropNote label="Read the repair instructions" art="ledger">
       <h2>Which reader keeps the card?</h2>
       <p>{VISION_INSTRUCTIONS}</p>
-    </ObjectNote>
+    </PropNote>
     <div className="reader-claims" aria-label="Reader statements">
       <p className="parchment"><b>First voice</b> “I remember your alias, {run.alias}. You have one library book.”</p>
       <p className="parchment"><b>Second voice</b> “{run.alias}. One borrowed book. I have the very same record.”</p>
@@ -58,9 +58,9 @@ export function VisionConsole({ run, busy, act, onIntercom }: {
         </button>)}
       </fieldset>
       <div className="vision-console-tools">
-        <ObjectPlaque label={solved ? 'Receipt filed' : 'File the borrowing receipt'} marker="▱"
+        <PropButton label={solved ? 'Receipt filed' : 'File the borrowing receipt'} art="card"
           aria-disabled={submitDisabled || undefined} onClick={() => { if (!submitDisabled) void act({ type: 'SUBMIT_IDENTITY' }); }} />
-        <button onClick={event => onIntercom(event.currentTarget)}>Inspect the annex intercom</button>
+        <PropButton art="intercom" label="Inspect the annex intercom" onClick={event => onIntercom(event.currentTarget)} />
       </div>
     </div>
     {solved && <section className="vision-verified" aria-label="Verified original reader">

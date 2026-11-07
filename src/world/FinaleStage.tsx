@@ -9,7 +9,7 @@ import { RuneStitch } from '../ui/RuneStitch';
 import { rectStyle, type Rect } from './layout';
 import { cottageKnockerLabel } from './navigation';
 import { MechanicalFlower } from './VisionConsole';
-import { ObjectNote, ObjectPlaque } from './ObjectPlaque';
+import { PropButton, PropNote } from './PropControl';
 
 export const FINALE_SURFACES = {
   rug: { title: 'The embroidered rug', inscription: 'FIVE MOTIFS · ONE THREAD', close: 'Step back from the rug', return: 'Return to the rug' },
@@ -60,10 +60,7 @@ export function FinaleStage({ kind, frame, surfaceRef, run, busy, act, active, g
       <div><span>{meta.inscription}</span><b>{meta.title}</b></div>
       {clock}
       <div className="finale-heading-tools">
-        {kind === 'desk' && <button className="desk-exit" aria-label="Sign out to cottage" disabled={busy} onClick={() => void act({ type: 'SIGN_OUT' })}>
-          <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 29V5h15v24M9 29V8l8-3v24M19 16h11m-4-4 4 4-4 4" /></svg>
-          <span>Sign out</span>
-        </button>}
+        {kind === 'desk' && <PropButton className="desk-exit" art="door" label="Sign out to cottage" caption="Sign out" disabled={busy} onClick={() => void act({ type: 'SIGN_OUT' })} />}
         <button aria-label={meta.close} onClick={close}>×</button>
       </div>
     </header>
@@ -78,10 +75,10 @@ function CottageDoor({ run, busy, act, active, geometryKey }: WorkProps & { acti
   const stitched = run.milestones.unbindingCompleted;
   const recognized = run.rememberEnabled && run.milestones.hasSignedInOnce;
   return <>
-    <ObjectNote label="Read the carved motifs">
+    <PropNote label="Read the carved motifs" art="cards">
       <h2>The way was here all along.</h2>
       <p>The cup, the record, the lamps, the cards and the flower. Familiar things, seen differently.</p>
-    </ObjectNote>
+    </PropNote>
     <div className="cottage-door-planks" data-ready={canSignIn(run)} aria-busy={busy}>
       <div className="door-nameplate" data-testid="borrower-nameplate" data-recognized={recognized}>
         <span>WESTVIEW BORROWING CARD</span>
@@ -94,20 +91,12 @@ function CottageDoor({ run, busy, act, active, geometryKey }: WorkProps & { acti
       <div className="door-hardware">
         <div className="door-thread">
           <RuneStitch completed={stitched} busy={busy} active={active} revision={run.revision} geometryKey={geometryKey} act={act} />
-          {!stitched && <ObjectPlaque className="door-unbind" marker="⌁" label="Unbind the door stitch" onClick={() => void act({ type: 'UNBIND' })} />}
+          {!stitched && <PropButton className="door-unbind" art="spool" label="Unbind the door stitch" onClick={() => void act({ type: 'UNBIND' })} />}
         </div>
-        <button className="door-knocker" onClick={() => void act({ type: 'SIGN_IN' })}>
-          <svg viewBox="0 0 80 100" aria-hidden="true">
-            <path className="knocker-plate" d="M40 5 61 18v58L40 94 19 76V18Z" />
-            <circle className="knocker-pin" cx="40" cy="27" r="9" />
-            <circle className="knocker-pin" cx="40" cy="77" r="4" />
-            <ellipse className="knocker-ring" cx="40" cy="50" rx="21" ry="22" />
-          </svg>
-          <span>{cottageKnockerLabel(run)}</span>
-        </button>
+        <PropButton className="door-knocker" art="knocker" label={cottageKnockerLabel(run)} onClick={() => void act({ type: 'SIGN_IN' })} />
       </div>
     </div>
-    <ObjectPlaque className="door-garden" marker="❧" label="Visit the optional garden" onClick={() => void act({ type: 'ENTER_SCENE', scene: 'garden' })} />
+    <PropButton className="door-garden" art="mushrooms" label="Visit the optional garden" onClick={() => void act({ type: 'ENTER_SCENE', scene: 'garden' })} />
   </>;
 }
 
@@ -121,10 +110,10 @@ function BorrowingDesk({ run, busy, act, flourish, openDateStamp }: WorkProps & 
   }
 
   return <>
-    <ObjectNote label="Read the borrowing policy">
+    <PropNote label="Read the borrowing policy" art="ledger">
       <h2>Your shelf, at last.</h2>
       <p>One book. Five trials. A perfectly reasonable library policy.</p>
-    </ObjectNote>
+    </PropNote>
     <div className="borrowing-counter" data-renewed={renewed}>
       <div className="desk-tray">
         <dl className="desk-ledger" aria-label="Borrowing ledger">
@@ -146,19 +135,14 @@ function BorrowingDesk({ run, busy, act, flourish, openDateStamp }: WorkProps & 
             <p>{renewed ? 'Renewed · another 28 fictional days' : 'Due for renewal · no actual fees'}</p>
           </div>
         </article>
-        <button className="desk-stamp" disabled={busy && !renewed} onClick={() => renewed ? readReceipt() : void act({ type: 'RENEW_BOOK' })}>
-          <svg viewBox="0 0 66 60" aria-hidden="true">
-            <path d="M22 17a11 11 0 1 1 22 0c0 5-4 9-4 17h10v8H16v-8h10c0-8-4-12-4-17Z" />
-            <path d="M10 43h46v11H10zM17 49h32" />
-          </svg>
-          <span>{renewed ? 'Read the renewal receipt' : 'Renew this book'}</span>
-        </button>
+        <PropButton className="desk-stamp" art={renewed ? 'card' : 'stamp'} label={renewed ? 'Read the renewal receipt' : 'Renew this book'}
+          disabled={busy && !renewed} onClick={() => renewed ? readReceipt() : void act({ type: 'RENEW_BOOK' })} />
       </div>
       <div className="desk-outlet">
-        <ObjectPlaque className="desk-return-slot" label="Inspect the return slot" marker="↧" disabled={busy} onClick={() => void act({ type: 'INSPECT_PROP', prop: 'returnSlot' })} />
+        <PropButton className="desk-return-slot" label="Inspect the return slot" art="slot" disabled={busy} onClick={() => void act({ type: 'INSPECT_PROP', prop: 'returnSlot' })} />
         <div className="desk-optional-tools">
-          <ObjectPlaque label="Inspect the return-date stamp" marker="◫" disabled={busy} onClick={event => openDateStamp(event.currentTarget)} />
-          <button disabled={busy} onClick={() => void act({ type: 'EXPIRE_SESSION' })}>Expire session</button>
+          <PropButton label="Inspect the return-date stamp" art="dateStamp" disabled={busy} onClick={event => openDateStamp(event.currentTarget)} />
+          <PropButton label="Expire session" art="hourglass" disabled={busy} onClick={() => void act({ type: 'EXPIRE_SESSION' })} />
         </div>
         {!renewed && <div className="desk-empty-tray" aria-hidden="true">RECEIPT TRAY</div>}
         {renewed && <section ref={receipt} className="desk-receipt" aria-label="Renewal receipt" tabIndex={-1}>

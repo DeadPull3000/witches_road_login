@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { approachRoom, openRoad } from './support';
-import { cottageLayout } from '../../src/world/layout';
+import { cottageLayout, project } from '../../src/world/layout';
 import { move, solveCurrent, throughTrial } from '../helpers';
 
 test('the cottage fills every aspect ratio and reframes one live renderer without losing a typed card', async ({ page }, testInfo) => {
@@ -21,7 +21,8 @@ test('the cottage fills every aspect ratio and reframes one live renderer withou
     expect(await canvas.boundingBox()).toEqual({ x: 0, y: 0, width, height });
     expect(await canvas.evaluate(element => { const output = element as HTMLCanvasElement; return output.width * output.height; })).toBeLessThanOrEqual(2_005_000);
     const door = page.locator('.world-hotspots [data-prop-id="cottage.door"]'), bounds = (await door.boundingBox())!;
-    expect(bounds.x).toBeCloseTo(expected.door.x, 1); expect(bounds.y).toBeCloseTo(expected.door.y, 1);
+    const ring = project(expected.profile === 'portrait' ? { x: 576, y: 954 } : { x: 645, y: 545 }, expected.camera);
+    expect(bounds.x + bounds.width / 2).toBeCloseTo(ring.x, 1); expect(bounds.y + bounds.height / 2).toBeCloseTo(ring.y, 1);
     for (const selector of ['.world-hotspots [data-prop-id="cottage.door"]', '.world-hotspots [data-prop-id="cottage.agatha"]', '.world-hotspots [data-prop-id="cottage.card"]']) {
       const rect = (await page.locator(selector).boundingBox())!;
       expect(rect.width).toBeGreaterThanOrEqual(44); expect(rect.height).toBeGreaterThanOrEqual(44);
@@ -82,7 +83,7 @@ test('a keyboard-sized visual viewport keeps the focused card usable without scr
   await page.keyboard.press('Escape'); await expect(page.getByRole('button', { name: 'Open borrowing card', exact: true })).toBeFocused();
 });
 
-test('the door restores focus and skipping theft leaves the recovery plaque in the room', async ({ page }) => {
+test('the knocker restores focus and starts recovery after skipping the theft', async ({ page }) => {
   await page.clock.install(); await openRoad(page);
   await page.getByRole('button', { name: 'Close borrowing card', exact: true }).click();
   const door = page.getByRole('button', { name: 'Inspect the cottage door', exact: true }); await door.focus(); await door.press('Enter');

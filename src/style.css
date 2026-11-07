@@ -20,7 +20,7 @@ html[data-text=large]{font-size:17px}html[data-text=large] p,html[data-text=larg
 .spirit-lamp>svg{display:block;width:44px;height:55px;color:#908199;margin-bottom:5px}.spirit-lamp.lit>svg{color:#edc6f4;filter:drop-shadow(0 0 7px #be89d750)}
 main.audio-entrance{max-width:none;min-height:100dvh;padding:45px 20px;display:grid;place-items:center;background:radial-gradient(ellipse at 15% 10%,#4c3d5750,transparent 55%),radial-gradient(ellipse at 90% 90%,#3d553b55,transparent 55%),#151b18}
 .entrance-card{max-width:550px;text-align:center;position:relative;padding:40px clamp(20px,5vw,58px)}
-.entrance-copy>.eyebrow{font-size:9px;line-height:1.8}.entrance-sigil{position:relative;margin:24px auto 20px;border:1px solid #a3b58c;width:55px;height:65px;font:italic 39px/62px Georgia,serif;color:#d2debd}.entrance-sigil span{position:absolute;font:17px Georgia,serif;right:-10px;top:-10px;background:#1b231f;padding:2px}
+.entrance-copy>.eyebrow{font-size:9px;line-height:1.8}
 .entrance-card h1{font-size:clamp(53px,9vw,82px);letter-spacing:-2px}.entrance-card h1 i{color:#c4d9a0}.entrance-card p{font-size:14px;line-height:1.8}.entrance-card .entrance-note{font-size:12px;color:#b2bda8;max-width:350px;margin:26px auto 22px}.entrance-card .primary{min-height:52px;width:100%;font-size:13px}.entrance-card .primary>span{margin-left:14px}.entrance-card .entrance-status{font-size:11px;color:#a1b095;margin:17px 0 0;min-height:40px}.audio-entrance[data-audio-state=blocked] .entrance-status,.audio-entrance[data-audio-state=unavailable] .entrance-status{color:#773d29}
 
 /* Cards move around a fixed table; labels always stay upright. */

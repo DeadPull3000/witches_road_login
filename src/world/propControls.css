@@ -1,0 +1,116 @@
+.prop-control,
+:is(.instrument-stage, .world-paper, .entrance-card) .prop-control {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 44px;
+  min-height: 44px;
+  max-width: 100%;
+  padding: 4px 7px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  box-shadow: none;
+  color: inherit;
+  font: 13px/1.15 Georgia, serif;
+  text-align: center;
+}
+.prop-control .prop-grip {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: var(--prop-width, 61px);
+  height: var(--prop-height, 46px);
+  max-width: 100%;
+  pointer-events: none;
+}
+.prop-grip > svg { width: 100%; height: 100%; display: block; }
+.prop-control .prop-caption {
+  margin: 0;
+  color: inherit;
+  font: inherit;
+  letter-spacing: normal;
+  overflow-wrap: anywhere;
+}
+.prop-control:is(:hover:enabled,:focus-visible),
+:is(.instrument-stage, .world-paper, .entrance-card) .prop-control:is(:hover:enabled,:focus-visible) {
+  background: transparent;
+  color: inherit;
+  box-shadow: none;
+}
+.prop-control:is(:hover:enabled,:focus-visible) .prop-grip { filter: brightness(1.12) drop-shadow(0 0 5px #dca97478); }
+.prop-control:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+.prop-control:is(:disabled,[aria-disabled='true']) { opacity: .63; cursor: default; }
+.prop-control[hidden] { display: none; }
+
+.object-note { margin: 0 0 10px; }
+.object-note > summary.prop-control {
+  flex-direction: row;
+  gap: 5px;
+  justify-content: flex-start;
+  width: fit-content;
+  list-style: none;
+  cursor: pointer;
+  text-align: left;
+  --prop-width: 49px;
+  --prop-height: 37px;
+}
+.object-note > summary::-webkit-details-marker { display: none; }
+.object-note[open] .prop-caption { text-decoration: underline; text-underline-offset: 3px; }
+html[data-text='large'] .object-note > summary { font-size: 16px; }
+.instrument-heading .prop-control {
+  flex-direction: row;
+  gap: 3px;
+  width: auto;
+  --prop-width: 36px;
+  --prop-height: 34px;
+}
+.entrance-card .prop-control {
+  align-self: center;
+  --prop-width: 83px;
+  --prop-height: 63px;
+  font-size: 16px;
+  color: #533728;
+}
+.instrument-stage .telephone-handset {
+  width: 100%;
+  --prop-width: 100%;
+  --prop-height: clamp(55px, 9vh, 84px);
+}
+.world-paper .world-object-list > button {
+  border: 0;
+  border-bottom: 1px dashed #a67f59;
+  background: transparent;
+  box-shadow: none;
+  color: #533728;
+}
+.world-paper .world-object-list > button:hover:enabled { background: #bf996026; color: #533728; }
+
+.world-app .world-viewport[data-scene] > .world-renderer-recovery {
+  top: auto;
+  bottom: 46px;
+  right: 18px;
+  width: 88px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.world-viewport > .world-renderer-recovery > span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.world-viewport > .world-renderer-recovery .prop-control { color: #ffe3b4; font-size: 11px; }
+@media (max-width: 720px) {
+  .world-app .world-viewport[data-scene] > .world-renderer-recovery { bottom: 103px; }
+}
+@media (max-height: 540px) {
+  .world-app .world-viewport[data-scene] > .world-renderer-recovery { bottom: 42px; }
+}

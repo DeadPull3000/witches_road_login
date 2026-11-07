@@ -1,5 +1,5 @@
 import type { Preferences } from '../game/state';
-import { project, type Rect, type WorldLayout } from './layout';
+import type { Rect, WorldLayout } from './layout';
 
 export type StudioDock = 'side' | 'compact' | 'sheet';
 export type StudioPlacement = {
@@ -8,7 +8,6 @@ export type StudioPlacement = {
   benchWidth: number;
   speaker: Rect;
   actor: Rect;
-  tag: Rect;
   headingHeight: number;
   speakerHeight: number;
 };
@@ -30,14 +29,6 @@ export function studioPlacement(layout: WorldLayout, textSize: Preferences['text
   const headingHeight = short ? 52 : 60;
   const speakerHeight = short ? 76 : textSize === 'large' ? 106 : 88;
   const speaker = { x: benchWidth + gap, y: dock === 'side' ? 8 : 2, width: dockWidth, height: dock === 'side' ? 112 : 126 };
-  const tagWidth = Math.min(198, width - 28);
-  const mount = project({ x: 330, y: 648 }, layout.camera);
-  const tag = {
-    x: clamp(mount.x - tagWidth * .52, 14, width - tagWidth - 14),
-    y: clamp(mount.y - 20, 72, height - (short ? 140 : 150)),
-    width: tagWidth,
-    height: 44,
-  };
 
   let actor: Rect;
   if (dock === 'sheet') {
@@ -65,5 +56,5 @@ export function studioPlacement(layout: WorldLayout, textSize: Preferences['text
       height: actorHeight,
     };
   }
-  return { dock, frame, benchWidth, speaker, actor, tag, headingHeight, speakerHeight };
+  return { dock, frame, benchWidth, speaker, actor, headingHeight, speakerHeight };
 }

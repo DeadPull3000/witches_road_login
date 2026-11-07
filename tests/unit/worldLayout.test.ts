@@ -3,7 +3,8 @@ import { SCENES } from '../../src/content/scenes';
 import { createRun } from '../../src/game/state';
 import { cottageLayout, cover, EFFECT_PIXEL_BUDGET, project, renderResolution, unproject, worldLayout, type Rect } from '../../src/world/layout';
 import { instrumentFrame } from '../../src/world/instruments';
-import { trialTag, type PaintedTrial } from '../../src/world/trialSurfaces';
+import type { PaintedTrial } from '../../src/world/trialSurfaces';
+import { roomObjective } from '../../src/world/objectives';
 
 const sizes = [[360, 640], [390, 844], [844, 390], [768, 1024], [1024, 768], [1280, 800], [1920, 1080], [2560, 1080]];
 describe('full-viewport cottage composition', () => {
@@ -46,17 +47,17 @@ describe('full-viewport cottage composition', () => {
 describe('painted trial work surfaces', () => {
   const trials = ['threshold', 'kitchen', 'cabin', 'tower', 'greenhouse'] as const satisfies readonly PaintedTrial[];
 
-  it('reserves the whole host rectangle on desktop and keeps each approach tag above the traveller’s kit', () => {
+  it('reserves the host on desktop and keeps the working objects above the traveller’s kit', () => {
     for (const scene of trials) {
       const run = { ...createRun(), currentScene: scene };
       for (const [width, height] of [[1280, 720], [1440, 900], [844, 390], [390, 844], [360, 780], [640, 360]]) {
         const layout = worldLayout(run, width, height);
-        const tag = trialTag(scene, layout);
+        const { frame: target } = roomObjective(run, layout);
         const bench = instrumentFrame(width, height, true, scene);
-        expect(tag.x).toBeGreaterThanOrEqual(14);
-        expect(tag.x + tag.width).toBeLessThanOrEqual(width - 14);
-        expect(tag.height).toBe(44);
-        expect(tag.y + tag.height).toBeLessThanOrEqual(height - 90);
+        expect(target.x).toBeGreaterThanOrEqual(8);
+        expect(target.x + target.width).toBeLessThanOrEqual(width - 8);
+        expect(target.height).toBeGreaterThanOrEqual(44);
+        expect(target.y + target.height).toBeLessThanOrEqual(height - 88);
         expect(bench.y + bench.height).toBeLessThanOrEqual(height - 100);
         if (width >= 1100) expect(bench.x + bench.width).toBeLessThanOrEqual(layout.actor.x - 23.9);
       }

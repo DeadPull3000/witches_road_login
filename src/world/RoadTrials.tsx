@@ -7,7 +7,7 @@ import { TarotSymbol, TarotTable } from '../ui/TarotTable';
 import { VineMap } from '../ui/VineMap';
 import { CAP_POSITIONS, capNeighbours, confirmationChoices, TAROT_MEMORIES } from './trialLayout';
 import { InstrumentInstructions } from './RoomRules';
-import { ObjectPlaque } from './ObjectPlaque';
+import { PropButton } from './PropControl';
 
 type Props={run:RunState;busy:boolean;act:(command:Command)=>Promise<void>};
 function ChairDrawing({ moon }: { moon: boolean }) {
@@ -46,13 +46,13 @@ export function LiliaTable({run,busy,act}:Props){
       {opposite ? <>
         <button disabled={busy || p.solved} onClick={() => void act({ type: 'CLEAR_CONFIRM' })}>Clear confirmation</button>
         {!p.solved && <button disabled>↶ Undo last move</button>}
-        <ObjectPlaque className="table-confirm" marker="✧" label="Confirm password" disabled={busy || p.solved || p.confirmation.length !== 5}
+        <PropButton className="table-confirm" art="stamp" label="Confirm password" disabled={busy || p.solved || p.confirmation.length !== 5}
           onClick={() => void act({ type: 'CONFIRM_DECK' })} />
       </> : <>
         <button disabled={busy} onClick={() => void act({ type: 'MOVE_DECK', move: 'cut' })}><span aria-hidden>↷</span>CUT</button>
         <button disabled={busy} onClick={() => void act({ type: 'MOVE_DECK', move: 'quarrel' })}><span aria-hidden>⇄</span>QUARREL</button>
         <button disabled={busy} onClick={() => void act({ type: 'UNDO' })}>↶ Undo last move</button>
-        <ObjectPlaque className="table-confirm" marker="▱" label="Set the arrangement" disabled={busy} onClick={() => void act({ type: 'SUBMIT_DECK' })} />
+        <PropButton className="table-confirm" art="cards" label="Set the arrangement" disabled={busy} onClick={() => void act({ type: 'SUBMIT_DECK' })} />
       </>}
       {!p.solved && <button disabled={busy} onClick={() => void act({ type: 'RESET_PUZZLE' })}>Reset this puzzle</button>}
     </div>
@@ -86,9 +86,9 @@ export function RememberingRing({run,busy,act}:Props){
     <p className="cap-preview" role="status">{preview||'Each numbered cap changes itself and its two neighbors; cap 1 also changes 8.'}</p>
     {p.solved&&<p className="garden-remembered">✧ The garden remembers. Recognition starts after your first sign-in.</p>}
     <div className="garden-sign-tools">
-      {run.rememberEnabled && <ObjectPlaque marker="⌁" label="Forget me" disabled={busy} onClick={() => void act({ type: 'FORGET_ME' })} />}
-      {p.solved && !run.rememberEnabled && <ObjectPlaque marker="✿" label="Remember this journey again" disabled={busy} onClick={() => void act({ type: 'REMEMBER_ME' })} />}
-      <ObjectPlaque className="garden-return" marker="↗" label="Return to cottage" disabled={busy} onClick={() => void act({ type: 'ENTER_SCENE', scene: 'cottage' })} />
+      {run.rememberEnabled && <PropButton art={<Mushroom lit={false} />} label="Forget me" disabled={busy} onClick={() => void act({ type: 'FORGET_ME' })} />}
+      {p.solved && !run.rememberEnabled && <PropButton art={<Flower />} label="Remember this journey again" disabled={busy} onClick={() => void act({ type: 'REMEMBER_ME' })} />}
+      <PropButton className="garden-return" art="door" label="Return to cottage" disabled={busy} onClick={() => void act({ type: 'ENTER_SCENE', scene: 'cottage' })} />
     </div>
   </>;
 }

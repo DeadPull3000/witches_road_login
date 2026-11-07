@@ -14,17 +14,14 @@ describe('Alice’s studio placement', () => {
     [390, 844, 'normal', 'sheet'],
     [360, 780, 'large', 'sheet'],
     [1280, 720, 'large', 'sheet'],
-  ] as const)('fits the desk, tag and host at %i × %i with %s text', (width, height, textSize, dock) => {
+  ] as const)('fits the desk and host at %i × %i with %s text', (width, height, textSize, dock) => {
     const layout = worldLayout(studio, width, height);
     const placement = studioPlacement(layout, textSize);
-    const { frame, benchWidth, actor, speaker, tag } = placement;
+    const { frame, benchWidth, actor, speaker } = placement;
     expect(placement.dock).toBe(dock);
     expect(frame.x).toBeGreaterThanOrEqual(0);
     expect(frame.x + frame.width).toBeLessThanOrEqual(width);
     expect(frame.y + frame.height).toBeLessThanOrEqual(height - 100);
-    expect(tag.x).toBeGreaterThanOrEqual(0);
-    expect(tag.x + tag.width).toBeLessThanOrEqual(width);
-    expect(tag.y + tag.height).toBeLessThanOrEqual(height - 90);
     if (dock === 'sheet') {
       const cropWidth = actor.width * .49, cropLeft = actor.x + actor.width * .24;
       expect(cropLeft).toBeGreaterThan(frame.x + benchWidth - 100);

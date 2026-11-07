@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { COTTAGE_INTERIOR_DOOR } from '../../src/content/cottage';
 import { createRun } from '../../src/game/state';
 import { sceneObjects } from '../../src/scenes/objects';
-import { project, worldApproachBounds, worldLayout, worldObjectBounds } from '../../src/world/layout';
+import { project, worldLayout } from '../../src/world/layout';
+import { roomObjective, roomObjectTarget } from '../../src/world/objectives';
 import { completedRun, move } from '../helpers';
 
 const firstVisit = () => move(createRun(), { type: 'SET_COTTAGE_VIEW', view: 'inside' });
@@ -21,33 +21,30 @@ describe('cottage and library prop placement', () => {
       expect(late.door).toEqual(early.door);
       const rug = sceneObjects(first).find(prop => prop.id === 'cottage.rug')!;
       expect(sceneObjects(returned)).toContainEqual(rug);
-      expect(worldApproachBounds(rug, late)).toEqual(worldApproachBounds(rug, early));
+      expect(roomObjectTarget(rug, late, returned)).toEqual(roomObjectTarget(rug, early, first));
     }
   });
 
-  it('projects the doorway mark and its approach from the painted interior door', () => {
+  it('places the sign-in target on the painted knocker', () => {
     const run = returnedVisit();
     const layout = worldLayout(run, 1280, 800);
-    const prop = sceneObjects(run).find(object => object.id === 'cottage.door')!;
-    const center = project(COTTAGE_INTERIOR_DOOR, layout.plane);
-    const target = worldApproachBounds(prop, layout);
-    expect(layout.door.x + layout.door.width / 2).toBeCloseTo(center.x);
-    expect(layout.door.y + layout.door.height / 2).toBeCloseTo(center.y);
+    const center = project({ x: 1268, y: 445 }, layout.camera);
+    const { frame: target, art } = roomObjective(run, layout);
+    expect(art).toBeUndefined();
     expect(target.x + target.width / 2).toBeCloseTo(center.x);
     expect(target.y + target.height / 2).toBeCloseTo(center.y);
   });
 
-  it.each([[360, 640], [390, 844], [844, 390], [1280, 800]])('keeps essential plaques reachable at %i × %i', (width, height) => {
+  it.each([[360, 640], [390, 844], [844, 390], [1280, 800]])('keeps essential objects reachable at %i × %i', (width, height) => {
     for (const run of [returnedVisit(), completedRun()]) {
       const layout = worldLayout(run, width, height);
-      for (const prop of sceneObjects(run).filter(item => ['cottage.door', 'cottage.rug', 'account.ledger'].includes(item.id))) {
-        const target = worldApproachBounds(prop, layout);
+      const extra = sceneObjects(run).find(prop => prop.id === (run.currentScene === 'account' ? 'account.slot' : 'cottage.rug'))!;
+      for (const target of [roomObjective(run, layout).frame, roomObjectTarget(extra, layout, run)!.frame]) {
         expect(target.width).toBeGreaterThanOrEqual(44);
         expect(target.height).toBeGreaterThanOrEqual(44);
-        expect(target.x).toBeGreaterThanOrEqual(16);
-        expect(target.x + target.width).toBeLessThanOrEqual(width - 16);
-        expect(target.y + target.height).toBeLessThanOrEqual(height - 108);
-        if (prop.id === 'cottage.door' && width < 400) expect(worldObjectBounds(prop, layout)).not.toBeNull();
+        expect(target.x).toBeGreaterThanOrEqual(0);
+        expect(target.x + target.width).toBeLessThanOrEqual(width);
+        expect(target.y + target.height).toBeLessThanOrEqual(height);
       }
     }
   });

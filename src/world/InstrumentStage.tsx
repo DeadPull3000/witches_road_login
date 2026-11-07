@@ -7,11 +7,11 @@ import { RoadEmblem } from '../ui/RoadEmblem';
 import { rectStyle, type Rect } from './layout';
 import { acceptedPour, COVEN_SEATS, INSTRUMENTS, jugActions, pourStream, SPIRIT_STATEMENTS, VESSELS, VESSEL_VIEW, type InstrumentScene, type PourCue } from './instruments';
 import { InstrumentInstructions } from './RoomRules';
-import { GardenPreview, LiliaTable, RioBed, RememberingRing } from './RoadTrials';
+import { LiliaTable, RioBed, RememberingRing } from './RoadTrials';
 import { VisionConsole } from './VisionConsole';
 import { BrassTap, CovenMat, DrainArt, IronRing, JugDrawing, LanternArt, PlanchetteArt } from './TrialPropArt';
 import { isPaintedTrial } from './trialSurfaces';
-import { ObjectPlaque } from './ObjectPlaque';
+import { PropButton } from './PropControl';
 
 type ActionProps = { run: RunState; busy: boolean; act: (command: Command) => Promise<void> };
 type SharedScene = Exclude<InstrumentScene, 'studio'>;
@@ -38,10 +38,9 @@ export function InstrumentStage({ run, busy, act, scene, expanded, obscured, act
     <header className="instrument-heading" hidden={!expanded}>
       <div><span>{meta.inscription}</span><b>{meta.title}</b></div>
       {clock}
-      {scene === 'vision' && <ObjectPlaque className="vision-return" marker="↗" label="Return to the cottage television" disabled={busy} onClick={() => void act({ type: 'LEAVE_VISION' })} />}
+      {scene === 'vision' && <PropButton className="vision-return" art="television" label="Return to the cottage television" disabled={busy} onClick={() => void act({ type: 'LEAVE_VISION' })} />}
       <button onClick={close} aria-label={meta.close}>×</button>
     </header>
-    {scene === 'garden' && <div className="instrument-preview" hidden={expanded} aria-hidden="true"><GardenPreview run={run} /></div>}
     <div className="instrument-content" hidden={!expanded}>
       {scene === 'threshold' && <CovenCircle run={run} act={act} busy={busy} />}
       {scene === 'kitchen' && <MeasuringCounter run={run} act={act} busy={busy} cue={cue} />}
@@ -54,7 +53,7 @@ export function InstrumentStage({ run, busy, act, scene, expanded, obscured, act
     {scene === 'kitchen' && <aside className="counter-oven" data-dismissed={run.puzzles.kitchen.timerDismissed} data-testid="oven-chime"><svg viewBox="0 0 60 56" aria-hidden="true"><path d="M5 6h50v44H5zM5 17h50M13 24h34v19H13z"/><circle cx="16" cy="11" r="2"/><circle cx="27" cy="11" r="2"/>{run.puzzles.kitchen.timerDismissed && <path className="oven-mitt" d="M34 13v-6q0-5 5-5h7q5 0 5 5v18H34l-7-9q-2-5 3-5z" />}</svg><p className="oven-caption">{run.puzzles.kitchen.solved ? 'Jen has put the mitt away.' : run.puzzles.kitchen.timerDismissed ? 'The oven mitt has hushed the chime.' : 'A little chime waits inside the oven.'}</p></aside>}
     <div className="instrument-end" hidden={!expanded}>
       {solved && scene !== 'garden' && scene !== 'vision' && <div className="instrument-exit"><RoadEmblem kind={scene === 'kitchen' ? 'cup' : scene === 'cabin' ? 'lamp' : scene === 'greenhouse' ? 'flower' : 'cards'} /><span>{scene === 'threshold' ? 'The coven is assembled. Sharon counts.' : 'Seal earned. Your work is safe.'}</span>
-        <ObjectPlaque className="instrument-door" marker="↗" label={scene === 'threshold' ? 'Enter Jen’s kitchen' : next === 'cottage' ? 'Return to the cottage' : `Continue to ${SCENE_INFO[next].character}’s ${next}`}
+        <PropButton className="instrument-door" art={scene === 'threshold' || scene === 'cabin' ? 'door' : 'key'} label={scene === 'threshold' ? 'Enter Jen’s kitchen' : next === 'cottage' ? 'Return to the cottage' : `Continue to ${SCENE_INFO[next].character}’s ${next}`}
           disabled={busy} onClick={() => void act({ type: 'ENTER_SCENE', scene: next })} />
       </div>}
       {!solved && ['kitchen','cabin','greenhouse','garden'].includes(scene) && <div className="instrument-tools"><button disabled={busy} onClick={() => void act({ type: 'UNDO' })}>↶ Undo last move</button><button disabled={busy} onClick={() => void act({ type: 'RESET_PUZZLE' })}>Reset this puzzle</button></div>}

@@ -241,11 +241,10 @@
   background: linear-gradient(125deg, #643d30, #45282b 75%);
   box-shadow: inset 0 0 0 2px #34222b, 0 2px #241921;
 }
-.studio-phone-art { display: block; width: 100%; height: 84px; }
+.studio-phone-art { display: block; width: 100%; height: 100%; }
 .telephone-number { min-width: 0; padding: 0 4px; }
 .telephone-number label { display: block; margin-bottom: 5px; color: #ffe5bd; text-align: center; font: .95rem/1.18 Georgia, serif; }
-.telephone-dial { display: grid; grid-template-columns: minmax(44px, 1fr) minmax(44px, .9fr); gap: 5px; }
-.telephone-dial input {
+.telephone-number input {
   min-width: 0;
   width: 100%;
   min-height: 44px;
@@ -259,8 +258,6 @@
   border-radius: 3px;
   box-shadow: inset 0 2px 0 #100c12;
 }
-.studio-stage .telephone-dial button { padding: 4px; background: linear-gradient(#e4c092, #b28b65); border-color: #d1aa77; color: #332022; font: 17px/1 var(--serif); }
-.studio-stage .telephone-dial button:hover:enabled { background: #f3d7a3; color: #332022; }
 .studio-gear-strip { grid-column: 1/-1; display: flex; align-items: center; flex-wrap: wrap; gap: 5px; padding: 2px 1px 0; }
 .studio-stage .studio-gear-strip button {
   padding: 5px 10px;

@@ -7,7 +7,7 @@ import { RoadEmblem } from '../ui/RoadEmblem';
 import { INSTRUMENTS } from './instruments';
 import { rectStyle, type Rect, type WorldLayout } from './layout';
 import { InstrumentInstructions } from './RoomRules';
-import { ObjectPlaque } from './ObjectPlaque';
+import { PropButton } from './PropControl';
 import type { StudioDock, StudioPlacement } from './studioLayout';
 import './recordingStudio.css';
 
@@ -113,14 +113,11 @@ export function RecordingStage({
             </div>
           </div>
           <form className="studio-telephone" onSubmit={event => { event.preventDefault(); void act({ type: 'DIAL_CODE', code }); }}>
-            <TelephoneArt />
+            <PropButton type="submit" className="telephone-handset" art={<TelephoneArt />} label="Dial the number" caption="Dial" disabled={busy || studio.solved} />
             <div className="telephone-number">
               <label htmlFor="code">Two-digit recording number</label>
-              <div className="telephone-dial">
-                <input id="code" inputMode="numeric" pattern="[0-9]{2}" maxLength={2} value={code} disabled={busy || studio.solved}
-                  onChange={event => setCode(event.target.value.replace(/\D/g, '').slice(0, 2))} required autoComplete="off" />
-                <ObjectPlaque type="submit" marker="↻" label="Dial" disabled={busy || studio.solved} aria-label="Dial the number" />
-              </div>
+              <input id="code" inputMode="numeric" pattern="[0-9]{2}" maxLength={2} value={code} disabled={busy || studio.solved}
+                onChange={event => setCode(event.target.value.replace(/\D/g, '').slice(0, 2))} required autoComplete="off" />
             </div>
           </form>
           <div className="studio-gear-strip">
@@ -135,7 +132,7 @@ export function RecordingStage({
         </div>
         {studio.solved && <div className="instrument-exit">
           <RoadEmblem kind="record" /><span>Seal earned. Your work is safe.</span>
-          <ObjectPlaque className="instrument-door" marker="↗" label="Continue to Agatha’s cabin" disabled={busy} onClick={() => void act({ type: 'ENTER_SCENE', scene: 'cabin' })} />
+          <PropButton className="instrument-door" art="key" label="Continue to Agatha’s cabin" disabled={busy} onClick={() => void act({ type: 'ENTER_SCENE', scene: 'cabin' })} />
         </div>}
         {working && <div className="studio-feedback">{children}</div>}
       </div>
