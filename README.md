@@ -1,3 +1,10 @@
+<picture>
+  <source media="(prefers-reduced-motion: no-preference)" srcset="./project-scan.gif">
+  <img src="./project-static.png" width="1056" alt="The Witches’ Road ASCII project diagram">
+</picture>
+
+Explore timed trials in a shared Pixi renderer. Save logic uses revision checks and a previous-save recovery path.
+
 # The Witches' Road
 
 A cozy pixel-art browser puzzle game in which a cottage and a magical road become an elaborate login for the fictional Westview Public Library.
